@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 284 48" role="img" aria-label="canica">
+  <title>canica</title>
+  <!-- c -->
+  <circle cx="24" cy="24" r="23" fill="#e5794a"/>
+  <text x="24" y="31" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" fill="white">c</text>
+  <!-- a -->
+  <circle cx="72" cy="24" r="23" fill="#d79093"/>
+  <text x="72" y="31" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" fill="white">a</text>
+  <!-- n -->
+  <circle cx="120" cy="24" r="23" fill="#be352b"/>
+  <text x="120" y="31" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" fill="white">n</text>
+  <!-- i -->
+  <circle cx="168" cy="24" r="23" fill="#107039"/>
+  <text x="168" y="31" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" fill="white">i</text>
+  <!-- c -->
+  <circle cx="216" cy="24" r="23" fill="#5273c6"/>
+  <text x="216" y="31" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" fill="white">c</text>
+  <!-- a -->
+  <circle cx="261" cy="24" r="23" fill="#f8be58"/>
+  <text x="261" y="31" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="26" fill="#1a1411">a</text>
+</svg>

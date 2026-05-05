@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Canica · Café y ludoteca · Condesa, CDMX</title>
+<meta name="description" content="Canica es un espacio para padres e hijos en la Condesa, CDMX. Café de verdad para adultos. Ludoteca supervisada para niños. Membresías familiares." />
+<meta name="theme-color" content="#FFF9F1" />
+
+<meta property="og:title" content="Canica · Café y ludoteca · Condesa, CDMX" />
+<meta property="og:description" content="Café y ludoteca en la Condesa. Dos ritmos, un lugar." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://canica.fun/" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+<link rel="canonical" href="https://canica.fun/" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  "name": "Canica",
+  "description": "Café y ludoteca en la Condesa. Un espacio para padres e hijos. Dos ritmos, un lugar.",
+  "url": "https://canica.fun",
+  "telephone": "",
+  "email": "hola@canica.fun",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Avenida Mazatlán 83",
+    "addressLocality": "Condesa",
+    "addressRegion": "Ciudad de México",
+    "postalCode": "06140",
+    "addressCountry": "MX"
+  },
+  "openingHours": "Mo-Su 09:00-19:30",
+  "servesCuisine": ["Café", "Desayunos", "Brunch"],
+  "sameAs": ["https://www.instagram.com/canicafun"]
+}
+</script>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="landing">
+<script>
+function openPage(id) { document.getElementById(id).style.display='block'; document.body.style.overflow='hidden'; }
+function closePage(id) { document.getElementById(id).style.display='none'; document.body.style.overflow=''; }
+</script>
+
+<!-- Brandmark -->
+<a class="bead-mark" href="index.html" aria-label="Canica home">
+  <img src="assets/canica-wordmark-vector.svg" alt="canica" />
+</a>
+
+<!-- Tiny status dot -->
+<a class="status-dot" href="reservations.html" aria-label="Reservations">
+  <span class="status-dot__dot"></span>
+  <span class="status-dot__txt">abierto hoy</span>
+</a>
+
+<!-- ====================================================
+     Section 01 — Restaurant / hero
+     ==================================================== -->
+<section class="hero" id="restaurant">
+  <div class="hero__photo" style="background-image: url('assets/photo-hero-exterior.jpg');"></div>
+
+  <div class="hero__copy">
+    <span class="kicker">Canica · Mazatlán 83, Condesa</span>
+    <h1>Un espacio para familias que no quieren <em>un espacio para familias.</em></h1>
+    <p class="lead">
+      Café de verdad. Ludoteca supervisada. Un lugar donde los adultos no se comprometen y los niños tampoco.
+    </p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="menu.html">Ver el menú →</a>
+      <a class="btn btn--ghost" href="reservations.html">Reservar una mesa</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     Section 02 — Playground / programme
+     ==================================================== -->
+<!-- Section 02 — La ludoteca (full experience) -->
+<section class="hero hero--reverse" id="playground">
+  <div class="hero__photo" style="background-image: url('assets/photo-hero-playground.jpg');"></div>
+
+  <div class="hero__copy">
+    <span class="kicker">02 · La ludoteca</span>
+    <h2>Aquí los niños <em>juegan.</em><br>Y ustedes pueden respirar.</h2>
+    <p class="lead">Un espacio diseñado bajo el principio del juego libre. Los niños construyen, inventan y exploran a su propio ritmo, guiados por su curiosidad y no por adultos.</p>
+    <div class="hero__actions">
+      <button class="btn btn--primary" onclick="openPage('ludoteca-page')">La ludoteca →</button>
+    </div>
+  </div>
+</section>
+
+<!-- Section 03 — Membership -->
+<section class="hero" id="membership">
+  <div class="hero__photo" style="background-image: url('assets/photo-interior-family.jpg');"></div>
+
+  <div class="hero__copy">
+    <span class="kicker">03 · Canica Commons</span>
+    <h2>Tu lugar, sin tener que <em>pensarlo.</em></h2>
+    <p class="lead">Acceso ilimitado entre semana. Sin calcular entradas. Las primeras 100 familias fundadoras bloquean este precio para siempre.</p>
+
+    <!-- Kid selector — each button goes directly to checkout -->
+    <div style="margin:var(--sp-5) 0 var(--sp-3);">
+      <p style="font-family:var(--body);font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.45;margin-bottom:var(--sp-3);">Cuántos niños</p>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn--primary" onclick="checkoutKids(1)" style="flex:1;padding:12px 8px;font-size:11px;line-height:1.4;">1 niño<br><span style="font-family:var(--display);font-size:17px;font-style:italic;">$950</span><br><span style="font-size:11px;opacity:.6;">/mes</span></button>
+        <button class="btn" onclick="checkoutKids(2)" style="flex:1;padding:12px 8px;font-size:11px;line-height:1.4;">2 niños<br><span style="font-family:var(--display);font-size:17px;font-style:italic;">$1,650</span><br><span style="font-size:11px;opacity:.6;">/mes</span></button>
+        <button class="btn" onclick="checkoutKids(3)" style="flex:1;padding:12px 8px;font-size:11px;line-height:1.4;">3+ niños<br><span style="font-family:var(--display);font-size:17px;font-style:italic;">$2,500</span><br><span style="font-size:11px;opacity:.6;">/mes</span></button>
+      </div>
+    </div>
+    <p style="font-family:var(--body);font-size:11px;opacity:.35;margin:0;">Tópe familiar: $2,500/mes · Cancela cuando quieras.</p>
+  </div>
+</section>
+
+<script>
+async function checkoutKids(n) {
+  const plan = n === 1 ? 'primer_nino' : n === 2 ? 'dos_ninos' : 'tope_familiar';
+  const btn = event.currentTarget;
+  const orig = btn.innerHTML;
+  btn.disabled = true;
+  btn.textContent = 'Cargando...';
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({plan})
+    });
+    const data = await res.json();
+    if (data.url) { window.location.href = data.url; }
+    else { alert('Error al procesar. Intenta de nuevo.'); btn.disabled=false; btn.innerHTML=orig; }
+  } catch(e) {
+    alert('Error de conexión. Intenta de nuevo.');
+    btn.disabled=false; btn.innerHTML=orig;
+  }
+}
+</script>
+
+<!-- ====================================================
+     Quiet info strip
+     ==================================================== -->
+<section class="info">
+  <div class="info__row">
+    <p class="info__line"><em>abierto</em> todos los días 9–19:30h</p>
+    <p class="info__line">mazatlán 83 · condesa · cdmx</p>
+    <p class="info__line"><a href="reservations.html">reservar →</a></p>
+  </div>
+</section>
+
+<!-- ====================================================
+     Footer
+     ==================================================== -->
+<footer class="site-footer-min">
+  <div class="footer-row">
+    <p><em>canica</em> · Mazatlán 83, Condesa · Ciudad de México</p>
+    <p>
+      <a href="https://www.instagram.com/canicafun?igsh=cmVuZWxmbHBqbHRv" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+      &nbsp;·&nbsp;
+      <a href="mailto:hola@canica.fun">hola@canica.fun</a>
+    </p>
+  </div>
+  <p class="footer-meta">© 2026 Canica · Identidad por Mestiza Estudio</p>
+</footer>
+
+
+
+
+
+
+<!-- LUDOTECA OVERLAY -->
+<div id="ludoteca-page" style="display:none;position:fixed;inset:0;z-index:300;background:#FFF9F1;overflow-y:auto;">
+
+<div style="position:sticky;top:0;z-index:10;background:#FFF9F1;border-bottom:1px solid rgba(26,20,17,.1);height:64px;display:flex;align-items:center;padding:0 clamp(20px,5vw,60px);justify-content:space-between;">
+    <img src="assets/canica-wordmark-vector.svg" alt="canica" style="height:26px;width:auto;">
+    <button onclick="closePage('ludoteca-page')" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:none;border:none;cursor:pointer;color:rgba(26,20,17,.5);padding:12px 0 12px 16px;min-height:44px;">← Volver</button>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:48px clamp(20px,5vw,60px) 72px;" class="ludo-grid">
+
+    <!-- LEFT: Razón de ser -->
+    <div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#be352b;margin-bottom:24px;">Bienvenidos a Canica</p>
+
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(26px,3.5vw,42px);font-weight:400;line-height:1.15;color:#1a1411;margin-bottom:32px;letter-spacing:-.01em;">La <em style="font-style:italic;">primera</em> vez que no tienen que elegir entre ustedes y sus hijos.</h2>
+
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(16px,1.5vw,19px);line-height:1.85;color:rgba(26,20,17,.72);margin-bottom:20px;">Un lugar pensado para padres como ustedes. Como papás nuevos, sabemos lo difícil que puede ser encontrar tiempo para ser adultos. Tiempo para platicar con calma, leer, jugar, tomar un café sin prisa o una copa de vino a gusto.</p>
+
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(16px,1.5vw,19px);line-height:1.85;color:rgba(26,20,17,.72);margin-bottom:20px;">Creamos Canica para devolverles ese espacio. Un lugar donde pueden disfrutar su tiempo como individuos, sin culpa y sin remordimientos. Donde estar con sus hijos no significa dejarse a ustedes mismos de lado.</p>
+
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(16px,1.5vw,19px);line-height:1.85;color:rgba(26,20,17,.65);font-style:italic;margin-bottom:20px;">La ludoteca Canica está diseñada bajo el principio del juego libre. Creemos que la mejor ludoteca no es la que lo explica todo, sino la que invita a imaginar. Un espacio donde los niños construyen, inventan y exploran a su propio ritmo, guiados por su curiosidad y no por adultos.</p>
+
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(16px,1.5vw,19px);line-height:1.85;color:rgba(26,20,17,.72);">Los invitamos a retomar su espacio, aunque sea por un momento. A quedarse. A volver.</p>
+    </div>
+
+    <!-- RIGHT: Precios — same classes as menu.html -->
+    <div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#be352b;margin-bottom:0;">Entrada a la ludoteca</p>
+      <ul class="items">
+        <li>
+          <div><h3 class="name">Lunes</h3><p class="ingredients">Tiempo libre · No aplica festivos</p></div>
+          <span class="price">$100</span>
+        </li>
+        <li>
+          <div><h3 class="name">Martes – viernes</h3><p class="ingredients">Tiempo libre</p></div>
+          <span class="price">$200</span>
+        </li>
+        <li>
+          <div><h3 class="name">Sábado y domingo</h3><p class="ingredients">Primera hora · Hora extra $100</p></div>
+          <span class="price">$200</span>
+        </li>
+      </ul>
+
+
+    </div>
+
+  </div>
+
+  <footer class="site-footer-min" style="margin-top:0;">
+    <div class="footer-row">
+      <p><em>canica</em> · Mazatlán 83, Condesa · Ciudad de México</p>
+      <p><a href="https://www.instagram.com/canicafun?igsh=cmVuZWxmbHBqbHRv" target="_blank" rel="noopener noreferrer">Instagram ↗</a> · <a href="mailto:hola@canica.fun">hola@canica.fun</a></p>
+    </div>
+    <p class="footer-meta">© 2026 Canica · Identity by Mestiza Estudio</p>
+  </footer>
+
+</div>
+
+</body>
+</html>

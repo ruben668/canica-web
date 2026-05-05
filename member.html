@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Canica Commons">
+  <meta name="theme-color" content="#0a4a1a">
+  <title>Mi Pase — Canica Commons</title>
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Apple touch icons -->
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-startup-image" href="/icons/icon-512.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%; overflow: hidden;
+      font-family: 'IBM Plex Mono', monospace;
+      background: #0a4a1a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .screen {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; height: 100%;
+      padding: 32px 24px; text-align: center;
+    }
+
+    /* Loading */
+    #screen-loading .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid rgba(255,255,255,0.15);
+      border-top-color: #F9C14F;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #screen-loading p { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: .12em; text-transform: uppercase; }
+
+    /* Valid pass */
+    #screen-pass { display: none; }
+    .pass-card {
+      background: #FFF9F1;
+      border-radius: 20px;
+      padding: 28px 24px;
+      width: 100%; max-width: 320px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .pass-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px;
+    }
+    .pass-brand {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic; font-size: 18px; color: #1a1411;
+    }
+    .pass-label {
+      font-size: 8px; letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(26,20,17,.4);
+    }
+    .pass-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px; color: #1a1411; margin-bottom: 4px;
+      font-style: italic;
+    }
+    .pass-plan {
+      font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
+      color: rgba(26,20,17,.45); margin-bottom: 20px;
+    }
+    .pass-qr {
+      background: #1a1411; border-radius: 12px;
+      padding: 16px; display: flex;
+      align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .pass-qr canvas { border-radius: 4px; }
+    .pass-footer {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .pass-footer-left { font-size: 9px; color: rgba(26,20,17,.35); line-height: 1.6; }
+    .marbles { display: flex; gap: 3px; }
+    .marble {
+      width: 16px; height: 16px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif; font-style: italic;
+      font-size: 7px; color: white;
+    }
+
+    .pass-status {
+      margin-top: 20px; font-size: 11px;
+      color: rgba(255,255,255,0.5); line-height: 1.6;
+    }
+    .pass-status strong { color: #F9C14F; }
+
+    /* Install prompt */
+    .install-banner {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #1a1411; padding: 16px 20px;
+      display: flex; align-items: center; gap: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      z-index: 100;
+    }
+    .install-banner.show { transform: translateY(0); }
+    .install-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: linear-gradient(135deg, #0a4a1a, #107039);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 20px;
+    }
+    .install-text { flex: 1; }
+    .install-text strong { display: block; font-size: 13px; color: white; margin-bottom: 2px; }
+    .install-text span { font-size: 11px; color: rgba(255,255,255,.45); }
+    .install-btn {
+      background: #F9C14F; color: #1a1411;
+      border: none; padding: 9px 18px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      border-radius: 6px; cursor: pointer; white-space: nowrap;
+    }
+    .install-dismiss {
+      background: none; border: none; color: rgba(255,255,255,.3);
+      font-size: 20px; cursor: pointer; padding: 4px; flex-shrink: 0;
+    }
+
+    /* iOS instruction overlay */
+    .ios-hint {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: #1a1411; border: 1px solid rgba(255,255,255,.15);
+      border-radius: 12px; padding: 14px 18px;
+      font-size: 12px; color: rgba(255,255,255,.7);
+      text-align: center; line-height: 1.6; max-width: 280px;
+      display: none; z-index: 101;
+    }
+    .ios-hint::after {
+      content: ''; position: absolute; bottom: -8px; left: 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-bottom: none; border-top-color: #1a1411;
+    }
+
+    /* Error */
+    #screen-error { display: none; }
+    #screen-error h2 { font-family: 'DM Serif Display', serif; font-size: 24px; color: white; margin-bottom: 12px; }
+    #screen-error p { font-size: 12px; color: rgba(255,255,255,.5); line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<!-- Loading -->
+<div class="screen" id="screen-loading">
+  <div class="spinner"></div>
+  <p>Cargando tu pase...</p>
+</div>
+
+<!-- Pass -->
+<div class="screen" id="screen-pass">
+  <div class="pass-card">
+    <div class="pass-top">
+      <span class="pass-brand">canica</span>
+      <span class="pass-label">Commons · Founding Member</span>
+    </div>
+    <div class="pass-name" id="pass-name">—</div>
+    <div class="pass-plan" id="pass-plan">—</div>
+    <div class="pass-qr">
+      <canvas id="pass-qr-canvas"></canvas>
+    </div>
+    <div class="pass-footer">
+      <div class="pass-footer-left">
+        <span id="pass-since">—</span><br>
+        Mazatlán 83 · Condesa
+      </div>
+      <div class="marbles">
+        <div class="marble" style="background:#e5794a">c</div>
+        <div class="marble" style="background:#d79093">a</div>
+        <div class="marble" style="background:#be352b">n</div>
+        <div class="marble" style="background:#107039">i</div>
+        <div class="marble" style="background:#5273c6">c</div>
+        <div class="marble" style="background:#f8be58;color:#1a1411">a</div>
+      </div>
+    </div>
+  </div>
+  <p class="pass-status">Muestra este código en la puerta de la ludoteca.<br><strong>Tu pase · siempre aquí.</strong></p>
+</div>
+
+<!-- Error -->
+<div class="screen" id="screen-error">
+  <h2>Pase no encontrado</h2>
+  <p>Este link no corresponde a una membresía activa.<br><br>
+  Escríbenos a <a href="mailto:hola@canica.fun" style="color:#F9C14F;">hola@canica.fun</a></p>
+</div>
+
+<!-- Install banner -->
+<div class="install-banner" id="install-banner">
+  <div class="install-icon">🎫</div>
+  <div class="install-text">
+    <strong>Guarda tu pase</strong>
+    <span>Acceso rápido desde tu pantalla de inicio</span>
+  </div>
+  <button class="install-btn" id="install-btn">Guardar</button>
+  <button class="install-dismiss" id="install-dismiss">×</button>
+</div>
+
+<!-- iOS hint -->
+<div class="ios-hint" id="ios-hint">
+  Toca <strong>⬆️ Compartir</strong> y luego<br>
+  <strong>"Agregar a pantalla de inicio"</strong>
+</div>
+
+<script>
+const PLAN_LABELS = {
+  primer_nino: 'Primer niño · $950/mes',
+  segundo_nino: 'Segundo niño · $700/mes',
+  tercer_nino: 'Tercer niño · $600/mes',
+  tope_familiar: 'Familia completa · $2,500/mes',
+  familiar: 'Familiar · $2,500/mes',
+  basica: 'Básica · $950/mes',
+};
+
+function show(id) {
+  ['screen-loading','screen-pass','screen-error'].forEach(s => {
+    document.getElementById(s).style.display = s === id ? 'flex' : 'none';
+  });
+}
+
+async function loadPass() {
+  const params = new URLSearchParams(window.location.search);
+  const customerId = params.get('id');
+
+  if (!customerId) { show('screen-error'); return; }
+
+  try {
+    const res = await fetch(`/api/verify?customer=${customerId}&log=false`);
+    const data = await res.json();
+
+    if (!data.valid) { show('screen-error'); return; }
+
+    // Fill card
+    document.getElementById('pass-name').textContent = data.name || 'Miembro';
+    document.getElementById('pass-plan').textContent = PLAN_LABELS[data.plan] || 'Canica Commons';
+    document.getElementById('pass-since').textContent = `Desde ${data.since || '2026'}`;
+
+    // Generate QR
+    const checkinUrl = `https://canica.fun/checkin.html?id=${customerId}`;
+    await QRCode.toCanvas(document.getElementById('pass-qr-canvas'), checkinUrl, {
+      width: 200, margin: 1,
+      color: { dark: '#FFF9F1', light: '#1a1411' }
+    });
+
+    show('screen-pass');
+    setupInstall(customerId, data.name);
+
+  } catch(e) {
+    show('screen-error');
+  }
+}
+
+// PWA install
+let deferredPrompt = null;
+
+function setupInstall(customerId, name) {
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isInStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone;
+
+  if (isInStandalone) return; // Already installed
+
+  if (isIOS) {
+    // iOS: show manual hint
+    setTimeout(() => {
+      document.getElementById('ios-hint').style.display = 'block';
+      setTimeout(() => document.getElementById('ios-hint').style.display = 'none', 5000);
+    }, 1500);
+    return;
+  }
+
+  // Android/Chrome: wait for beforeinstallprompt
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(() => document.getElementById('install-banner').classList.add('show'), 1000);
+  });
+
+  document.getElementById('install-btn').addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    document.getElementById('install-banner').classList.remove('show');
+  });
+
+  document.getElementById('install-dismiss').addEventListener('click', () => {
+    document.getElementById('install-banner').classList.remove('show');
+  });
+}
+
+loadPass();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "functions": {
+    "api/checkout.js": { "memory": 128, "maxDuration": 10 },
+    "api/verify.js":   { "memory": 128, "maxDuration": 10 },
+    "api/webhook.js":  { "memory": 128, "maxDuration": 10 }
+  },
+  "rewrites": [
+    { "source": "/menu",         "destination": "/src/menu.html" },
+    { "source": "/menu.html",    "destination": "/src/menu.html" },
+    { "source": "/reservations", "destination": "/src/reservations.html" },
+    { "source": "/reservations.html", "destination": "/src/reservations.html" },
+    { "source": "/membership",   "destination": "/src/membership.html" },
+    { "source": "/membership.html", "destination": "/src/membership.html" },
+    { "source": "/success",      "destination": "/src/success.html" },
+    { "source": "/success.html", "destination": "/src/success.html" },
+    { "source": "/checkin",      "destination": "/src/checkin.html" },
+    { "source": "/checkin.html", "destination": "/src/checkin.html" },
+    { "source": "/member",       "destination": "/src/member.html" },
+    { "source": "/member.html",  "destination": "/src/member.html" },
+    { "source": "/sitemap.xml",  "destination": "/src/sitemap.xml" },
+    { "source": "/robots.txt",   "destination": "/src/robots.txt" },
+    { "source": "/manifest.json","destination": "/src/manifest.json" },
+    { "source": "/styles.css",   "destination": "/src/styles.css" },
+    { "source": "/assets/(.*)",  "destination": "/src/assets/$1" },
+    { "source": "/icons/(.*)",   "destination": "/src/icons/$1" },
+    { "source": "/api/(.*)",     "destination": "/src/api/$1" }
+  ]
+}

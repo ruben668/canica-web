@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu boleto dorado — Canica Commons</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital,wght@0,400;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:    #F9C14F;
+      --gold-d:  #D4A017;
+      --ivory:   #FFF9F1;
+      --ink:     #1A1411;
+      --rufous:  #be352b;
+      --green:   #107039;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── CONFETTI ── */
+    .confetti-container {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 8px; height: 14px;
+      border-radius: 2px;
+      opacity: 0;
+      animation: confetti-fall linear forwards;
+    }
+    @keyframes confetti-fall {
+      0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0.3; }
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    /* ── GOLDEN TICKET ── */
+    .ticket-wrap {
+      perspective: 1200px;
+      margin-bottom: 48px;
+    }
+    .ticket {
+      width: min(560px, 90vw);
+      background: var(--gold);
+      border-radius: 12px;
+      padding: 0;
+      position: relative;
+      box-shadow:
+        0 0 0 3px var(--gold-d),
+        0 0 0 6px var(--gold),
+        0 20px 60px rgba(249,193,79,0.4),
+        0 40px 100px rgba(249,193,79,0.2);
+      animation: ticket-rise 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards;
+      transform: translateY(60px) rotateX(8deg);
+      opacity: 0;
+    }
+    @keyframes ticket-rise {
+      to { transform: translateY(0) rotateX(0deg); opacity: 1; }
+    }
+
+    /* Perforated edge */
+    .ticket::before, .ticket::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 24px; height: 24px;
+      background: var(--ink);
+      border-radius: 50%;
+      transform: translateY(-50%);
+      box-shadow: 0 0 0 4px var(--gold-d);
+    }
+    .ticket::before { left: -12px; }
+    .ticket::after  { right: -12px; }
+
+    .ticket-inner {
+      padding: 40px 52px;
+      border-radius: 10px;
+      border: 2px dashed rgba(0,0,0,0.2);
+      margin: 8px;
+    }
+
+    /* Shimmer overlay */
+    .ticket-shine {
+      position: absolute; inset: 0;
+      border-radius: 12px;
+      background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(255,255,255,0.35) 50%,
+        transparent 60%
+      );
+      background-size: 200% 100%;
+      animation: shine 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes shine {
+      0%   { background-position: 200% 0; }
+      50%  { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .ticket-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .ticket-label {
+      font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+      font-weight: 600; color: rgba(0,0,0,0.5);
+    }
+    .ticket-number {
+      font-size: 11px; letter-spacing: 0.15em;
+      color: rgba(0,0,0,0.4); font-variant-numeric: tabular-nums;
+    }
+
+    .ticket-headline {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(28px, 6vw, 42px);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .ticket-headline em {
+      font-style: italic;
+    }
+
+    .ticket-sub {
+      font-size: 12px; color: rgba(0,0,0,0.55);
+      letter-spacing: 0.04em; margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .ticket-divider {
+      border: none;
+      border-top: 2px dashed rgba(0,0,0,0.2);
+      margin: 24px 0;
+    }
+
+    .ticket-details {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .ticket-detail-label {
+      font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(0,0,0,0.45); margin-bottom: 4px;
+    }
+    .ticket-detail-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 14px; color: var(--ink);
+    }
+
+    .ticket-stamp {
+      position: absolute;
+      bottom: 28px; right: 40px;
+      width: 80px; height: 80px;
+      border: 3px solid rgba(0,0,0,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      transform: rotate(-15deg);
+    }
+    .ticket-stamp-text {
+      font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase;
+      font-weight: 600; color: rgba(0,0,0,0.4); text-align: center; line-height: 1.4;
+    }
+    .ticket-stamp-year {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px; color: rgba(0,0,0,0.5);
+    }
+
+    /* ── COPY BELOW TICKET ── */
+    .below-ticket {
+      text-align: center; max-width: 480px;
+      animation: fade-up 0.6s 0.5s both;
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .below-ticket p {
+      color: rgba(255,249,241,0.6);
+      font-size: 13px; line-height: 1.8; margin-bottom: 8px;
+    }
+    .below-ticket p strong { color: var(--gold); }
+
+    .actions {
+      display: flex; gap: 12px; justify-content: center;
+      flex-wrap: wrap; margin-top: 32px;
+    }
+    .btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 13px 28px; text-decoration: none; cursor: pointer;
+      border: 1px solid; transition: all 0.2s;
+    }
+    .btn-gold {
+      background: var(--gold); color: var(--ink); border-color: var(--gold);
+    }
+    .btn-gold:hover { background: var(--gold-d); border-color: var(--gold-d); }
+    .btn-ghost {
+      background: transparent; color: rgba(255,249,241,0.5);
+      border-color: rgba(255,249,241,0.2);
+    }
+    .btn-ghost:hover { color: var(--ivory); border-color: rgba(255,249,241,0.5); }
+
+    /* ── MARBLES ── */
+    .marbles { display: flex; gap: 5px; justify-content: center; margin-bottom: 40px; }
+    .marble {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif; font-style: italic;
+      font-size: 13px; color: white;
+      animation: marble-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .marble:nth-child(1) { background: #e5794a; animation-delay: 0.1s; }
+    .marble:nth-child(2) { background: #d79093; animation-delay: 0.15s; }
+    .marble:nth-child(3) { background: #be352b; animation-delay: 0.2s; }
+    .marble:nth-child(4) { background: #107039; animation-delay: 0.25s; }
+    .marble:nth-child(5) { background: #5273c6; animation-delay: 0.3s; }
+    .marble:nth-child(6) { background: #f8be58; color: #1a1411; animation-delay: 0.35s; }
+    @keyframes marble-pop {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 480px) {
+      .ticket-inner { padding: 28px 32px; }
+      .ticket-details { grid-template-columns: 1fr; }
+      .ticket-stamp { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="confetti-container" id="confetti"></div>
+
+<div class="page">
+
+  <div class="marbles">
+    <div class="marble">c</div>
+    <div class="marble">a</div>
+    <div class="marble">n</div>
+    <div class="marble">i</div>
+    <div class="marble">c</div>
+    <div class="marble" style="color:#1a1411">a</div>
+  </div>
+
+  <div class="ticket-wrap">
+    <div class="ticket">
+      <div class="ticket-shine"></div>
+      <div class="ticket-inner">
+
+        <div class="ticket-top">
+          <span class="ticket-label">Canica Commons · Founding Member</span>
+          <span class="ticket-number" id="ticket-number">#—</span>
+        </div>
+
+        <h1 class="ticket-headline">Tu boleto<br><em>dorado.</em></h1>
+        <p class="ticket-sub">Bienvenido a las primeras 100 familias fundadoras.<br>Este precio es tuyo para siempre.</p>
+
+        <hr class="ticket-divider">
+
+        <div class="ticket-details">
+          <div>
+            <div class="ticket-detail-label">Acceso</div>
+            <div class="ticket-detail-value">Lunes – Viernes</div>
+          </div>
+          <div>
+            <div class="ticket-detail-label">Lugar</div>
+            <div class="ticket-detail-value">Mazatlán 83</div>
+          </div>
+          <div>
+            <div class="ticket-detail-label">Ludoteca</div>
+            <div class="ticket-detail-value">Ilimitada</div>
+          </div>
+          <div>
+            <div class="ticket-detail-label">Condesa, CDMX</div>
+            <div class="ticket-detail-value">Todos los días 9h</div>
+          </div>
+        </div>
+
+        <div class="ticket-stamp">
+          <span class="ticket-stamp-text">Familia<br>Fundadora</span>
+          <span class="ticket-stamp-year">2026</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="below-ticket">
+    <p>Recibirás un correo de confirmación en unos minutos.<br>Tu membresía está <strong>activa desde hoy.</strong></p>
+    <p style="margin-top:8px;">Este es tu pase de entrada.<br>Muéstralo en la ludoteca cada vez que llegues.</p>
+
+    <!-- QR Code -->
+    <div id="qr-wrap" style="margin:28px auto;background:#FFF9F1;border-radius:12px;padding:20px;width:fit-content;display:none;">
+      <div id="qr-code"></div>
+      <p style="color:#1a1411;font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-top:12px;opacity:.5;">Tu pase personal · Canica Commons</p>
+    </div>
+
+    <div class="actions">
+      <a href="reservations.html" class="btn btn-gold">Reservar tu primera visita</a>
+      <a href="index.html" class="btn btn-ghost">Volver al inicio</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>
+  // Generate ticket number from session
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id') || '';
+  const ticketNum = sessionId ? '#' + sessionId.slice(-6).toUpperCase() : '#' + Math.random().toString(36).slice(-6).toUpperCase();
+  document.getElementById('ticket-number').textContent = ticketNum;
+
+  // Generate QR code that links to check-in page
+  async function generateQR() {
+    if (!sessionId) return;
+    try {
+      // Resolve session to customer ID
+      const res = await fetch(`/api/verify?session=${sessionId}&log=false`);
+      const data = await res.json();
+      if (!data.customer_id) return;
+
+      const checkinUrl = `https://member.canica.fun?id=${data.customer_id}`;
+
+      // Show the link as text backup
+      const linkEl = document.createElement('p');
+      linkEl.style.cssText = 'font-size:11px;color:rgba(26,20,17,.45);margin-top:10px;word-break:break-all;';
+      linkEl.innerHTML = `<strong style="color:#1a1411">Tu link personal:</strong><br><a href="${checkinUrl}" style="color:#be352b;">${checkinUrl}</a>`;
+
+      const canvas = document.createElement('canvas');
+      await QRCode.toCanvas(canvas, checkinUrl, {
+        width: 180, margin: 2,
+        color: { dark: '#1A1411', light: '#FFF9F1' }
+      });
+      document.getElementById('qr-code').appendChild(canvas);
+      document.getElementById('qr-code').appendChild(linkEl);
+      document.getElementById('qr-wrap').style.display = 'block';
+    } catch(e) {
+      console.log('QR generation skipped:', e.message);
+    }
+  }
+
+  // Clean URL
+  if (window.history.replaceState) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+
+  // Confetti
+  const colors = ['#F9C14F','#e5794a','#d79093','#be352b','#107039','#5273c6','#FFF9F1'];
+  const container = document.getElementById('confetti');
+
+  function spawnConfetti() {
+    for (let i = 0; i < 120; i++) {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.cssText = `
+        left: ${Math.random() * 100}%;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        width: ${4 + Math.random() * 8}px;
+        height: ${8 + Math.random() * 14}px;
+        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+        animation-duration: ${2 + Math.random() * 3}s;
+        animation-delay: ${Math.random() * 0.8}s;
+      `;
+      container.appendChild(el);
+    }
+    // Second wave
+    setTimeout(() => {
+      for (let i = 0; i < 80; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.cssText = `
+          left: ${Math.random() * 100}%;
+          background: ${colors[Math.floor(Math.random() * colors.length)]};
+          width: ${4 + Math.random() * 6}px;
+          height: ${6 + Math.random() * 10}px;
+          border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+          animation-duration: ${2.5 + Math.random() * 2}s;
+          animation-delay: ${Math.random() * 0.5}s;
+        `;
+        container.appendChild(el);
+      }
+    }, 600);
+    // Clean up after 8s
+    setTimeout(() => container.innerHTML = '', 8000);
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(spawnConfetti, 300);
+    setTimeout(generateQR, 800);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Reservaciones · Canica · Reserva tu mesa en Condesa</title>
+<meta name="description" content="Reserva tu mesa en Canica, Condesa, CDMX. Sin complicaciones. Confirmamos en menos de 24 horas." />
+<meta name="keywords" content="Canica reservations, book table Condesa CDMX, workshop reservation Mexico City, members visit booking" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://canica.fun/reservations.html" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Reservations · Canica" />
+<meta property="og:description" content="Plan your visit. Reserve a table, a workshop, or a member tour." />
+<meta property="og:url" content="https://canica.fun/reservations.html" />
+
+<meta name="theme-color" content="#FFF9F1" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFF9F1'/><text x='50' y='66' font-family='Georgia,serif' font-style='italic' font-size='52' text-anchor='middle' fill='%23BF5341'>c</text></svg>" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="subpage">
+
+<header class="sub-header">
+  <a class="sub-back" href="index.html" aria-label="Canica home"><img src="assets/canica-wordmark-vector.svg" alt="canica" /></a>
+  <a class="sub-reserve" href="reservations.html">Reservar</a>
+</header>
+
+<main>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="kicker">Reservaciones · Mesa por mesa</span>
+    <h1>Planea tu <em>visita.</em></h1>
+    <p class="lead">Dínos quién viene y tendremos tu mesa lista. El café recibe sin reserva — pero los sábados se llenan rápido.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <div class="section-head">
+      <span class="num">01 — Reserve</span>
+      <h2>Cuéntanos cuándo <em>vienes.</em></h2>
+    </div>
+
+    <form class="reserve-form" onsubmit="event.preventDefault(); document.getElementById('confirm').hidden = false; this.hidden = true;">
+      <div class="field">
+        <label for="purpose">¿Para qué?</label>
+        <select id="purpose" name="purpose" required>
+          <option value="cafe">Mesa en el café</option>
+          <option value="workshop">Un taller</option>
+          <option value="member-tour">Visita de miembro</option>
+          <option value="private">Evento privado</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="party">¿Cuántos?</label>
+        <select id="party" name="party" required>
+          <option>1 adult</option>
+          <option>2 adults</option>
+          <option>2 adults · 1 child</option>
+          <option selected>2 adults · 2 children</option>
+          <option>3 adults · 2 children</option>
+          <option>Larger party</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="date">Fecha</label>
+        <input id="date" type="date" name="date" required />
+      </div>
+
+      <div class="field">
+        <label for="time">Horario</label>
+        <input id="time" type="time" name="time" required value="11:00" />
+      </div>
+
+      <div class="field">
+        <label for="name">Tu nombre</label>
+        <input id="name" type="text" name="name" required placeholder="Nombre completo" />
+      </div>
+
+      <div class="field">
+        <label for="email">Correo</label>
+        <input id="email" type="email" name="email" required placeholder="tu@correo.com" />
+      </div>
+
+      <div class="field full">
+        <label for="notes">Notas para el equipo (opcional)</label>
+        <textarea id="notes" name="notes" placeholder="Alergias, carriola, cumpleaños — lo que necesitemos saber."></textarea>
+      </div>
+
+      <div class="field full submit-row">
+        <p>Confirmamos por correo o WhatsApp en menos de 24 horas. Cancelaciones con 24h de anticipación.</p>
+        <button type="submit" class="btn btn--primary">Enviar reservación</button>
+      </div>
+    </form>
+
+    <div id="confirm" hidden style="border: 1px solid var(--canica-black); padding: var(--sp-7); margin: var(--sp-7) 0; background: var(--canica-yellow);">
+      <p class="kicker" style="margin-bottom: var(--sp-4); display: block;">Confirmation</p>
+      <h2 class="display-m" style="margin: 0 0 var(--sp-4);">Gracias. Te escribimos <em>pronto.</em></h2>
+      <p>Ya le avisamos a nuestro equipo. Confirmaremos por correo en menos de 24 horas. Si necesitamos sugerirte otro horario, te escribimos hoy.</p>
+      <p style="margin-top: var(--sp-5);"><a class="btn" href="index.html">Volver al inicio</a></p>
+    </div>
+
+    <div class="section-head" style="margin-top: var(--sp-9);">
+      <span class="num">02 — Other ways</span>
+      <h2>O conectámonos <em>directamente.</em></h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); margin-top: var(--sp-5);">
+      <div style="border: 1px solid var(--rule); padding: var(--sp-5);">
+        <p class="kicker" style="display: block; margin-bottom: var(--sp-3);">By email</p>
+        <p class="display-s" style="margin: 0 0 var(--sp-3);"><a href="mailto:hola@canica.fun">hola@canica.fun</a></p>
+        <p class="muted" style="font-size: 13px; margin: 0;">Replies within an hour, 9 – 9.</p>
+      </div>
+      <div style="border: 1px solid var(--rule); padding: var(--sp-5);">
+        <p class="kicker" style="display: block; margin-bottom: var(--sp-3);">By phone</p>
+        <p class="display-s" style="margin: 0 0 var(--sp-3);"><a href="mailto:hola@canica.fun">hola@canica.fun</a></p>
+        <p class="muted" style="font-size: 13px; margin: 0;">Para grupos grandes o el mismo día.</p>
+      </div>
+      <div style="border: 1px solid var(--rule); padding: var(--sp-5);">
+        <p class="kicker" style="display: block; margin-bottom: var(--sp-3);">En persona</p>
+        <p class="display-s" style="margin: 0 0 var(--sp-3);">Entra nomás.</p>
+        <p class="muted" style="font-size: 13px; margin: 0;">Las mesas del café son por orden de llegada.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer-min">
+  <div class="footer-row">
+    <p><em>canica</em> · Mazatlán 83, Condesa · CDMX</p>
+    <p><a href="https://www.instagram.com/canicafun?igsh=cmVuZWxmbHBqbHRv" target="_blank" rel="noopener noreferrer">Instagram ↗</a> · <a href="mailto:hola@canica.fun">hola@canica.fun</a></p>
+  </div>
+  <p class="footer-meta">© 2026 Canica · Identity by Mestiza Estudio</p>
+</footer>
+
+
+<!-- Sticky bottom nav (mobile) -->
+<nav class="bottom-nav" aria-label="Primary">
+  <a href="index.html" class="bn">
+    <span class="bn__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 11 L12 3 L21 11 L21 21 L14 21 L14 14 L10 14 L10 21 L3 21 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    </span>
+    <span class="bn__label">Inicio</span>
+  </a>
+  <a href="menu.html" class="bn">
+    <span class="bn__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="6" cy="6" r="3.5" fill="currentColor"/><rect x="14" y="2.5" width="7" height="7" fill="currentColor"/><rect x="2.5" y="14" width="7" height="7" fill="currentColor"/><path d="M14 21 L21 21 L17.5 14 Z" fill="currentColor"/></svg>
+    </span>
+    <span class="bn__label">Menú</span>
+  </a>
+  <a href="reservations.html" class="bn bn--cta">
+    <span class="bn__label">Reservar</span>
+  </a>
+</nav>
+</body>
+</html>

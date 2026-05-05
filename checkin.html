@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Canica — Verificación de membresía</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%; font-family: 'IBM Plex Mono', monospace;
+      -webkit-font-smoothing: antialiased; overflow: hidden;
+    }
+
+    body {
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.4s ease;
+    }
+
+    body.loading  { background: #1a1411; }
+    body.valid    { background: #0a4a1a; }
+    body.invalid  { background: #4a0a0a; }
+
+    .card {
+      width: min(380px, 92vw);
+      padding: 48px 36px;
+      text-align: center;
+      animation: pop-in 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes pop-in {
+      from { transform: scale(0.85); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    .status-icon {
+      font-size: 80px; line-height: 1;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .status-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px; font-weight: 400;
+      color: white; margin-bottom: 8px; line-height: 1.1;
+    }
+    .status-title em { font-style: italic; }
+
+    .member-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px; color: rgba(255,255,255,0.9);
+      margin: 20px 0 8px; font-style: italic;
+    }
+
+    .member-detail {
+      font-size: 12px; color: rgba(255,255,255,0.5);
+      letter-spacing: 0.08em; margin-bottom: 4px;
+      line-height: 1.6;
+    }
+
+    .divider {
+      border: none; border-top: 1px solid rgba(255,255,255,0.15);
+      margin: 24px 0;
+    }
+
+    .plan-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 6px 16px; border-radius: 999px;
+      font-size: 10px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.7);
+      margin-bottom: 20px;
+    }
+
+    .marbles {
+      display: flex; gap: 5px; justify-content: center;
+      margin-top: 36px;
+    }
+    .marble {
+      width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif; font-style: italic;
+      font-size: 10px; opacity: 0.7;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      width: 48px; height: 48px;
+      border: 3px solid rgba(255,255,255,0.15);
+      border-top-color: #F9C14F;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 24px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-size: 12px; color: rgba(255,255,255,0.4);
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+
+    /* Pulse ring for valid */
+    .pulse-ring {
+      display: none;
+      position: fixed; inset: 0; pointer-events: none;
+      animation: pulse-out 0.6s ease-out both;
+    }
+    body.valid .pulse-ring { display: block; }
+    @keyframes pulse-out {
+      from { box-shadow: inset 0 0 0 20px rgba(16,112,57,0.6); }
+      to   { box-shadow: inset 0 0 0 0px rgba(16,112,57,0); }
+    }
+  </style>
+</head>
+<body class="loading">
+<div class="pulse-ring"></div>
+
+<div class="card" id="card">
+  <div class="spinner"></div>
+  <div class="loading-text">Verificando...</div>
+</div>
+
+<script>
+const PLAN_LABELS = {
+  primer_nino:   'Canica Commons · Primer niño',
+  segundo_nino:  'Canica Commons · Segundo niño',
+  tercer_nino:   'Canica Commons · Tercer niño',
+  tope_familiar: 'Canica Commons · Familia completa',
+  basica:        'Canica Commons · Básica',
+  familiar:      'Canica Commons · Familiar',
+};
+
+async function verify() {
+  const params = new URLSearchParams(window.location.search);
+  const customerId = params.get('id');
+  const sessionId  = params.get('session');
+
+  if (!customerId && !sessionId) {
+    showInvalid({ error: 'Código inválido.' });
+    return;
+  }
+
+  try {
+    const query = customerId ? `customer=${customerId}` : `session=${sessionId}`;
+    const res = await fetch(`/api/verify?${query}`);
+    const data = await res.json();
+
+    if (data.valid) {
+      showValid(data);
+    } else {
+      showInvalid(data);
+    }
+  } catch(e) {
+    showInvalid({ error: 'Error de conexión.' });
+  }
+}
+
+function showValid(data) {
+  document.body.className = 'valid';
+  const planLabel = PLAN_LABELS[data.plan] || 'Canica Commons';
+  document.getElementById('card').innerHTML = `
+    <span class="status-icon">✓</span>
+    <h1 class="status-title"><em>Pasa adelante.</em></h1>
+    <p class="member-name">${data.name}</p>
+    <div class="plan-badge">${planLabel}</div>
+    <p class="member-detail">Miembro desde ${data.since || '—'}</p>
+    ${data.email ? `<p class="member-detail">${data.email}</p>` : ''}
+    <hr class="divider">
+    <p class="member-detail" style="font-size:10px;opacity:.35;">Membresía activa · Válida hasta ${data.current_period_end || '—'}</p>
+    <div class="marbles">
+      <div class="marble" style="background:#e5794a">c</div>
+      <div class="marble" style="background:#d79093">a</div>
+      <div class="marble" style="background:#be352b">n</div>
+      <div class="marble" style="background:#107039">i</div>
+      <div class="marble" style="background:#5273c6">c</div>
+      <div class="marble" style="background:#f8be58;color:#1a1411">a</div>
+    </div>
+  `;
+}
+
+function showInvalid(data) {
+  document.body.className = 'invalid';
+  document.getElementById('card').innerHTML = `
+    <span class="status-icon">✕</span>
+    <h1 class="status-title">Sin <em>membresía</em><br>activa.</h1>
+    <hr class="divider">
+    <p class="member-detail">${data.error || 'No encontramos una membresía activa para este código.'}</p>
+    <p class="member-detail" style="margin-top:12px;">Entrada individual: <strong style="color:white;">$200</strong></p>
+    <div class="marbles" style="margin-top:24px;">
+      <div class="marble" style="background:#e5794a">c</div>
+      <div class="marble" style="background:#d79093">a</div>
+      <div class="marble" style="background:#be352b">n</div>
+      <div class="marble" style="background:#107039">i</div>
+      <div class="marble" style="background:#5273c6">c</div>
+      <div class="marble" style="background:#f8be58;color:#1a1411">a</div>
+    </div>
+  `;
+}
+
+verify();
+</script>
+</body>
+</html>

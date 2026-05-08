@@ -1,0 +1,88 @@
+// Cal.com webhook — fires on every new booking
+// Sends WhatsApp notification to Saira via Telegram Bot (as SMS proxy)
+// POST /api/cal-webhook
+
+const BOT_TOKEN = '8580935482:AAFK-y4drZtUBaxNTL0cV6YseKiG0cyw3Os';
+const SAIRA_WHATSAPP = '+525532909854';
+const RUBEN_TELEGRAM  = '6525841557';
+
+async function sendTelegram(chatId, text) {
+  const body = JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' });
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body
+  });
+}
+
+function getRawBody(req) {
+  return new Promise((resolve, reject) => {
+    let data = '';
+    req.on('data', chunk => data += chunk);
+    req.on('end', () => resolve(data));
+    req.on('error', reject);
+  });
+}
+
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const rawBody = await getRawBody(req);
+  let event;
+  try { event = JSON.parse(rawBody); } catch(e) {
+    return res.status(400).json({ error: 'Invalid JSON' });
+  }
+
+  const triggerEvent = event.triggerEvent || event.type;
+
+  // Only process new bookings
+  if (triggerEvent !== 'BOOKING_CREATED') {
+    return res.status(200).json({ received: true, ignored: true });
+  }
+
+  const booking = event.payload || event;
+  const attendee  = booking.attendees?.[0] || {};
+  const name      = attendee.name || booking.title || 'Cliente';
+  const email     = attendee.email || '';
+  const phone     = attendee.phoneNumber || '';
+  const startTime = booking.startTime ? new Date(booking.startTime).toLocaleString('es-MX', {
+    timeZone: 'America/Mexico_City',
+    weekday: 'long', day: 'numeric', month: 'long',
+    hour: '2-digit', minute: '2-digit'
+  }) : 'Fecha por confirmar';
+  const eventType  = booking.eventType?.title || booking.title || 'Mesa';
+  const responses  = booking.responses || {};
+  const party      = responses.party?.value || responses.guests?.value || '';
+  const children   = responses.children?.value || '';
+  const notes      = responses.notes?.value || responses.additionalNotes?.value || '';
+
+  // Build notification message
+  const msg = [
+    `🍽 <b>Nueva reserva — ${eventType}</b>`,
+    ``,
+    `👤 <b>${name}</b>`,
+    email ? `📧 ${email}` : null,
+    phone ? `📱 ${phone}` : null,
+    ``,
+    `📅 <b>${startTime}</b>`,
+    party ? `👥 ${party}` : null,
+    children ? `🧒 Niños: ${children}` : null,
+    notes ? `📝 ${notes}` : null,
+    ``,
+    `<i>Confirma respondiendo al cliente directamente.</i>`,
+  ].filter(l => l !== null).join('\n');
+
+  // Send to Ruben via Telegram
+  await sendTelegram(RUBEN_TELEGRAM, msg);
+
+  // Also send WhatsApp link to Saira via Telegram
+  // (We send via Telegram since Saira may not yet have the bot)
+  // When Saira connects, we send directly to her
+  const whatsappText = encodeURIComponent(
+    `Hola! Nueva reserva en Canica:\n${name} — ${startTime}${party ? ` (${party})` : ''}${notes ? `\nNotas: ${notes}` : ''}`
+  );
+
+  console.log(`Booking received: ${name} — ${startTime}`);
+
+  res.status(200).json({ received: true, booking: name });
+};

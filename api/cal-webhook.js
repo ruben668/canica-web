@@ -5,6 +5,7 @@
 const BOT_TOKEN = '8580935482:AAFK-y4drZtUBaxNTL0cV6YseKiG0cyw3Os';
 const SAIRA_WHATSAPP = '+525532909854';
 const RUBEN_TELEGRAM  = '6525841557';
+const SAIRA_TELEGRAM  = '6247865657';
 
 async function sendTelegram(chatId, text) {
   const body = JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' });
@@ -72,8 +73,9 @@ module.exports = async (req, res) => {
     `<i>Confirma respondiendo al cliente directamente.</i>`,
   ].filter(l => l !== null).join('\n');
 
-  // Send to Ruben via Telegram
+  // Send to Ruben and Saira via Telegram
   await sendTelegram(RUBEN_TELEGRAM, msg);
+  await sendTelegram(SAIRA_TELEGRAM, msg);
 
   // Also send WhatsApp link to Saira via Telegram
   // (We send via Telegram since Saira may not yet have the bot)

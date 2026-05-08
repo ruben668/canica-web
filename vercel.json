@@ -4,5 +4,13 @@
     "api/verify.js":   { "memory": 128, "maxDuration": 10 },
     "api/webhook.js":  { "memory": 128, "maxDuration": 10 }
   },
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "canica.fun" }],
+      "destination": "https://www.canica.fun/$1",
+      "permanent": true
+    }
+  ]
 }

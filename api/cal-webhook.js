@@ -53,13 +53,17 @@ module.exports = async (req, res) => {
   }) : 'Fecha por confirmar';
   const eventType  = booking.eventType?.title || booking.title || 'Mesa';
   const responses  = booking.responses || {};
-  const party      = responses.party?.value || responses.guests?.value || '';
-  const children   = responses.children?.value || '';
+  const party      = responses.party_size?.value || responses.party?.value || responses.guests?.value || '';
+  const partyNum   = parseInt(party) || 0;
+  const children   = responses.children?.value || responses.ninos?.value || '';
   const notes      = responses.notes?.value || responses.additionalNotes?.value || '';
 
   // Build notification message
+  const urgentFlag = partyNum >= 5 ? '⚠️ GRUPO GRANDE — confirmar por WhatsApp\n' : '';
+
   const msg = [
-    `🍽 <b>Nueva reserva — ${eventType}</b>`,
+    `🍽 <b>Nueva reserva — ${eventType}</b>${partyNum >= 5 ? ' 👥 GRUPO DE '+partyNum : ''}`,
+    urgentFlag || null,
     ``,
     `👤 <b>${name}</b>`,
     email ? `📧 ${email}` : null,

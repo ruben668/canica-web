@@ -4,401 +4,445 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cotización Evento Privado · Canica</title>
+  <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --ivory:   #FFF9F1;
-      --ink:     #1a1411;
-      --muted:   rgba(26,20,17,0.45);
-      --rule:    rgba(26,20,17,0.12);
-      --rufous:  #be352b;
-      --apricot: #e5794a;
-      --serif:   'Cormorant Garamond', Georgia, serif;
-      --mono:    'JetBrains Mono', monospace;
-    }
-
     @media print {
       @page { margin: 0; size: A4; }
-      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      .no-print { display: none; }
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #FFF9F1; }
+      .no-print { display: none !important; }
+      .quote-page { padding: 48px 56px; max-width: none; box-shadow: none; }
     }
 
-    body {
-      background: var(--ivory);
-      color: var(--ink);
-      font-family: var(--mono);
-      font-size: 13px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+    body { background: #FFF9F1; }
 
-    .page {
-      max-width: 720px;
+    .quote-page {
+      max-width: 760px;
       margin: 0 auto;
-      padding: 56px 64px 64px;
-      min-height: 100vh;
+      padding: 64px 72px 80px;
+      background: #FFF9F1;
     }
 
     /* ── HEADER ── */
-    .header {
-      text-align: center;
-      padding-bottom: 32px;
-      border-bottom: 1px solid var(--rule);
-      margin-bottom: 36px;
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(26,20,17,.12);
+      margin-bottom: 40px;
     }
 
-    .wordmark {
-      font-family: var(--serif);
-      font-size: 36px;
+    .q-wordmark {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 32px;
       font-weight: 400;
-      letter-spacing: 0.08em;
-      color: var(--ink);
-      margin-bottom: 6px;
+      color: #1a1411;
+      letter-spacing: 0.04em;
     }
 
-    .wordmark em { font-style: italic; color: var(--rufous); }
-
-    .subhead {
-      font-size: 9px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
+    .q-wordmark em {
+      font-style: italic;
+      color: #be352b;
     }
 
-    /* ── DOCUMENT LABEL ── */
-    .doc-label {
-      font-size: 9px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 28px;
-    }
-
-    /* ── EVENT DETAILS ── */
-    .details-grid {
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 0;
-      margin-bottom: 36px;
-    }
-
-    .details-grid .key {
+    .q-address {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--muted);
-      padding: 8px 0;
-      border-bottom: 1px solid var(--rule);
+      color: rgba(26,20,17,.4);
+      text-align: right;
+      line-height: 1.8;
     }
 
-    .details-grid .val {
-      font-family: var(--serif);
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--ink);
-      padding: 8px 0 8px 16px;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    /* ── SECTIONS ── */
-    .section {
-      margin-bottom: 32px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .section-title {
+    /* ── DOC LABEL ── */
+    .q-doc-label {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 14px;
+      color: rgba(26,20,17,.4);
+      margin-bottom: 32px;
     }
 
-    .section-heading {
-      font-family: var(--serif);
-      font-size: 22px;
+    /* ── DETAILS GRID ── */
+    .q-details {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      margin-bottom: 40px;
+    }
+
+    .q-details .k {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(26,20,17,.4);
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(26,20,17,.08);
+    }
+
+    .q-details .v {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 17px;
       font-weight: 400;
-      color: var(--ink);
-      margin-bottom: 4px;
+      color: #1a1411;
+      padding: 9px 0 9px 20px;
+      border-bottom: 1px solid rgba(26,20,17,.08);
     }
 
-    .section-sub {
+    /* ── SECTIONS ── */
+    .q-section {
+      margin-bottom: 36px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid rgba(26,20,17,.12);
+    }
+
+    .q-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(26,20,17,.35);
+      margin-bottom: 10px;
+    }
+
+    .q-section-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: #1a1411;
+      margin-bottom: 3px;
+    }
+
+    .q-section-sub {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 14px;
+      color: rgba(26,20,17,.45);
+      margin-bottom: 16px;
     }
 
-    .bullets { list-style: none; margin-bottom: 16px; }
-    .bullets li {
-      font-size: 12px;
-      color: rgba(26,20,17,0.72);
-      padding: 4px 0;
-      padding-left: 16px;
+    .q-bullets { list-style: none; margin-bottom: 18px; }
+
+    .q-bullets li {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: rgba(26,20,17,.65);
+      padding: 5px 0 5px 18px;
       position: relative;
+      border-bottom: 1px solid rgba(26,20,17,.06);
       line-height: 1.55;
     }
-    .bullets li::before {
-      content: '—';
+
+    .q-bullets li:last-child { border-bottom: none; }
+
+    .q-bullets li::before {
+      content: '→';
       position: absolute;
       left: 0;
-      color: var(--muted);
+      color: rgba(26,20,17,.3);
+      font-size: 10px;
+    }
+
+    .q-bullets li strong {
+      color: #1a1411;
+      font-weight: 500;
     }
 
     /* ── LINE ITEM ── */
-    .line-item {
+    .q-line {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      padding: 10px 14px;
-      background: rgba(26,20,17,0.03);
-      margin-top: 8px;
+      align-items: center;
+      padding: 12px 16px;
+      background: rgba(26,20,17,.04);
+      border-left: 2px solid #be352b;
     }
 
-    .line-item .li-label {
-      font-size: 12px;
+    .q-line-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #1a1411;
       font-weight: 500;
-      color: var(--ink);
     }
 
-    .line-item .li-price {
-      font-family: var(--serif);
-      font-size: 18px;
+    .q-line-label small {
+      display: block;
+      font-size: 9px;
+      color: rgba(26,20,17,.4);
+      font-weight: 400;
+      margin-top: 2px;
+      letter-spacing: 0.04em;
+    }
+
+    .q-line-price {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px;
       font-style: italic;
-      color: var(--rufous);
+      color: #be352b;
       white-space: nowrap;
     }
 
     /* ── TOTALS ── */
-    .totals { margin-top: 8px; }
+    .q-totals { margin-top: 4px; }
 
-    .total-row {
+    .q-total-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      padding: 6px 0;
-      border-bottom: 1px solid var(--rule);
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(26,20,17,.08);
     }
 
-    .total-row .tr-label { font-size: 11px; color: var(--muted); }
-    .total-row .tr-val   { font-size: 13px; color: var(--muted); }
-
-    .total-final {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 16px 14px;
-      background: var(--ink);
-      margin-top: 12px;
-    }
-
-    .total-final .tf-label {
+    .q-total-row .tl {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(255,249,241,0.6);
+      color: rgba(26,20,17,.45);
+      letter-spacing: 0.06em;
     }
 
-    .total-final .tf-val {
-      font-family: var(--serif);
-      font-size: 28px;
-      font-style: italic;
-      color: var(--ivory);
+    .q-total-row .tv {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: rgba(26,20,17,.5);
     }
 
-    /* ── CONDITIONS ── */
-    .conditions {
-      margin-top: 36px;
+    .q-total-final {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 20px;
+      background: #1a1411;
+      margin-top: 14px;
     }
 
-    .conditions-title {
+    .q-total-final .tf-label {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 14px;
+      color: rgba(255,249,241,.5);
     }
 
-    .conditions ol {
-      list-style: none;
-      counter-reset: cond;
+    .q-total-final .tf-val {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 32px;
+      font-style: italic;
+      color: #FFF9F1;
     }
 
-    .conditions ol li {
-      counter-increment: cond;
-      font-size: 11px;
-      color: rgba(26,20,17,0.6);
-      padding: 5px 0 5px 28px;
+    /* ── CONDITIONS ── */
+    .q-conditions { margin-top: 40px; }
+
+    .q-conditions-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(26,20,17,.35);
+      margin-bottom: 16px;
+    }
+
+    .q-cond-list { list-style: none; }
+
+    .q-cond-list li {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: rgba(26,20,17,.55);
+      padding: 6px 0 6px 24px;
       position: relative;
-      border-bottom: 1px solid var(--rule);
-      line-height: 1.55;
+      border-bottom: 1px solid rgba(26,20,17,.06);
+      line-height: 1.6;
+      counter-increment: cond;
     }
 
-    .conditions ol li::before {
+    .q-cond-list { counter-reset: cond; }
+
+    .q-cond-list li::before {
       content: counter(cond, decimal-leading-zero);
       position: absolute;
       left: 0;
-      font-size: 9px;
-      color: var(--muted);
-      top: 7px;
+      font-size: 8px;
+      color: rgba(26,20,17,.3);
+      top: 8px;
     }
 
-    .conditions ol li strong { color: var(--ink); }
+    .q-cond-list li strong { color: #1a1411; }
 
     /* ── FOOTER ── */
-    .footer {
-      margin-top: 48px;
-      padding-top: 20px;
-      border-top: 1px solid var(--rule);
+    .q-footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(26,20,17,.12);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .footer-left {
-      font-family: var(--serif);
-      font-size: 16px;
+    .q-footer-brand {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 20px;
       font-style: italic;
-      color: var(--muted);
+      color: rgba(26,20,17,.4);
     }
 
-    .footer-right {
+    .q-footer-contact {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: rgba(26,20,17,.35);
       text-align: right;
-      line-height: 1.8;
+      line-height: 1.9;
     }
 
     /* ── PRINT BUTTON ── */
-    .print-btn {
+    .q-print-btn {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--ink);
-      color: var(--ivory);
+      bottom: 28px;
+      right: 28px;
+      background: #1a1411;
+      color: #FFF9F1;
       border: none;
-      padding: 12px 24px;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.18em;
+      padding: 13px 28px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       cursor: pointer;
       transition: opacity 0.2s;
     }
-    .print-btn:hover { opacity: 0.75; }
+    .q-print-btn:hover { opacity: 0.75; }
+
+    @media (max-width: 600px) {
+      .quote-page { padding: 32px 24px 48px; }
+      .q-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .q-address { text-align: left; }
+      .q-total-final .tf-val { font-size: 24px; }
+    }
   </style>
 </head>
 <body>
 
-<div class="page">
+<div class="quote-page">
 
   <!-- HEADER -->
-  <header class="header">
-    <div class="wordmark">canica</div>
-    <div class="subhead">Café &amp; Ludoteca · Mazatlán 83, Condesa, Ciudad de México</div>
+  <header class="q-header">
+    <div class="q-wordmark"><em>canica</em></div>
+    <div class="q-address">
+      hola@canica.fun<br>
+      @canicafun<br>
+      Mazatlán 83, Condesa
+    </div>
   </header>
 
-  <div class="doc-label">Cotización · Evento privado</div>
+  <div class="q-doc-label">Cotización · Evento privado</div>
 
-  <!-- DETALLES DEL EVENTO -->
-  <div class="details-grid">
-    <div class="key">Fecha</div>
-    <div class="val">Viernes 21 de agosto</div>
-    <div class="key">Horario</div>
-    <div class="val">3:00 pm – 7:00 pm <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">(4 horas)</span></div>
-    <div class="key">Invitados</div>
-    <div class="val">22 adultos · 11 niños · 33 personas</div>
-    <div class="key">Modalidad</div>
-    <div class="val">Cierre exclusivo del restaurante al público</div>
+  <!-- DETALLES -->
+  <div class="q-details">
+    <div class="k">Fecha</div>
+    <div class="v">Miércoles 3 ó Jueves 4 de junio</div>
+    <div class="k">Horario</div>
+    <div class="v">3:00 pm – 7:00 pm <span style="font-size:13px;color:rgba(26,20,17,.4);">(4 horas)</span></div>
+    <div class="k">Invitados</div>
+    <div class="v">22 adultos · 11 niños · 33 personas</div>
+    <div class="k">Modalidad</div>
+    <div class="v">Cierre exclusivo del restaurante al público</div>
   </div>
 
-  <!-- RENTA DE ESPACIO -->
-  <div class="section">
-    <div class="section-title">01 — Renta de espacio</div>
-    <div class="section-heading">Uso exclusivo de Canica</div>
-    <div class="section-sub">Incluye todo lo que necesitan para un evento memorable.</div>
-    <ul class="bullets">
+  <!-- 01 — RENTA -->
+  <div class="q-section">
+    <div class="q-num">01 — Renta de espacio</div>
+    <div class="q-section-title">Uso exclusivo de Canica</div>
+    <div class="q-section-sub">Todo lo que necesitan para un evento memorable.</div>
+    <ul class="q-bullets">
       <li>Uso exclusivo del restaurante y ludoteca durante 4 horas</li>
       <li>Servicio privado del equipo de cocina, sala y maestras de ludoteca</li>
       <li>Dos actividades recreativas personalizadas para los niños</li>
       <li>Pastel de cumpleaños personalizado</li>
       <li>Piñata para los niños</li>
     </ul>
-    <div class="line-item">
-      <span class="li-label">Renta de espacio <span style="font-size:10px;color:var(--muted);">(incluye actividades, pastel y piñata)</span></span>
-      <span class="li-price">$16,000.00</span>
+    <div class="q-line">
+      <div class="q-line-label">
+        Renta de espacio
+        <small>Incluye actividades, pastel y piñata</small>
+      </div>
+      <div class="q-line-price">$16,000.00</div>
     </div>
   </div>
 
-  <!-- MENÚ NIÑOS -->
-  <div class="section">
-    <div class="section-title">02 — Menú para niños</div>
-    <div class="section-heading">Bento infantil</div>
-    <div class="section-sub">$300.00 por persona · 11 niños</div>
-    <ul class="bullets">
-      <li><strong>Proteína (elige 1):</strong> Salmón &nbsp;ó&nbsp; Pechuga de pollo a la plancha</li>
-      <li><strong>Acompañamientos (elige 2):</strong> Arroz blanco · Puré de camote · Jitomate cherry confitado · Hummus de lenteja · Aguacate · Ensalada de pepino · Pan masa madre</li>
-      <li><strong>Bebida (elige 1):</strong> Soda natural · Naranjada · Limonada</li>
+  <!-- 02 — NIÑOS -->
+  <div class="q-section">
+    <div class="q-num">02 — Menú para niños</div>
+    <div class="q-section-title">Bento infantil</div>
+    <div class="q-section-sub">$300.00 por persona · 11 niños</div>
+    <ul class="q-bullets">
+      <li><strong>Proteína (elige 1)</strong>&nbsp;&nbsp;Salmón &nbsp;ó&nbsp; Pechuga de pollo a la plancha</li>
+      <li><strong>Acompañamientos (elige 2)</strong>&nbsp;&nbsp;Arroz blanco · Puré de camote · Jitomate cherry confitado · Hummus de lenteja · Aguacate · Ensalada de pepino · Pan masa madre</li>
+      <li><strong>Bebida (elige 1)</strong>&nbsp;&nbsp;Soda natural · Naranjada · Limonada</li>
     </ul>
-    <div class="line-item">
-      <span class="li-label">Menú niños &nbsp;·&nbsp; 11 personas × $300.00</span>
-      <span class="li-price">$3,300.00</span>
+    <div class="q-line">
+      <div class="q-line-label">
+        Menú niños
+        <small>11 personas × $300.00</small>
+      </div>
+      <div class="q-line-price">$3,300.00</div>
     </div>
   </div>
 
-  <!-- MENÚ ADULTOS -->
-  <div class="section">
-    <div class="section-title">03 — Menú para adultos</div>
-    <div class="section-heading">Menú de evento</div>
-    <div class="section-sub">$550.00 por persona · 22 adultos</div>
-    <ul class="bullets">
-      <li><strong>Platillo (elige 1):</strong> Milanesa o Sabana de Pollo con ensalada verde, aioli y salsa macha &nbsp;·&nbsp; Salmón Miso Macha con arroz, champiñones, aguacate y jengibre</li>
-      <li><strong>Bebida (elige 1):</strong> Soda natural · Naranjada · Limonada · Copa de vino de la casa</li>
+  <!-- 03 — ADULTOS -->
+  <div class="q-section">
+    <div class="q-num">03 — Menú para adultos</div>
+    <div class="q-section-title">Menú de evento</div>
+    <div class="q-section-sub">$550.00 por persona · 22 adultos</div>
+    <ul class="q-bullets">
+      <li><strong>Platillo (elige 1)</strong>&nbsp;&nbsp;Milanesa o Sabana de Pollo con ensalada verde, aioli y salsa macha &nbsp;·&nbsp; Salmón Miso Macha con arroz, champiñones, aguacate y jengibre</li>
+      <li><strong>Bebida (elige 1)</strong>&nbsp;&nbsp;Soda natural · Naranjada · Limonada · Copa de vino de la casa</li>
     </ul>
-    <div class="line-item">
-      <span class="li-label">Menú adultos &nbsp;·&nbsp; 22 personas × $550.00</span>
-      <span class="li-price">$12,100.00</span>
+    <div class="q-line">
+      <div class="q-line-label">
+        Menú adultos
+        <small>22 personas × $550.00</small>
+      </div>
+      <div class="q-line-price">$12,100.00</div>
     </div>
   </div>
 
   <!-- TOTALES -->
-  <div class="totals">
-    <div class="total-row">
-      <span class="tr-label">Subtotal</span>
-      <span class="tr-val">$31,400.00</span>
+  <div class="q-totals">
+    <div class="q-total-row">
+      <span class="tl">Subtotal</span>
+      <span class="tv">$31,400.00</span>
     </div>
-    <div class="total-row">
-      <span class="tr-label">Servicio (15%)</span>
-      <span class="tr-val">$4,710.00</span>
+    <div class="q-total-row">
+      <span class="tl">Servicio (15%)</span>
+      <span class="tv">$4,710.00</span>
     </div>
-    <div class="total-final">
+    <div class="q-total-final">
       <span class="tf-label">Total del evento</span>
       <span class="tf-val">$36,110.00</span>
     </div>
   </div>
 
   <!-- CONDICIONES -->
-  <div class="conditions">
-    <div class="conditions-title">Condiciones</div>
-    <ol>
+  <div class="q-conditions">
+    <div class="q-conditions-title">Condiciones</div>
+    <ol class="q-cond-list">
       <li>Para confirmar la fecha se requiere el 50% de la renta: <strong>$8,000.00</strong></li>
       <li>El saldo restante se liquida el día del evento, antes del inicio.</li>
       <li>Esta cotización tiene vigencia de <strong>7 días naturales</strong> a partir de su emisión.</li>
-      <li>Servicios adicionales disponibles a cotizar: piñatas, pastel, decoración temática.</li>
+      <li>La fecha queda confirmada únicamente al recibir el anticipo.</li>
       <li>El menú está sujeto a disponibilidad de ingredientes de temporada.</li>
     </ol>
   </div>
 
   <!-- FOOTER -->
-  <div class="footer">
-    <div class="footer-left">canica</div>
-    <div class="footer-right">
+  <div class="q-footer">
+    <div class="q-footer-brand">canica</div>
+    <div class="q-footer-contact">
       hola@canica.fun<br>
       @canicafun<br>
       Mazatlán 83, Condesa
@@ -407,7 +451,7 @@
 
 </div>
 
-<button class="print-btn no-print" onclick="window.print()">Descargar PDF</button>
+<button class="q-print-btn no-print" onclick="window.print()">Guardar PDF</button>
 
 </body>
 </html>

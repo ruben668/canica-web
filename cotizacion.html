@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotización Evento Privado · Canica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ivory:   #FFF9F1;
+      --ink:     #1a1411;
+      --muted:   rgba(26,20,17,0.45);
+      --rule:    rgba(26,20,17,0.12);
+      --rufous:  #be352b;
+      --apricot: #e5794a;
+      --serif:   'Cormorant Garamond', Georgia, serif;
+      --mono:    'JetBrains Mono', monospace;
+    }
+
+    @media print {
+      @page { margin: 0; size: A4; }
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none; }
+    }
+
+    body {
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 64px 64px;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 36px;
+    }
+
+    .wordmark {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .wordmark em { font-style: italic; color: var(--rufous); }
+
+    .subhead {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── DOCUMENT LABEL ── */
+    .doc-label {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    /* ── EVENT DETAILS ── */
+    .details-grid {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0;
+      margin-bottom: 36px;
+    }
+
+    .details-grid .key {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .details-grid .val {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--ink);
+      padding: 8px 0 8px 16px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section-title {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .section-heading {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .bullets { list-style: none; margin-bottom: 16px; }
+    .bullets li {
+      font-size: 12px;
+      color: rgba(26,20,17,0.72);
+      padding: 4px 0;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.55;
+    }
+    .bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--muted);
+    }
+
+    /* ── LINE ITEM ── */
+    .line-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px 14px;
+      background: rgba(26,20,17,0.03);
+      margin-top: 8px;
+    }
+
+    .line-item .li-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .line-item .li-price {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-style: italic;
+      color: var(--rufous);
+      white-space: nowrap;
+    }
+
+    /* ── TOTALS ── */
+    .totals { margin-top: 8px; }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .total-row .tr-label { font-size: 11px; color: var(--muted); }
+    .total-row .tr-val   { font-size: 13px; color: var(--muted); }
+
+    .total-final {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 16px 14px;
+      background: var(--ink);
+      margin-top: 12px;
+    }
+
+    .total-final .tf-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,249,241,0.6);
+    }
+
+    .total-final .tf-val {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-style: italic;
+      color: var(--ivory);
+    }
+
+    /* ── CONDITIONS ── */
+    .conditions {
+      margin-top: 36px;
+    }
+
+    .conditions-title {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .conditions ol {
+      list-style: none;
+      counter-reset: cond;
+    }
+
+    .conditions ol li {
+      counter-increment: cond;
+      font-size: 11px;
+      color: rgba(26,20,17,0.6);
+      padding: 5px 0 5px 28px;
+      position: relative;
+      border-bottom: 1px solid var(--rule);
+      line-height: 1.55;
+    }
+
+    .conditions ol li::before {
+      content: counter(cond, decimal-leading-zero);
+      position: absolute;
+      left: 0;
+      font-size: 9px;
+      color: var(--muted);
+      top: 7px;
+    }
+
+    .conditions ol li strong { color: var(--ink); }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .footer-right {
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    /* ── PRINT BUTTON ── */
+    .print-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--ink);
+      color: var(--ivory);
+      border: none;
+      padding: 12px 24px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .print-btn:hover { opacity: 0.75; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="wordmark">canica</div>
+    <div class="subhead">Café &amp; Ludoteca · Mazatlán 83, Condesa, Ciudad de México</div>
+  </header>
+
+  <div class="doc-label">Cotización · Evento privado</div>
+
+  <!-- DETALLES DEL EVENTO -->
+  <div class="details-grid">
+    <div class="key">Fecha</div>
+    <div class="val">Viernes 21 de agosto</div>
+    <div class="key">Horario</div>
+    <div class="val">3:00 pm – 7:00 pm <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">(4 horas)</span></div>
+    <div class="key">Invitados</div>
+    <div class="val">22 adultos · 11 niños · 33 personas</div>
+    <div class="key">Modalidad</div>
+    <div class="val">Cierre exclusivo del restaurante al público</div>
+  </div>
+
+  <!-- RENTA DE ESPACIO -->
+  <div class="section">
+    <div class="section-title">01 — Renta de espacio</div>
+    <div class="section-heading">Uso exclusivo de Canica</div>
+    <div class="section-sub">Incluye todo lo que necesitan para un evento memorable.</div>
+    <ul class="bullets">
+      <li>Uso exclusivo del restaurante y ludoteca durante 4 horas</li>
+      <li>Servicio privado del equipo de cocina, sala y maestras de ludoteca</li>
+      <li>Dos actividades recreativas personalizadas para los niños</li>
+      <li>Pastel de cumpleaños personalizado</li>
+      <li>Piñata para los niños</li>
+    </ul>
+    <div class="line-item">
+      <span class="li-label">Renta de espacio <span style="font-size:10px;color:var(--muted);">(incluye actividades, pastel y piñata)</span></span>
+      <span class="li-price">$16,000.00</span>
+    </div>
+  </div>
+
+  <!-- MENÚ NIÑOS -->
+  <div class="section">
+    <div class="section-title">02 — Menú para niños</div>
+    <div class="section-heading">Bento infantil</div>
+    <div class="section-sub">$300.00 por persona · 11 niños</div>
+    <ul class="bullets">
+      <li><strong>Proteína (elige 1):</strong> Salmón &nbsp;ó&nbsp; Pechuga de pollo a la plancha</li>
+      <li><strong>Acompañamientos (elige 2):</strong> Arroz blanco · Puré de camote · Jitomate cherry confitado · Hummus de lenteja · Aguacate · Ensalada de pepino · Pan masa madre</li>
+      <li><strong>Bebida (elige 1):</strong> Soda natural · Naranjada · Limonada</li>
+    </ul>
+    <div class="line-item">
+      <span class="li-label">Menú niños &nbsp;·&nbsp; 11 personas × $300.00</span>
+      <span class="li-price">$3,300.00</span>
+    </div>
+  </div>
+
+  <!-- MENÚ ADULTOS -->
+  <div class="section">
+    <div class="section-title">03 — Menú para adultos</div>
+    <div class="section-heading">Menú de evento</div>
+    <div class="section-sub">$550.00 por persona · 22 adultos</div>
+    <ul class="bullets">
+      <li><strong>Platillo (elige 1):</strong> Milanesa o Sabana de Pollo con ensalada verde, aioli y salsa macha &nbsp;·&nbsp; Salmón Miso Macha con arroz, champiñones, aguacate y jengibre</li>
+      <li><strong>Bebida (elige 1):</strong> Soda natural · Naranjada · Limonada · Copa de vino de la casa</li>
+    </ul>
+    <div class="line-item">
+      <span class="li-label">Menú adultos &nbsp;·&nbsp; 22 personas × $550.00</span>
+      <span class="li-price">$12,100.00</span>
+    </div>
+  </div>
+
+  <!-- TOTALES -->
+  <div class="totals">
+    <div class="total-row">
+      <span class="tr-label">Subtotal</span>
+      <span class="tr-val">$31,400.00</span>
+    </div>
+    <div class="total-row">
+      <span class="tr-label">Servicio (15%)</span>
+      <span class="tr-val">$4,710.00</span>
+    </div>
+    <div class="total-final">
+      <span class="tf-label">Total del evento</span>
+      <span class="tf-val">$36,110.00</span>
+    </div>
+  </div>
+
+  <!-- CONDICIONES -->
+  <div class="conditions">
+    <div class="conditions-title">Condiciones</div>
+    <ol>
+      <li>Para confirmar la fecha se requiere el 50% de la renta: <strong>$8,000.00</strong></li>
+      <li>El saldo restante se liquida el día del evento, antes del inicio.</li>
+      <li>Esta cotización tiene vigencia de <strong>7 días naturales</strong> a partir de su emisión.</li>
+      <li>Servicios adicionales disponibles a cotizar: piñatas, pastel, decoración temática.</li>
+      <li>El menú está sujeto a disponibilidad de ingredientes de temporada.</li>
+    </ol>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">canica</div>
+    <div class="footer-right">
+      hola@canica.fun<br>
+      @canicafun<br>
+      Mazatlán 83, Condesa
+    </div>
+  </div>
+
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">Descargar PDF</button>
+
+</body>
+</html>

@@ -16,322 +16,57 @@
       .no-print { display: none !important; }
       .quote-page { padding: 48px 56px; max-width: none; box-shadow: none; }
     }
-
     body { background: #FFF9F1; }
-
-    .quote-page {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 64px 72px 80px;
-      background: #FFF9F1;
-    }
-
-    /* ── HEADER ── */
-    .q-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      padding-bottom: 28px;
-      border-bottom: 1px solid rgba(26,20,17,.12);
-      margin-bottom: 40px;
-    }
-
-    .q-wordmark {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 32px;
-      font-weight: 400;
-      color: #1a1411;
-      letter-spacing: 0.04em;
-    }
-
-    .q-wordmark em {
-      font-style: italic;
-      color: #be352b;
-    }
-
-    .q-address {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(26,20,17,.4);
-      text-align: right;
-      line-height: 1.8;
-    }
-
-    /* ── DOC LABEL ── */
-    .q-doc-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(26,20,17,.4);
-      margin-bottom: 32px;
-    }
-
-    /* ── DETAILS GRID ── */
-    .q-details {
-      display: grid;
-      grid-template-columns: 110px 1fr;
-      margin-bottom: 40px;
-    }
-
-    .q-details .k {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(26,20,17,.4);
-      padding: 9px 0;
-      border-bottom: 1px solid rgba(26,20,17,.08);
-    }
-
-    .q-details .v {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 17px;
-      font-weight: 400;
-      color: #1a1411;
-      padding: 9px 0 9px 20px;
-      border-bottom: 1px solid rgba(26,20,17,.08);
-    }
-
-    /* ── SECTIONS ── */
-    .q-section {
-      margin-bottom: 36px;
-      padding-bottom: 36px;
-      border-bottom: 1px solid rgba(26,20,17,.12);
-    }
-
-    .q-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(26,20,17,.35);
-      margin-bottom: 10px;
-    }
-
-    .q-section-title {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 24px;
-      font-weight: 400;
-      color: #1a1411;
-      margin-bottom: 3px;
-    }
-
-    .q-section-sub {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: rgba(26,20,17,.45);
-      margin-bottom: 16px;
-    }
-
+    .quote-page { max-width: 760px; margin: 0 auto; padding: 64px 72px 80px; background: #FFF9F1; }
+    .q-header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 28px; border-bottom: 1px solid rgba(26,20,17,.12); margin-bottom: 40px; }
+    .q-address { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(26,20,17,.4); text-align: right; line-height: 1.8; }
+    .q-doc-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(26,20,17,.4); margin-bottom: 32px; }
+    .q-details { display: grid; grid-template-columns: 110px 1fr; margin-bottom: 40px; }
+    .q-details .k { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(26,20,17,.4); padding: 9px 0; border-bottom: 1px solid rgba(26,20,17,.08); }
+    .q-details .v { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 17px; font-weight: 400; color: #1a1411; padding: 9px 0 9px 20px; border-bottom: 1px solid rgba(26,20,17,.08); }
+    .q-section { margin-bottom: 36px; padding-bottom: 36px; border-bottom: 1px solid rgba(26,20,17,.12); }
+    .q-num { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(26,20,17,.35); margin-bottom: 10px; }
+    .q-section-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; font-weight: 400; color: #1a1411; margin-bottom: 3px; }
+    .q-section-sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(26,20,17,.45); margin-bottom: 16px; }
     .q-bullets { list-style: none; margin-bottom: 18px; }
-
-    .q-bullets li {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: rgba(26,20,17,.65);
-      padding: 5px 0 5px 18px;
-      position: relative;
-      border-bottom: 1px solid rgba(26,20,17,.06);
-      line-height: 1.55;
-    }
-
+    .q-bullets li { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(26,20,17,.65); padding: 5px 0 5px 18px; position: relative; border-bottom: 1px solid rgba(26,20,17,.06); line-height: 1.55; }
     .q-bullets li:last-child { border-bottom: none; }
-
-    .q-bullets li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: rgba(26,20,17,.3);
-      font-size: 10px;
-    }
-
-    .q-bullets li strong {
-      color: #1a1411;
-      font-weight: 500;
-    }
-
-    /* ── LINE ITEM ── */
-    .q-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      background: rgba(26,20,17,.04);
-      border-left: 2px solid #be352b;
-    }
-
-    .q-line-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: #1a1411;
-      font-weight: 500;
-    }
-
-    .q-line-label small {
-      display: block;
-      font-size: 9px;
-      color: rgba(26,20,17,.4);
-      font-weight: 400;
-      margin-top: 2px;
-      letter-spacing: 0.04em;
-    }
-
-    .q-line-price {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 22px;
-      font-style: italic;
-      color: #be352b;
-      white-space: nowrap;
-    }
-
-    /* ── TOTALS ── */
+    .q-bullets li::before { content: '→'; position: absolute; left: 0; color: rgba(26,20,17,.3); font-size: 10px; }
+    .q-bullets li strong { color: #1a1411; font-weight: 500; }
+    .q-line { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(26,20,17,.04); border-left: 2px solid #be352b; }
+    .q-line-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #1a1411; font-weight: 500; }
+    .q-line-label small { display: block; font-size: 9px; color: rgba(26,20,17,.4); font-weight: 400; margin-top: 2px; letter-spacing: 0.04em; }
+    .q-line-price { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-style: italic; color: #be352b; white-space: nowrap; }
+    .q-line-note { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(26,20,17,.45); font-style: italic; }
     .q-totals { margin-top: 4px; }
-
-    .q-total-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 7px 0;
-      border-bottom: 1px solid rgba(26,20,17,.08);
-    }
-
-    .q-total-row .tl {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: rgba(26,20,17,.45);
-      letter-spacing: 0.06em;
-    }
-
-    .q-total-row .tv {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: rgba(26,20,17,.5);
-    }
-
-    .q-total-final {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 20px;
-      background: #1a1411;
-      margin-top: 14px;
-    }
-
-    .q-total-final .tf-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(255,249,241,.5);
-    }
-
-    .q-total-final .tf-val {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 32px;
-      font-style: italic;
-      color: #FFF9F1;
-    }
-
-    /* ── CONDITIONS ── */
+    .q-total-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(26,20,17,.08); }
+    .q-total-row .tl { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(26,20,17,.45); letter-spacing: 0.06em; }
+    .q-total-row .tv { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(26,20,17,.5); }
+    .q-total-final { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px; background: #1a1411; margin-top: 14px; }
+    .q-total-final .tf-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,249,241,.5); }
+    .q-total-final .tf-val { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 32px; font-style: italic; color: #FFF9F1; }
+    .q-note-box { background: rgba(26,20,17,.04); border-left: 2px solid #e5794a; padding: 12px 16px; margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: rgba(26,20,17,.6); line-height: 1.6; }
     .q-conditions { margin-top: 40px; }
-
-    .q-conditions-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(26,20,17,.35);
-      margin-bottom: 16px;
-    }
-
-    .q-cond-list { list-style: none; }
-
-    .q-cond-list li {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10.5px;
-      color: rgba(26,20,17,.55);
-      padding: 6px 0 6px 24px;
-      position: relative;
-      border-bottom: 1px solid rgba(26,20,17,.06);
-      line-height: 1.6;
-      counter-increment: cond;
-    }
-
-    .q-cond-list { counter-reset: cond; }
-
-    .q-cond-list li::before {
-      content: counter(cond, decimal-leading-zero);
-      position: absolute;
-      left: 0;
-      font-size: 8px;
-      color: rgba(26,20,17,.3);
-      top: 8px;
-    }
-
+    .q-conditions-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(26,20,17,.35); margin-bottom: 16px; }
+    .q-cond-list { list-style: none; counter-reset: cond; }
+    .q-cond-list li { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: rgba(26,20,17,.55); padding: 6px 0 6px 24px; position: relative; border-bottom: 1px solid rgba(26,20,17,.06); line-height: 1.6; counter-increment: cond; }
+    .q-cond-list li::before { content: counter(cond, decimal-leading-zero); position: absolute; left: 0; font-size: 8px; color: rgba(26,20,17,.3); top: 8px; }
     .q-cond-list li strong { color: #1a1411; }
-
-    /* ── FOOTER ── */
-    .q-footer {
-      margin-top: 56px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(26,20,17,.12);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .q-footer-brand {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 20px;
-      font-style: italic;
-      color: rgba(26,20,17,.4);
-    }
-
-    .q-footer-contact {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(26,20,17,.35);
-      text-align: right;
-      line-height: 1.9;
-    }
-
-    /* ── PRINT BUTTON ── */
-    .q-print-btn {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      background: #1a1411;
-      color: #FFF9F1;
-      border: none;
-      padding: 13px 28px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
+    .q-footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid rgba(26,20,17,.12); display: flex; justify-content: space-between; align-items: center; }
+    .q-footer-brand { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 20px; font-style: italic; color: rgba(26,20,17,.4); }
+    .q-footer-contact { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(26,20,17,.35); text-align: right; line-height: 1.9; }
+    .q-print-btn { position: fixed; bottom: 28px; right: 28px; background: #1a1411; color: #FFF9F1; border: none; padding: 13px 28px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
     .q-print-btn:hover { opacity: 0.75; }
-
-    @media (max-width: 600px) {
-      .quote-page { padding: 32px 24px 48px; }
-      .q-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-      .q-address { text-align: left; }
-      .q-total-final .tf-val { font-size: 24px; }
-    }
+    @media (max-width: 600px) { .quote-page { padding: 32px 24px 48px; } .q-header { flex-direction: column; align-items: flex-start; gap: 12px; } .q-address { text-align: left; } .q-total-final .tf-val { font-size: 24px; } }
   </style>
 </head>
 <body>
-
 <div class="quote-page">
 
-  <!-- HEADER -->
   <header class="q-header">
-    <a href="/" style="display:block;"><img src="assets/canica-wordmark-vector.svg" alt="canica" style="height:32px;width:auto;display:block;"></a>
+    <a href="/" style="display:block;">
+      <img src="assets/canica-wordmark-vector.svg" alt="canica" style="height:32px;width:auto;display:block;">
+    </a>
     <div class="q-address">
       hola@canica.fun<br>
       @canicafun<br>
@@ -341,7 +76,6 @@
 
   <div class="q-doc-label">Cotización · Evento privado</div>
 
-  <!-- DETALLES -->
   <div class="q-details">
     <div class="k">Fecha</div>
     <div class="v">Miércoles 3 ó Jueves 4 de junio</div>
@@ -378,36 +112,39 @@
   <div class="q-section">
     <div class="q-num">02 — Menú para niños</div>
     <div class="q-section-title">Bento infantil</div>
-    <div class="q-section-sub">$300.00 por persona · 11 niños</div>
+    <div class="q-section-sub">$200.00 por persona · 11 niños</div>
     <ul class="q-bullets">
-      <li><strong>Proteína (elige 1)</strong>&nbsp;&nbsp;Salmón &nbsp;ó&nbsp; Pechuga de pollo a la plancha</li>
+      <li><strong>Proteína</strong>&nbsp;&nbsp;Pechuga de pollo a la plancha</li>
       <li><strong>Acompañamientos (elige 2)</strong>&nbsp;&nbsp;Arroz blanco · Puré de camote · Jitomate cherry confitado · Hummus de lenteja · Aguacate · Ensalada de pepino · Pan masa madre</li>
       <li><strong>Bebida (elige 1)</strong>&nbsp;&nbsp;Soda natural · Naranjada · Limonada</li>
     </ul>
     <div class="q-line">
       <div class="q-line-label">
         Menú niños
-        <small>11 personas × $300.00</small>
+        <small>11 personas × $200.00</small>
       </div>
-      <div class="q-line-price">$3,300.00</div>
+      <div class="q-line-price">$2,200.00</div>
     </div>
   </div>
 
   <!-- 03 — ADULTOS -->
   <div class="q-section">
-    <div class="q-num">03 — Menú para adultos</div>
-    <div class="q-section-title">Menú de evento</div>
-    <div class="q-section-sub">$550.00 por persona · 22 adultos</div>
+    <div class="q-num">03 — Bebidas para adultos</div>
+    <div class="q-section-title">Paquete de bebidas</div>
+    <div class="q-section-sub">$250.00 por persona · 22 adultos</div>
     <ul class="q-bullets">
-      <li><strong>Platillo (elige 1)</strong>&nbsp;&nbsp;Milanesa o Sabana de Pollo con ensalada verde, aioli y salsa macha &nbsp;·&nbsp; Salmón Miso Macha con arroz, champiñones, aguacate y jengibre</li>
-      <li><strong>Bebida (elige 1)</strong>&nbsp;&nbsp;Soda natural · Naranjada · Limonada · Copa de vino de la casa</li>
+      <li>Selección de vinos de la casa, cervezas y refrescos naturales durante el evento</li>
+      <li>Servicio de mesa durante las 4 horas</li>
     </ul>
     <div class="q-line">
       <div class="q-line-label">
-        Menú adultos
-        <small>22 personas × $550.00</small>
+        Paquete bebidas adultos
+        <small>22 personas × $250.00</small>
       </div>
-      <div class="q-line-price">$12,100.00</div>
+      <div class="q-line-price">$5,500.00</div>
+    </div>
+    <div class="q-note-box">
+      Las botanas y mezze se pueden pedir a la carta durante el evento — te avisamos los precios al confirmar la fecha.
     </div>
   </div>
 
@@ -415,15 +152,18 @@
   <div class="q-totals">
     <div class="q-total-row">
       <span class="tl">Subtotal</span>
-      <span class="tv">$31,400.00</span>
+      <span class="tv">$23,700.00</span>
     </div>
     <div class="q-total-row">
       <span class="tl">Servicio (15%)</span>
-      <span class="tv">$4,710.00</span>
+      <span class="tv">$3,555.00</span>
     </div>
     <div class="q-total-final">
       <span class="tf-label">Total del evento</span>
-      <span class="tf-val">$36,110.00</span>
+      <span class="tf-val">$27,255.00</span>
+    </div>
+    <div class="q-note-box" style="margin-top:12px;">
+      Las botanas y mezze à la carte se cobran adicional al total del evento.
     </div>
   </div>
 
@@ -435,11 +175,11 @@
       <li>El saldo restante se liquida el día del evento, antes del inicio.</li>
       <li>Esta cotización tiene vigencia de <strong>7 días naturales</strong> a partir de su emisión.</li>
       <li>La fecha queda confirmada únicamente al recibir el anticipo.</li>
+      <li>Las botanas y mezze à la carta se cobran al consumo, no están incluidas en el total.</li>
       <li>El menú está sujeto a disponibilidad de ingredientes de temporada.</li>
     </ol>
   </div>
 
-  <!-- FOOTER -->
   <div class="q-footer">
     <div class="q-footer-brand">canica</div>
     <div class="q-footer-contact">
@@ -452,6 +192,5 @@
 </div>
 
 <button class="q-print-btn no-print" onclick="window.print()">Guardar PDF</button>
-
 </body>
 </html>

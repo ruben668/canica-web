@@ -43,9 +43,11 @@ module.exports = async (req, res) => {
 
   const booking = event.payload || event;
   const attendee  = booking.attendees?.[0] || {};
-  const name      = attendee.name || booking.title || 'Cliente';
-  const email     = attendee.email || '';
-  const phone     = attendee.phoneNumber || '';
+  const fields    = booking.bookingFieldsResponses || booking.responses || {};
+  const name      = attendee.name || fields.name || booking.title || 'Cliente';
+  const email     = attendee.email || fields.email || '';
+  const phone     = fields.phone || fields.whatsapp || fields.phoneNumber ||
+                    attendee.phoneNumber || '';
   const startTime = booking.startTime ? new Date(booking.startTime).toLocaleString('es-MX', {
     timeZone: 'America/Mexico_City',
     weekday: 'long', day: 'numeric', month: 'long',

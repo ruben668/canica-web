@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hiring Dashboard · Canica</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ivory:#FFF9F1;--ink:#1a1411;--muted:rgba(26,20,17,.45);--rule:rgba(26,20,17,.1);
+      --rufous:#be352b;--apricot:#e5794a;--green:#107039;--yellow:#f8be58;
+      --serif:'Cormorant Garamond',Georgia,serif;--mono:'JetBrains Mono',monospace;
+    }
+    body{background:var(--ivory);color:var(--ink);font-family:var(--mono);font-size:12px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    .page{max-width:1100px;margin:0 auto;padding:48px 40px 80px;}
+
+    /* HEADER */
+    .header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:24px;border-bottom:1px solid var(--rule);margin-bottom:40px;}
+    .header img{height:28px;}
+    .header-right{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:right;line-height:1.9;}
+
+    /* PAGE TITLE */
+    .page-title{font-family:var(--serif);font-size:32px;font-weight:400;color:var(--ink);margin-bottom:4px;}
+    .page-sub{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:40px;}
+
+    /* ROLE SECTION */
+    .role-section{margin-bottom:56px;}
+    .role-header{display:flex;align-items:baseline;gap:16px;margin-bottom:6px;}
+    .role-title{font-family:var(--serif);font-size:24px;font-weight:400;}
+    .role-count{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+    .role-why{font-size:11px;color:var(--muted);margin-bottom:20px;padding-left:2px;max-width:680px;line-height:1.65;}
+
+    /* RUBRIC */
+    .rubric{background:rgba(26,20,17,.03);border-left:2px solid var(--rule);padding:14px 18px;margin-bottom:24px;}
+    .rubric-title{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+    .rubric-row{display:flex;gap:12px;align-items:baseline;padding:4px 0;border-bottom:1px solid rgba(26,20,17,.05);}
+    .rubric-row:last-child{border-bottom:none;}
+    .rubric-tier{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);width:100px;flex-shrink:0;}
+    .rubric-kw{font-size:10px;color:rgba(26,20,17,.7);flex:1;}
+    .rubric-pts{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--rufous);width:40px;text-align:right;}
+
+    /* GRADE LEGEND */
+    .legend{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;}
+    .legend-item{font-size:9px;letter-spacing:.1em;color:var(--muted);}
+
+    /* CANDIDATE TABLE */
+    .cand-table{width:100%;border-collapse:collapse;}
+    .cand-table th{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 12px;border-bottom:2px solid var(--rule);}
+    .cand-table td{padding:10px 12px;border-bottom:1px solid rgba(26,20,17,.06);vertical-align:top;}
+    .cand-table tr:hover td{background:rgba(26,20,17,.02);}
+
+    .grade{display:inline-flex;align-items:center;gap:4px;font-size:9px;letter-spacing:.08em;font-weight:500;}
+    .grade-strong{color:#107039;}
+    .grade-good{color:#e5794a;}
+    .grade-weak{color:var(--muted);}
+
+    .score-bar{display:inline-block;height:2px;background:var(--rufous);margin-left:6px;vertical-align:middle;}
+
+    .cand-name{font-family:var(--serif);font-size:15px;font-weight:400;color:var(--ink);}
+    .cand-role{font-size:10px;color:var(--muted);margin-top:2px;}
+    .cand-kw{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+    .kw-tag{font-size:8px;letter-spacing:.08em;padding:2px 6px;background:rgba(26,20,17,.06);color:rgba(26,20,17,.6);}
+
+    .phone-link{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule);}
+    .phone-link:hover{border-bottom-color:var(--rufous);color:var(--rufous);}
+
+    .wa-btn{display:inline-block;padding:5px 12px;background:var(--ink);color:var(--ivory);font-size:8px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;margin-top:4px;}
+    .wa-btn:hover{opacity:.75;}
+
+    /* DIVIDER */
+    .divider{border:none;border-top:1px solid var(--rule);margin:48px 0;}
+
+    /* FOOTER */
+    .footer{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--rule);margin-top:48px;}
+    .footer-brand{font-family:var(--serif);font-size:18px;font-style:italic;color:var(--muted);}
+    .footer-note{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="/"><img src="assets/canica-wordmark-vector.svg" alt="canica"></a>
+    <div class="header-right">Hiring Dashboard · Interno<br>Actualizado May 16, 2026</div>
+  </header>
+
+  <div class="page-title">Pipeline de Contratación</div>
+  <div class="page-sub">3 roles abiertos · 585 candidatos evaluados · Top candidates por rol</div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- ROLE 1: MAESTRA DE LUDOTECA -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="role-section">
+    <div class="role-header">
+      <div class="role-title">Maestra de Ludoteca</div>
+      <div class="role-count">355 candidatos evaluados · 48 STRONG · 43 GOOD</div>
+    </div>
+    <div class="role-why">
+      Lo que buscamos: una educadora profesional que diseñe y coordine actividades de aprendizaje y juego para niños de 0–8 años. Perfil educativo, no niñera. El post actual ("Ludotecaria") atrae al perfil equivocado — se recomienda retitular a "Maestra de Ludoteca" y reescribir la descripción.
+    </div>
+
+    <div class="rubric">
+      <div class="rubric-title">Criterios de evaluación</div>
+      <div class="rubric-row">
+        <div class="rubric-tier">Tier 1 — Educación temprana</div>
+        <div class="rubric-kw">preescolar · educación especial · montessori · pedagogía · estimulación temprana · jardín de niños · desarrollo infantil · maestra de maternal</div>
+        <div class="rubric-pts">+40</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-tier">Tier 2 — Educadora general</div>
+        <div class="rubric-kw">licenciatura en pedagogía · educadora · maestra de grupo · docente · instructora · psicóloga infantil · asistente educativa</div>
+        <div class="rubric-pts">+25</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-tier">Tier 3 — Cuidado infantil</div>
+        <div class="rubric-kw">guardería · actividades con niños · talleres infantiles · ludoteca · parvularia · maternal · monitor infantil</div>
+        <div class="rubric-pts">+15</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-tier">Tier 4 — Señales blandas</div>
+        <div class="rubric-kw">creatividad · manualidades · arte · música · teatro · inglés · psicomotricidad · juego dirigido</div>
+        <div class="rubric-pts">+8</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span class="legend-item">🟢 STRONG ≥80</span>
+      <span class="legend-item">🟡 GOOD ≥40</span>
+      <span class="legend-item">🟠 WEAK ≥15</span>
+      <span class="legend-item">⬜ SKIP &lt;15</span>
+    </div>
+
+    <table class="cand-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Candidata</th>
+          <th>Score</th>
+          <th>Keywords encontrados</th>
+          <th>Contacto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>
+            <div class="cand-name">Ana Lilia Lopez Olivares</div>
+            <div class="cand-role">Maestra de maternal · Colegio Madrid, A.C.</div>
+          </td>
+          <td><span class="grade grade-strong">🟢 264</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">preescolar</span><span class="kw-tag">pedagogía</span><span class="kw-tag">estimulación temprana</span><span class="kw-tag">maestra de maternal</span><span class="kw-tag">asistente educativa</span></div></td>
+          <td><a class="phone-link" href="tel:+5215517554526">+52 55 1755 4526</a><br><a class="wa-btn" href="https://wa.me/5215517554526?text=Hola+Ana+%F0%9F%91%8B+Te+escribimos+de+Canica%2C+una+ludoteca+y+cafeter%C3%ADa+en+Condesa%2C+CDMX.+Vimos+tu+perfil+en+Indeed+y+nos+llam%C3%B3+mucho+la+atenci%C3%B3n+tu+experiencia+en+educaci%C3%B3n+infantil.+%C2%BFTienes+unos+minutos+para+platicar+esta+semana%3F" target="_blank">WhatsApp</a></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>
+            <div class="cand-name">Claudia Castañeda</div>
+            <div class="cand-role">Mediadora taller niños de preescolar · La Gaviota IAP</div>
+          </td>
+          <td><span class="grade grade-strong">🟢 232</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">preescolar</span><span class="kw-tag">pedagogía</span><span class="kw-tag">estimulación temprana</span><span class="kw-tag">docente</span><span class="kw-tag">ludoteca</span></div></td>
+          <td><a class="phone-link" href="tel:+5215567108873">+52 55 6710 8873</a><br><a class="wa-btn" href="https://wa.me/5215567108873?text=Hola+Claudia+%F0%9F%91%8B+Te+escribimos+de+Canica..." target="_blank">WhatsApp</a></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>
+            <div class="cand-name">Alexa Berenice Fernández</div>
+            <div class="cand-role">Maestra titular · Konnect Kids Club</div>
+          </td>
+          <td><span class="grade grade-strong">🟢 208</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">montessori</span><span class="kw-tag">pedagogía</span><span class="kw-tag">licenciatura en pedagogía</span><span class="kw-tag">asistente educativa</span></div></td>
+          <td><a class="phone-link" href="tel:+5215551492680">55 5149 2680</a><br><a class="wa-btn" href="https://wa.me/5215551492680?text=Hola+Alexa+%F0%9F%91%8B+Te+escribimos+de+Canica..." target="_blank">WhatsApp</a></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>
+            <div class="cand-name">Kenya Lizeth Rojas Pérez</div>
+            <div class="cand-role">Atención infantil · IMSS, SEDESOL, Colegios</div>
+          </td>
+          <td><span class="grade grade-strong">🟢 201</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">preescolar</span><span class="kw-tag">estimulación temprana</span><span class="kw-tag">licenciatura en educación</span><span class="kw-tag">asistente educativa</span></div></td>
+          <td><a class="phone-link" href="tel:+5215534057435">55 3405 7435</a><br><a class="wa-btn" href="https://wa.me/5215534057435?text=Hola+Kenya+%F0%9F%91%8B+Te+escribimos+de+Canica..." target="_blank">WhatsApp</a></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>
+            <div class="cand-name">Blanca Esther Labastida Luna</div>
+            <div class="cand-role">CUCEP · Pachuca, Hgo.</div>
+          </td>
+          <td><span class="grade grade-strong">🟢 193</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">preescolar</span><span class="kw-tag">educación especial</span><span class="kw-tag">montessori</span><span class="kw-tag">pedagogía</span></div></td>
+          <td><a class="phone-link" href="tel:+5215591977202">+52 55 9197 7202</a><br><a class="wa-btn" href="https://wa.me/5215591977202?text=Hola+Blanca+%F0%9F%91%8B+Te+escribimos+de+Canica..." target="_blank">WhatsApp</a></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>
+            <div class="cand-name">Maria Olivier Ramos Martínez</div>
+            <div class="cand-role">Asistente educativa y Niñera · Colegios y particulares</div>
+          </td>
+          <td><span class="grade grade-strong">🟢 184</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">preescolar</span><span class="kw-tag">estimulación temprana</span><span class="kw-tag">desarrollo infantil</span><span class="kw-tag">educadora</span></div></td>
+          <td><a class="phone-link" href="tel:+5215559667561">55 5966 7561</a><br><a class="wa-btn" href="https://wa.me/5215559667561?text=Hola+Maria+%F0%9F%91%8B+Te+escribimos+de+Canica..." target="_blank">WhatsApp</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- ROLE 2: COCINERO B -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="role-section">
+    <div class="role-header">
+      <div class="role-title">Cocinero B</div>
+      <div class="role-count">80 candidatos evaluados · 30 STRONG · 10 GOOD</div>
+    </div>
+    <div class="role-why">
+      Reemplazar a Uriel — manejaba ~48% del POS antes de salir. Alberto está solo en sala. Prioridad urgente. El pool tiene candidatos sólidos con experiencia en brigada de cocina. Foco en brunch/desayunos y precisión en línea.
+    </div>
+
+    <div class="rubric">
+      <div class="rubric-title">Criterios de evaluación</div>
+      <div class="rubric-row">
+        <div class="rubric-tier">Tier 1 — Técnica relevante</div>
+        <div class="rubric-kw">brunch · desayunos · ensaladas · bowls · masa madre · chef de partie · sous chef · cocinero a</div>
+        <div class="rubric-pts">+40</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-tier">Tier 2 — Brigada</div>
+        <div class="rubric-kw">cocina · restaurante · brigada · línea · mise en place · cocinero</div>
+        <div class="rubric-pts">+25</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-tier">Tier 3 — General</div>
+        <div class="rubric-kw">preparación · higiene · limpieza · tarjeta de salud · ayudante de cocina</div>
+        <div class="rubric-pts">+15</div>
+      </div>
+    </div>
+
+    <table class="cand-table">
+      <thead>
+        <tr><th>#</th><th>Candidato</th><th>Score</th><th>Keywords</th><th>Contacto</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><div class="cand-name">Luis René César de la Cruz</div><div class="cand-role">Cocinero 1a · CDMX</div></td>
+          <td><span class="grade grade-strong">🟢 308</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">brunch</span><span class="kw-tag">cocinero a</span><span class="kw-tag">brigada</span><span class="kw-tag">restaurante</span><span class="kw-tag">línea</span></div></td>
+          <td><a class="phone-link" href="tel:+5215540180960">55 4018 0960</a><br><a class="wa-btn" href="https://wa.me/5215540180960?text=Hola+Luis+%F0%9F%91%8B+Te+escribimos+de+Canica+en+Condesa.+Vimos+tu+perfil+en+Indeed+y+nos+interesa+mucho+tu+experiencia.+%C2%BFTienes+minutos+para+platicar%3F" target="_blank">WhatsApp</a></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><div class="cand-name">Daniel Noyola Estrada</div><div class="cand-role">Ayudante general · Algarin, CDMX</div></td>
+          <td><span class="grade grade-strong">🟢 200</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">cocina</span><span class="kw-tag">restaurante</span><span class="kw-tag">brigada</span><span class="kw-tag">desayunos</span></div></td>
+          <td><a class="phone-link" href="tel:+5215573632877">+52 55 7363 2877</a><br><a class="wa-btn" href="https://wa.me/5215573632877?text=Hola+Daniel+%F0%9F%91%8B+Te+escribimos+de+Canica+en+Condesa..." target="_blank">WhatsApp</a></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><div class="cand-name">Angel Cristian Gil del Real</div><div class="cand-role">Producción · CDMX</div></td>
+          <td><span class="grade grade-strong">🟢 193</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">cocinero</span><span class="kw-tag">brigada</span><span class="kw-tag">línea</span><span class="kw-tag">restaurante</span></div></td>
+          <td><a class="phone-link" href="tel:+5215630008600">+52 56 3000 8600</a><br><a class="wa-btn" href="https://wa.me/5215630008600?text=Hola+Angel+%F0%9F%91%8B+Te+escribimos+de+Canica+en+Condesa..." target="_blank">WhatsApp</a></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><div class="cand-name">Geovany Tula</div><div class="cand-role">Encargado de línea · CDMX</div></td>
+          <td><span class="grade grade-strong">🟢 188</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">cocinero a</span><span class="kw-tag">supervisor</span><span class="kw-tag">línea</span><span class="kw-tag">brigada</span></div></td>
+          <td><a class="phone-link" href="tel:+5215581482788">+52 55 8148 2788</a><br><a class="wa-btn" href="https://wa.me/5215581482788?text=Hola+Geovany+%F0%9F%91%8B+Te+escribimos+de+Canica+en+Condesa..." target="_blank">WhatsApp</a></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><div class="cand-name">Ángela Dorantes</div><div class="cand-role">Cocinero A · Tlalnepantla</div></td>
+          <td><span class="grade grade-strong">🟢 178</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">cocinero a</span><span class="kw-tag">brigada</span><span class="kw-tag">restaurante</span></div></td>
+          <td><a class="phone-link" href="tel:+5215528678971">+52 55 2867 8971</a><br><a class="wa-btn" href="https://wa.me/5215528678971?text=Hola+Angela+%F0%9F%91%8B+Te+escribimos+de+Canica+en+Condesa..." target="_blank">WhatsApp</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- ROLE 3: GERENTE -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="role-section">
+    <div class="role-header">
+      <div class="role-title">Gerente de Restaurante</div>
+      <div class="role-count">150 candidatos evaluados · 11 STRONG · 42 GOOD</div>
+    </div>
+    <div class="role-why">
+      Pool más débil de los tres. El perfil fuerte en gerencia de restaurante con experiencia en café/hospitalidad es escaso. Los STRONG tienen experiencia en operaciones pero no todos tienen background de café de especialidad. Recomiendo entrevistar a los top 3 y evaluar fit cultural antes de comprometerse.
+    </div>
+
+    <div class="rubric">
+      <div class="rubric-title">Criterios de evaluación</div>
+      <div class="rubric-row">
+        <div class="rubric-tier">Tier 1 — Ops restaurante</div>
+        <div class="rubric-kw">gerente de restaurante · operaciones · control de costos · inventarios · proveedores · apertura y cierre</div>
+        <div class="rubric-pts">+40</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-tier">Tier 2 — Hospitalidad</div>
+        <div class="rubric-kw">café · cafetería · bar · hotel · hospitalidad · supervisora · anfitriona · servicio</div>
+        <div class="rubric-pts">+25</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-tier">Tier 3 — Admin</div>
+        <div class="rubric-kw">administración · nómina · facturación · caja · recursos humanos · conciliación</div>
+        <div class="rubric-pts">+15</div>
+      </div>
+    </div>
+
+    <table class="cand-table">
+      <thead>
+        <tr><th>#</th><th>Candidato</th><th>Score</th><th>Keywords</th><th>Contacto</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><div class="cand-name">Estefano Yhue Solorio Flores</div><div class="cand-role">Gerente · CDMX</div></td>
+          <td><span class="grade grade-strong">🟢 151</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">gerente de restaurante</span><span class="kw-tag">operaciones</span><span class="kw-tag">café</span><span class="kw-tag">inventarios</span></div></td>
+          <td><span style="color:var(--muted);font-size:10px;">Sin número visible</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><div class="cand-name">Carlos Ernesto Torres Márquez</div><div class="cand-role">Gerente · CDMX</div></td>
+          <td><span class="grade grade-strong">🟢 121</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">gerente de restaurante</span><span class="kw-tag">operaciones</span><span class="kw-tag">proveedores</span></div></td>
+          <td><span style="color:var(--muted);font-size:10px;">Sin número visible</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><div class="cand-name">Edgar Arreola Dorantes</div><div class="cand-role">Subgerente de tienda · Chimalhuacán</div></td>
+          <td><span class="grade grade-strong">🟢 128</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">operaciones</span><span class="kw-tag">gerente</span><span class="kw-tag">servicio</span><span class="kw-tag">control de costos</span></div></td>
+          <td><a class="phone-link" href="tel:+5215576956214">+52 55 7695 6214</a><br><a class="wa-btn" href="https://wa.me/5215576956214?text=Hola+Edgar+%F0%9F%91%8B+Te+escribimos+de+Canica+en+Condesa..." target="_blank">WhatsApp</a></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><div class="cand-name">José Luis Trujillo Robles</div><div class="cand-role">Gerente · CDMX</div></td>
+          <td><span class="grade grade-strong">🟢 128</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">gerente de restaurante</span><span class="kw-tag">café</span><span class="kw-tag">inventarios</span></div></td>
+          <td><span style="color:var(--muted);font-size:10px;">Sin número visible</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><div class="cand-name">DIEGO ARMANDO CASTILLO AGUIRRE</div><div class="cand-role">Gerente · CDMX</div></td>
+          <td><span class="grade grade-strong">🟢 103</span></td>
+          <td><div class="cand-kw"><span class="kw-tag">gerente de restaurante</span><span class="kw-tag">operaciones</span><span class="kw-tag">hospitalidad</span></div></td>
+          <td><span style="color:var(--muted);font-size:10px;">Sin número visible</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">canica</div>
+    <div class="footer-note">Uso interno · Emma · Mayo 2026</div>
+  </div>
+
+</div>
+</body>
+</html>

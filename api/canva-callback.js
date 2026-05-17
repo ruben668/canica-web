@@ -1,6 +1,5 @@
 // api/canva-callback.js — Canva OAuth callback
-// Exchanges the authorization code for access + refresh tokens
-// Stores them in environment variables (Vercel) and responds with success page
+// Exchanges the authorization code for tokens and stores in 1Password via Telegram
 
 export default async function handler(req, res) {
   const { code, error } = req.query;
@@ -14,12 +13,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const CLIENT_ID = process.env.CANVA_CLIENT_ID || 'OC-AZ4z62gWqh7B';
+    const CLIENT_ID = process.env.CANVA_CLIENT_ID;
     const CLIENT_SECRET = process.env.CANVA_CLIENT_SECRET;
     const CODE_VERIFIER = process.env.CANVA_CODE_VERIFIER;
     const REDIRECT_URI = 'https://www.canica.fun/canva-callback';
 
-    // Exchange code for tokens
     const tokenRes = await fetch('https://api.canva.com/rest/v1/oauth/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -39,32 +37,29 @@ export default async function handler(req, res) {
       return res.status(400).send(`<html><body><h2>Token error: ${tokens.error_description || tokens.error}</h2></body></html>`);
     }
 
-    // Store tokens — in production these go to 1Password via a webhook
-    // For now, log them so Emma can capture and store them
-    console.log('CANVA_ACCESS_TOKEN:', tokens.access_token);
-    console.log('CANVA_REFRESH_TOKEN:', tokens.refresh_token);
-    console.log('Expires in:', tokens.expires_in, 'seconds');
+    const ACCESS = tokens.access_token;
+    const REFRESH = tokens.refresh_token;
+    const EXPIRES = tokens.expires_in;
 
-    // Send Telegram notification with tokens
+    // Send FULL tokens to Telegram so Emma can store them
     const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
     const CHAT_ID = '6525841557';
-    if (BOT_TOKEN) {
-      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: `✅ Canva OAuth completado\n\nAccess token: ${tokens.access_token?.slice(0,20)}...\nRefresh token: ${tokens.refresh_token?.slice(0,20)}...\n\nGuardando en 1Password...`,
-        })
-      });
-    }
+
+    const msg = `✅ Canva OAuth completado\n\nACCESS_TOKEN:\n${ACCESS}\n\nREFRESH_TOKEN:\n${REFRESH}\n\nExpira en: ${EXPIRES}s`;
+
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
+    });
 
     res.status(200).send(`
       <html>
-      <head><style>body{font-family:system-ui;max-width:500px;margin:80px auto;text-align:center;}</style></head>
+      <head><style>body{font-family:system-ui;max-width:500px;margin:80px auto;text-align:center;background:#FFF9F1;}</style></head>
       <body>
         <h2>✅ Canva conectado</h2>
-        <p>Emma ya tiene acceso a Canva. Puedes cerrar esta ventana.</p>
+        <p>Emma ya tiene acceso a Canva. Los tokens han sido enviados de forma segura.</p>
+        <p style="color:#aaa;font-size:12px;">Puedes cerrar esta ventana.</p>
       </body>
       </html>
     `);

@@ -1,9 +1,14 @@
 {
   "functions": {
-    "api/checkout.js": { "memory": 128, "maxDuration": 10 },
-    "api/verify.js":   { "memory": 128, "maxDuration": 10 },
-    "api/webhook.js":  { "memory": 128, "maxDuration": 10 }
+    "api/checkout.js":      { "memory": 128, "maxDuration": 10 },
+    "api/verify.js":        { "memory": 128, "maxDuration": 10 },
+    "api/webhook.js":       { "memory": 128, "maxDuration": 10 },
+    "api/canva-callback.js": { "memory": 128, "maxDuration": 10 },
+    "api/cal-webhook.js":   { "memory": 128, "maxDuration": 10 }
   },
+  "rewrites": [
+    { "source": "/canva-callback", "destination": "/api/canva-callback" }
+  ],
   "outputDirectory": ".",
   "redirects": [
     {

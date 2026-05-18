@@ -1,12 +1,12 @@
 // Cal.com webhook — fires on every new booking
-// Sends WhatsApp notification to Saira via Telegram Bot (as SMS proxy)
+// Sends Telegram notification to Ruben
 // POST /api/cal-webhook
 
-const BOT_TOKEN = '8580935482:AAFK-y4drZtUBaxNTL0cV6YseKiG0cyw3Os';
-// Saira departed May 2026 — removed from notifications
-// const SAIRA_WHATSAPP = '+525532909854';
-const RUBEN_TELEGRAM  = '6525841557';
-// const SAIRA_TELEGRAM  = '6247865657'; // Saira departed May 2026
+const BOT_TOKEN    = '8580935482:AAFK-y4drZtUBaxNTL0cV6YseKiG0cyw3Os';
+const RUBEN        = '6525841557';
+
+// Deduplicate: track recent booking UIDs to avoid duplicate notifications
+const recentUIDs = new Set();
 
 async function sendTelegram(chatId, text) {
   const body = JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' });
@@ -39,59 +39,86 @@ module.exports = async (req, res) => {
 
   // Only process new bookings
   if (triggerEvent !== 'BOOKING_CREATED') {
-    return res.status(200).json({ received: true, ignored: true });
+    return res.status(200).json({ received: true, ignored: triggerEvent });
   }
 
   const booking = event.payload || event;
-  const attendee  = booking.attendees?.[0] || {};
-  const fields    = booking.bookingFieldsResponses || booking.responses || {};
-  const name      = attendee.name || fields.name || booking.title || 'Cliente';
-  const email     = attendee.email || fields.email || '';
-  const phone     = fields.phone || fields.whatsapp || fields.phoneNumber ||
-                    attendee.phoneNumber || '';
-  const startTime = booking.startTime ? new Date(booking.startTime).toLocaleString('es-MX', {
-    timeZone: 'America/Mexico_City',
-    weekday: 'long', day: 'numeric', month: 'long',
-    hour: '2-digit', minute: '2-digit'
-  }) : 'Fecha por confirmar';
-  const eventType  = booking.eventType?.title || booking.title || 'Mesa';
-  const responses  = booking.responses || {};
-  const party      = responses.party_size?.value || responses.party?.value || responses.guests?.value || '';
-  const partyNum   = parseInt(party) || 0;
-  const children   = responses.children?.value || responses.ninos?.value || '';
-  const notes      = responses.notes?.value || responses.additionalNotes?.value || '';
 
-  // Build notification message
-  const urgentFlag = partyNum >= 5 ? '⚠️ GRUPO GRANDE — confirmar por WhatsApp\n' : '';
+  // Deduplicate by booking UID — Cal.com sometimes fires the webhook multiple times
+  const uid = booking.uid || booking.id || booking.bookingId;
+  if (uid && recentUIDs.has(uid)) {
+    console.log(`Duplicate webhook for booking ${uid} — ignored`);
+    return res.status(200).json({ received: true, duplicate: true });
+  }
+  if (uid) {
+    recentUIDs.add(uid);
+    // Clean up after 5 minutes
+    setTimeout(() => recentUIDs.delete(uid), 5 * 60 * 1000);
+  }
 
-  const msg = [
-    `🍽 <b>Nueva reserva — ${eventType}</b>${partyNum >= 5 ? ' 👥 GRUPO DE '+partyNum : ''}`,
-    urgentFlag || null,
+  // Extract fields
+  const attendee = booking.attendees?.[0] || {};
+  const fields   = booking.bookingFieldsResponses || booking.responses || {};
+
+  const name  = attendee.name || fields.name || 'Cliente';
+  const email = attendee.email || fields.email || '';
+
+  // Phone: try multiple field names Cal.com uses
+  const phone = fields.phone?.value || fields.phone ||
+                fields.whatsapp?.value || fields.whatsapp ||
+                fields.phoneNumber?.value || fields.phoneNumber ||
+                attendee.phoneNumber || '';
+
+  // Party size: Cal.com stores custom fields under their label slug
+  const partyRaw = fields.party_size?.value || fields.party_size ||
+                   fields.party?.value || fields.party ||
+                   fields.guests?.value || fields.guests ||
+                   fields.personas?.value || fields.personas ||
+                   fields.cuantas_personas?.value || fields.cuantas_personas || '';
+  const partyNum = parseInt(partyRaw) || 0;
+
+  // Children
+  const children = fields.children?.value || fields.children ||
+                   fields.ninos?.value || fields.ninos ||
+                   fields.ninios?.value || fields.ninios || '';
+
+  // Notes / special requests
+  const notes = fields.notes?.value || fields.notes ||
+                fields.additionalNotes?.value || fields.additionalNotes ||
+                fields.notas?.value || fields.notas ||
+                booking.description || '';
+
+  const startTime = booking.startTime
+    ? new Date(booking.startTime).toLocaleString('es-MX', {
+        timeZone: 'America/Mexico_City',
+        weekday: 'long', day: 'numeric', month: 'long',
+        hour: '2-digit', minute: '2-digit'
+      })
+    : 'Fecha por confirmar';
+
+  const isLargeGroup = partyNum >= 5;
+
+  const lines = [
+    isLargeGroup
+      ? `⚠️ <b>GRUPO GRANDE — Reserva Nueva</b>`
+      : `🍽 <b>Nueva reserva</b>`,
     ``,
     `👤 <b>${name}</b>`,
-    email ? `📧 ${email}` : null,
-    phone ? `📱 ${phone}` : null,
+    email   ? `📧 ${email}`       : null,
+    phone   ? `📱 ${phone}`       : null,
     ``,
     `📅 <b>${startTime}</b>`,
-    party ? `👥 ${party}` : null,
-    children ? `🧒 Niños: ${children}` : null,
-    notes ? `📝 ${notes}` : null,
+    partyNum > 0 ? `👥 ${partyNum} persona${partyNum > 1 ? 's' : ''}` : null,
+    children    ? `🧒 Niños: ${children}` : null,
+    notes       ? `📝 ${notes}`          : null,
     ``,
-    `<i>Confirma respondiendo al cliente directamente.</i>`,
+    isLargeGroup
+      ? `⚠️ <b>Confirmar mesa grande por WhatsApp o llamada.</b>`
+      : `<i>Confirma respondiendo al cliente directamente.</i>`,
   ].filter(l => l !== null).join('\n');
 
-  // Send to Ruben and Saira via Telegram
-  await sendTelegram(RUBEN_TELEGRAM, msg);
-  await sendTelegram(SAIRA_TELEGRAM, msg);
+  await sendTelegram(RUBEN, lines);
 
-  // Also send WhatsApp link to Saira via Telegram
-  // (We send via Telegram since Saira may not yet have the bot)
-  // When Saira connects, we send directly to her
-  const whatsappText = encodeURIComponent(
-    `Hola! Nueva reserva en Canica:\n${name} — ${startTime}${party ? ` (${party})` : ''}${notes ? `\nNotas: ${notes}` : ''}`
-  );
-
-  console.log(`Booking received: ${name} — ${startTime}`);
-
+  console.log(`Booking: ${name} — ${startTime} — party: ${partyNum} — uid: ${uid}`);
   res.status(200).json({ received: true, booking: name });
 };

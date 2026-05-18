@@ -5,266 +5,315 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard · Canica</title>
   <meta name="robots" content="noindex">
-  <meta http-equiv="refresh" content="300"> <!-- auto-refresh every 5 min -->
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
-    body{background:#1a1411;color:#FFF9F1;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased;}
-    .header{padding:20px 20px 0;display:flex;justify-content:space-between;align-items:center;}
-    .wordmark{font-family:'DM Serif Display',serif;font-size:20px;font-style:italic;color:#FFF9F1;}
-    .time{font-size:10px;letter-spacing:.1em;color:rgba(255,249,241,.4);}
-    .day-label{padding:16px 20px 8px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,249,241,.4);}
+    body{background:#1a1411;color:#FFF9F1;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased;}
 
-    /* BIG NUMBER */
-    .revenue-block{padding:0 20px 20px;}
-    .revenue-today{font-family:'DM Serif Display',serif;font-size:64px;font-style:italic;line-height:1;color:#FFF9F1;}
-    .revenue-today .unit{font-size:24px;color:rgba(255,249,241,.5);}
-    .revenue-sub{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,249,241,.4);margin-top:4px;}
+    .header{padding:16px 16px 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,249,241,.08);padding-bottom:12px;}
+    .wordmark{font-family:'DM Serif Display',serif;font-size:18px;font-style:italic;}
+    .clock{font-size:10px;letter-spacing:.1em;color:rgba(255,249,241,.4);}
 
-    /* PROGRESS BAR */
-    .progress-wrap{padding:0 20px 20px;}
-    .progress-label{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,249,241,.4);margin-bottom:8px;}
-    .progress-track{background:rgba(255,249,241,.1);height:8px;border-radius:0;}
-    .progress-fill{height:8px;border-radius:0;transition:width .5s ease;}
-    .progress-fill.red   { background:#C7243E; }
-    .progress-fill.yellow{ background:#F9C14F; }
-    .progress-fill.green { background:#0B6C31; }
+    .section{padding:14px 16px;border-bottom:1px solid rgba(255,249,241,.08);}
+    .section-title{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,249,241,.35);margin-bottom:10px;}
 
-    /* METRICS GRID */
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:0 20px 20px;}
-    .metric{background:rgba(255,249,241,.06);padding:16px;}
-    .metric-label{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,249,241,.35);margin-bottom:6px;}
-    .metric-value{font-family:'DM Serif Display',serif;font-size:32px;font-style:italic;line-height:1;}
-    .metric-value.good  {color:#4CAF50;}
-    .metric-value.warn  {color:#F9C14F;}
-    .metric-value.bad   {color:#C7243E;}
-    .metric-value.neutral{color:#FFF9F1;}
-    .metric-sub{font-size:9px;color:rgba(255,249,241,.35);margin-top:4px;}
+    /* Revenue */
+    .revenue-big{font-family:'DM Serif Display',serif;font-size:52px;font-style:italic;line-height:1;}
+    .revenue-big .unit{font-size:22px;color:rgba(255,249,241,.5);}
+    .revenue-meta{display:flex;gap:12px;margin-top:6px;font-size:10px;color:rgba(255,249,241,.5);}
 
-    /* GAP DIAGNOSIS */
-    .gap-block{margin:0 20px 20px;background:rgba(255,249,241,.06);padding:16px;}
-    .gap-title{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,249,241,.4);margin-bottom:12px;}
-    .gap-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,249,241,.06);font-size:11px;}
-    .gap-item:last-child{border-bottom:none;}
-    .gap-label{color:rgba(255,249,241,.7);}
-    .gap-amount{font-family:'DM Serif Display',serif;font-size:16px;font-style:italic;}
-    .gap-amount.positive{color:#F9C14F;}
-    .gap-amount.zero{color:rgba(255,249,241,.3);}
+    /* Progress */
+    .progress-wrap{margin-top:10px;}
+    .progress-labels{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,249,241,.35);margin-bottom:5px;}
+    .progress-track{background:rgba(255,249,241,.1);height:6px;}
+    .progress-fill{height:6px;transition:width .5s;}
+    .red{background:#C7243E;} .yellow{background:#F9C14F;} .green{background:#0B6C31;}
 
-    /* ALARM */
-    .alarm{margin:0 20px 20px;padding:16px;background:#C7243E;display:none;}
+    /* Metric grid */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+    .metric{background:rgba(255,249,241,.05);padding:12px 10px;}
+    .metric-label{font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,249,241,.3);margin-bottom:5px;}
+    .metric-value{font-family:'DM Serif Display',serif;font-size:28px;font-style:italic;line-height:1;}
+    .metric-sub{font-size:9px;color:rgba(255,249,241,.3);margin-top:3px;}
+    .good{color:#4CAF50;} .warn{color:#F9C14F;} .bad{color:#C7243E;} .neutral{color:#FFF9F1;}
+
+    /* Items table */
+    .items-table{width:100%;}
+    .items-table td{padding:6px 0;border-bottom:1px solid rgba(255,249,241,.06);font-size:11px;}
+    .items-table td:last-child{text-align:right;color:rgba(255,249,241,.6);}
+    .items-table .item-name{color:#FFF9F1;font-weight:500;}
+    .items-table .item-qty{color:rgba(255,249,241,.4);font-size:10px;}
+
+    /* Staff */
+    .staff-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,249,241,.06);}
+    .staff-name{font-weight:500;}
+    .staff-stats{font-size:10px;color:rgba(255,249,241,.5);text-align:right;}
+
+    /* Alarm */
+    .alarm{background:#C7243E;padding:14px 16px;display:none;}
     .alarm.show{display:block;}
-    .alarm-title{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,249,241,.8);margin-bottom:6px;}
-    .alarm-text{font-size:12px;color:#FFF9F1;}
+    .alarm-title{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,249,241,.7);margin-bottom:6px;}
 
-    /* LOADING */
-    .loading{text-align:center;padding:60px 20px;color:rgba(255,249,241,.3);font-size:11px;}
+    /* Gap section */
+    .gap-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,249,241,.06);font-size:11px;}
+    .gap-label{color:rgba(255,249,241,.7);}
+    .gap-val{font-family:'DM Serif Display',serif;font-size:15px;font-style:italic;color:#F9C14F;}
 
-    .footer{padding:20px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,249,241,.2);text-align:center;}
+    .footer{padding:12px 16px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,249,241,.2);text-align:center;}
+    .error{color:#C7243E;font-size:10px;padding:8px 0;}
   </style>
 </head>
 <body>
 
 <div class="header">
   <div class="wordmark">canica</div>
-  <div class="time" id="clock">cargando...</div>
+  <div class="clock" id="clock">–</div>
 </div>
 
-<div class="day-label" id="day-label">hoy</div>
-
-<div class="revenue-block">
-  <div class="revenue-today" id="revenue-today"><span class="unit">$</span><span id="rev-num">—</span></div>
-  <div class="revenue-sub" id="revenue-sub">cargando datos...</div>
-</div>
-
-<div class="progress-wrap">
-  <div class="progress-label">
-    <span>$0</span>
-    <span id="target-label">meta: —</span>
+<div class="section">
+  <div class="section-title" id="day-label">hoy</div>
+  <div class="revenue-big"><span class="unit">$</span><span id="rev-num">–</span></div>
+  <div class="revenue-meta">
+    <span id="pct-label">–% de meta</span>
+    <span id="gap-label">–</span>
   </div>
-  <div class="progress-track">
-    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+  <div class="progress-wrap">
+    <div class="progress-labels"><span>$0</span><span id="target-label">–</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
   </div>
 </div>
 
-<div class="grid">
-  <div class="metric">
-    <div class="metric-label">tickets hoy</div>
-    <div class="metric-value neutral" id="tickets">—</div>
-    <div class="metric-sub" id="tickets-sub">meta: ~28/día</div>
-  </div>
-  <div class="metric">
-    <div class="metric-label">ticket promedio</div>
-    <div class="metric-value neutral" id="avg-ticket">—</div>
-    <div class="metric-sub">meta: $350+</div>
-  </div>
-  <div class="metric">
-    <div class="metric-label">faltan para meta</div>
-    <div class="metric-value neutral" id="gap">—</div>
-    <div class="metric-sub" id="gap-sub"> </div>
-  </div>
-  <div class="metric">
-    <div class="metric-label">ritmo diario</div>
-    <div class="metric-value neutral" id="pace">—</div>
-    <div class="metric-sub">proyectado al cierre</div>
+<div class="section">
+  <div class="section-title">métricas clave</div>
+  <div class="grid-3">
+    <div class="metric">
+      <div class="metric-label">Comandas</div>
+      <div class="metric-value neutral" id="tickets">–</div>
+      <div class="metric-sub" id="tickets-sub"> </div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Ticket prom.</div>
+      <div class="metric-value neutral" id="avg-ticket">–</div>
+      <div class="metric-sub">meta $350</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Ritmo</div>
+      <div class="metric-value neutral" id="pace">–</div>
+      <div class="metric-sub">proyect. cierre</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Niños hoy</div>
+      <div class="metric-value neutral" id="ludo">–</div>
+      <div class="metric-sub" id="ludo-sub">entradas</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Niños comieron</div>
+      <div class="metric-value neutral" id="bento">–</div>
+      <div class="metric-sub">meta 80%+</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Bebidas/mesa</div>
+      <div class="metric-value neutral" id="drinks">–</div>
+      <div class="metric-sub">meta 1.5+</div>
+    </div>
   </div>
 </div>
 
-<div class="gap-block" id="gap-block" style="display:none;">
-  <div class="gap-title">¿Cómo cerrar el gap?</div>
+<div class="section" id="gap-section" style="display:none;">
+  <div class="section-title">¿cómo cerrar el gap hoy?</div>
   <div id="gap-items"></div>
 </div>
 
-<div class="alarm" id="alarm">
-  <div class="alarm-title">🚨 Alarma</div>
-  <div class="alarm-text" id="alarm-text"></div>
+<div class="section" id="items-section" style="display:none;">
+  <div class="section-title">lo más vendido hoy</div>
+  <table class="items-table" id="items-table"></table>
 </div>
 
-<div class="footer" id="last-update">actualizando...</div>
+<div class="section" id="staff-section" style="display:none;">
+  <div class="section-title">meseros</div>
+  <div id="staff-list"></div>
+</div>
+
+<div class="alarm" id="alarm">
+  <div class="alarm-title">🚨 alarma</div>
+  <div id="alarm-text"></div>
+</div>
+
+<div class="footer" id="last-update">cargando datos de Polotab...</div>
 
 <script>
-const RID = '57feae50-e490-435f-b821-4dc86e89aadc';
-const BASE = 'https://api.polotab.com';
-
-// Day targets
-const TARGETS = { 0:52000, 1:14000, 2:18000, 3:18000, 4:20000, 5:32000, 6:44000 };
-const DAY_NAMES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const RID     = '57feae50-e490-435f-b821-4dc86e89aadc';
+const BASE    = 'https://api.polotab.com';
+const TARGETS = {0:52000,1:14000,2:18000,3:18000,4:20000,5:32000,6:44000};
+const DAYS    = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 
 function cdmxNow() {
-  return new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+  return new Date(new Date().toLocaleString('en-US',{timeZone:'America/Mexico_City'}));
 }
-
-function fmt(n) {
-  return '$' + Math.round(n).toLocaleString('es-MX');
-}
+function fmt(n) { return '$'+Math.round(n).toLocaleString('es-MX'); }
+function el(id) { return document.getElementById(id); }
 
 function updateClock() {
   const now = cdmxNow();
-  const h = now.getHours().toString().padStart(2,'0');
-  const m = now.getMinutes().toString().padStart(2,'0');
-  document.getElementById('clock').textContent = `${DAY_NAMES[now.getDay()]} ${h}:${m}`;
+  el('clock').textContent = `${DAYS[now.getDay()]} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
 }
 
-async function fetchData() {
+async function load() {
   try {
-    // Get Polotab token via the site's API
-    const authRes = await fetch('/api/polotab-token');
-    if (!authRes.ok) throw new Error('auth failed');
-    const { token } = await authRes.json();
+    // Get token
+    const tokenRes = await fetch('/api/polotab-token');
+    if (!tokenRes.ok) throw new Error(`Token error ${tokenRes.status}`);
+    const {token} = await tokenRes.json();
 
-    const now = cdmxNow();
+    const now   = cdmxNow();
     const today = now.toISOString().slice(0,10);
-    const start = new Date(`${today}T15:00:00.000Z`).getTime(); // 9am CDMX
+    const start = new Date(`${today}T15:00:00.000Z`).getTime();
     const end   = Date.now();
+    const dow   = now.getDay();
+    const target = TARGETS[dow];
 
-    const [payRes, ordRes] = await Promise.all([
-      fetch(`${BASE}/api/v1/restaurants/${RID}/analytics/sales/total_payments/?startDate=${start}&endDate=${end}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      }),
-      fetch(`${BASE}/api/v1/restaurants/${RID}/analytics/sales/total_orders/?startDate=${start}&endDate=${end}&offset=360`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      }),
+    const headers = {'Authorization':`Bearer ${token}`,'Accept':'application/json'};
+
+    const [payRes, ordRes, itemsRes] = await Promise.all([
+      fetch(`${BASE}/api/v1/restaurants/${RID}/analytics/sales/total_payments/?startDate=${start}&endDate=${end}`,{headers}),
+      fetch(`${BASE}/api/v1/restaurants/${RID}/analytics/sales/total_orders/?startDate=${start}&endDate=${end}&offset=360`,{headers}),
+      fetch(`${BASE}/api/v1/restaurants/${RID}/analytics/sales/items_sales_list/?startDate=${start}&endDate=${end}&limit=30`,{headers}),
     ]);
 
-    const payData = await payRes.json();
-    const ordData = await ordRes.json();
+    const [payData, ordData, itemData] = await Promise.all([payRes.json(), ordRes.json(), itemsRes.json()]);
 
-    // Parse
+    // Parse revenue
     const ridData = payData?.[RID] || {};
     let revenue = 0;
     for (const val of Object.values(ridData)) {
       if (typeof val === 'object') revenue += val.sell || 0;
     }
 
-    const tickets = Array.isArray(ordData)
-      ? ordData.reduce((s,r) => s + (r.totalOrders||0), 0) : 0;
+    // Parse tickets
+    const tickets = Array.isArray(ordData) ? ordData.reduce((s,r)=>s+(r.totalOrders||0),0) : 0;
+    const avgTicket = tickets > 0 ? revenue/tickets : 0;
 
-    const avgTicket = tickets > 0 ? revenue / tickets : 0;
+    // Parse items by category
+    const allItems = itemData?.results || itemData?.data || [];
+    let drinksQty=0, ludoQty=0, kidsFoodQty=0;
+    const itemRows = [];
 
-    // Day target
-    const dayOfWeek = now.getDay();
-    const target = TARGETS[dayOfWeek];
-    const pct = Math.min(revenue / target * 100, 100);
-    const gap = Math.max(target - revenue, 0);
+    allItems.forEach(i => {
+      const menuName = (i.menu?.items?.[0]?.name||'').toLowerCase();
+      const menuType = (i.menu?.items?.[0]?.type||'').toLowerCase();
+      const prodName = (i.product?.name||'').toLowerCase();
+      const qty = i.sellData?.completed?.quantitySell||0;
+      const rev = i.sellData?.completed?.totalAmountSell||0;
+      if (!qty) return;
+      if (/ludoteca/.test(prodName)||/ludoteca/.test(menuName)) ludoQty+=qty;
+      else if (/ni[ñn]/.test(menuName)) kidsFoodQty+=qty;
+      else if (menuType==='drinks'||/bar|fr[íi]o|bebida|vino|cerveza/.test(menuName)) drinksQty+=qty;
+      if (!/ludoteca/.test(prodName)) {
+        itemRows.push({name:(i.product?.name||'?').trim(), qty, rev});
+      }
+    });
 
-    // Pace: extrapolate to end of day
-    const openHour = 9, closeHour = 19.5;
-    const hoursOpen = closeHour - openHour;
-    const hoursSoFar = Math.max(now.getHours() + now.getMinutes()/60 - openHour, 0.5);
-    const pace = hoursSoFar > 0 ? (revenue / hoursSoFar) * hoursOpen : 0;
+    const drinksRatio = tickets>0 ? drinksQty/tickets : 0;
+    const bentoPct    = ludoQty>0 ? Math.round(kidsFoodQty/ludoQty*100) : null;
+    const pct         = Math.round(revenue/target*100);
+    const gap         = Math.max(target-revenue,0);
 
-    // Update UI
-    document.getElementById('day-label').textContent = DAY_NAMES[dayOfWeek].toLowerCase();
-    document.getElementById('rev-num').textContent = Math.round(revenue).toLocaleString('es-MX');
-    document.getElementById('revenue-sub').textContent = `${Math.round(pct)}% de la meta del día`;
-    document.getElementById('target-label').textContent = `meta: ${fmt(target)}`;
+    // Pace
+    const openH=9, closeH=19.5;
+    const hoursOpen = closeH-openH;
+    const hoursSoFar = Math.max(now.getHours()+now.getMinutes()/60-openH, 0.5);
+    const pace = hoursSoFar>0 ? (revenue/hoursSoFar)*hoursOpen : 0;
 
-    const fill = document.getElementById('progress-fill');
-    fill.style.width = `${pct}%`;
-    fill.className = 'progress-fill ' + (pct >= 90 ? 'green' : pct >= 60 ? 'yellow' : 'red');
+    // ── UPDATE UI ──
+    el('day-label').textContent = DAYS[dow].toLowerCase();
+    el('rev-num').textContent   = Math.round(revenue).toLocaleString('es-MX');
+    el('pct-label').textContent = `${pct}% de meta`;
+    el('gap-label').textContent = gap>0 ? `faltan ${fmt(gap)}` : '✅ meta cumplida';
+    el('target-label').textContent = `meta ${fmt(target)}`;
 
-    const ticketEl = document.getElementById('tickets');
-    ticketEl.textContent = tickets;
-    ticketEl.className = 'metric-value ' + (tickets >= 20 ? 'good' : tickets >= 12 ? 'warn' : 'bad');
+    const fill = el('progress-fill');
+    fill.style.width = `${Math.min(pct,100)}%`;
+    fill.className = 'progress-fill '+(pct>=95?'green':pct>=65?'yellow':'red');
 
-    const avgEl = document.getElementById('avg-ticket');
-    avgEl.textContent = fmt(avgTicket);
-    avgEl.className = 'metric-value ' + (avgTicket >= 350 ? 'good' : avgTicket >= 250 ? 'warn' : 'bad');
+    // Tickets
+    const ticketTarget = Math.round(target/350);
+    el('tickets').textContent = tickets;
+    el('tickets').className = `metric-value ${tickets>=ticketTarget?'good':tickets>=ticketTarget*0.7?'warn':'bad'}`;
+    el('tickets-sub').textContent = `necesitas ~${ticketTarget}`;
 
-    const gapEl = document.getElementById('gap');
-    gapEl.textContent = gap > 0 ? fmt(gap) : '✅ meta';
-    gapEl.className = 'metric-value ' + (gap === 0 ? 'good' : gap < target*0.3 ? 'warn' : 'bad');
+    // Avg ticket
+    el('avg-ticket').textContent = fmt(avgTicket);
+    el('avg-ticket').className = `metric-value ${avgTicket>=350?'good':avgTicket>=270?'warn':'bad'}`;
 
-    const paceEl = document.getElementById('pace');
-    paceEl.textContent = fmt(pace);
-    paceEl.className = 'metric-value ' + (pace >= target ? 'good' : pace >= target*0.75 ? 'warn' : 'bad');
+    // Pace
+    el('pace').textContent = fmt(pace);
+    el('pace').className = `metric-value ${pace>=target?'good':pace>=target*0.75?'warn':'bad'}`;
 
-    // Gap diagnosis
-    if (gap > 0) {
-      const adultsNeeded = Math.round(gap / 350);
-      const bentoConversions = Math.round(gap / 160);
-      const secondDrinks = Math.round(gap / 90);
+    // Ludo
+    el('ludo').textContent = ludoQty||'–';
+    el('ludo').className = 'metric-value neutral';
+    el('ludo-sub').textContent = ludoQty>0?`${ludoQty} niños`:'sin datos';
 
-      document.getElementById('gap-block').style.display = 'block';
-      document.getElementById('gap-items').innerHTML = `
-        <div class="gap-item">
-          <span class="gap-label">Subir ${adultsNeeded} adulto${adultsNeeded>1?'s':''} más a $350</span>
-          <span class="gap-amount positive">${fmt(adultsNeeded*350)}</span>
-        </div>
-        <div class="gap-item">
-          <span class="gap-label">Convertir ${bentoConversions} niño${bentoConversions>1?'s':''} a bento</span>
-          <span class="gap-amount positive">${fmt(bentoConversions*160)}</span>
-        </div>
-        <div class="gap-item">
-          <span class="gap-label">Segunda bebida en ${secondDrinks} mesa${secondDrinks>1?'s':''}</span>
-          <span class="gap-amount positive">${fmt(secondDrinks*90)}</span>
-        </div>
+    // Bento
+    if (ludoQty>0&&bentoPct!==null) {
+      el('bento').textContent = `${bentoPct}%`;
+      el('bento').className = `metric-value ${bentoPct>=80?'good':bentoPct>=60?'warn':'bad'}`;
+    } else {
+      el('bento').textContent = '–';
+      el('bento').className = 'metric-value neutral';
+    }
+
+    // Drinks
+    if (drinksQty>0) {
+      el('drinks').textContent = drinksRatio.toFixed(1);
+      el('drinks').className = `metric-value ${drinksRatio>=1.5?'good':drinksRatio>=1.0?'warn':'bad'}`;
+    } else {
+      el('drinks').textContent = '–';
+      el('drinks').className = 'metric-value neutral';
+    }
+
+    // Gap section
+    if (gap>500) {
+      el('gap-section').style.display='block';
+      const adultsNeeded = Math.round(gap/350);
+      const bentoConv = Math.round(gap/160);
+      const drinks2 = Math.round(gap/90);
+      el('gap-items').innerHTML = `
+        <div class="gap-item"><span class="gap-label">${adultsNeeded} adulto${adultsNeeded>1?'s':''} más a $350</span><span class="gap-val">${fmt(adultsNeeded*350)}</span></div>
+        <div class="gap-item"><span class="gap-label">${bentoConv} bento${bentoConv>1?'s':''} más</span><span class="gap-val">${fmt(bentoConv*160)}</span></div>
+        <div class="gap-item"><span class="gap-label">Segunda bebida en ${drinks2} mesa${drinks2>1?'s':''}</span><span class="gap-val">${fmt(drinks2*90)}</span></div>
       `;
-    } else {
-      document.getElementById('gap-block').style.display = 'none';
     }
 
-    // Alarm: if before noon and under $8K
-    const alarm = document.getElementById('alarm');
-    if (now.getHours() >= 12 && revenue < 8000) {
-      alarm.classList.add('show');
-      document.getElementById('alarm-text').textContent = `Son las ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} y llevas ${fmt(revenue)}. Activa upsell inmediato.`;
-    } else {
-      alarm.classList.remove('show');
+    // Items
+    if (itemRows.length>0) {
+      el('items-section').style.display='block';
+      itemRows.sort((a,b)=>b.rev-a.rev);
+      el('items-table').innerHTML = itemRows.slice(0,8).map(i=>
+        `<tr><td><span class="item-name">${i.name}</span> <span class="item-qty">${i.qty}×</span></td><td>${fmt(i.rev)}</td></tr>`
+      ).join('');
     }
 
-    document.getElementById('last-update').textContent = `actualizado ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')}`;
+    // Alarm
+    if (now.getHours()>=12 && revenue<8000) {
+      el('alarm').classList.add('show');
+      el('alarm-text').textContent = `Son las ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} y llevas ${fmt(revenue)}. Activa: ofrece platillo a cada mesa, bento a niños sin comer, segunda bebida.`;
+    }
+
+    el('last-update').textContent = `actualizado ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} · refresca cada 5 min`;
 
   } catch(e) {
-    document.getElementById('revenue-sub').textContent = `error: ${e.message}`;
-    document.getElementById('last-update').textContent = 'error de conexión — reintentando en 5 min';
+    el('last-update').textContent = `error: ${e.message}`;
+    el('last-update').style.color = '#C7243E';
+    console.error(e);
   }
 }
 
 updateClock();
 setInterval(updateClock, 10000);
-fetchData();
-setInterval(fetchData, 300000); // refresh every 5 min
+load();
+setInterval(load, 300000);
 </script>
 
 </body>

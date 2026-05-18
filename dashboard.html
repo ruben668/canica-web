@@ -161,58 +161,27 @@ function updateClock() {
 
 async function load() {
   try {
-    // Get token
-    const tokenRes = await fetch('/api/polotab-token');
-    if (!tokenRes.ok) throw new Error(`Token error ${tokenRes.status}`);
-    const {token} = await tokenRes.json();
+    // Read pre-built JSON (updated every 5 min by Mac mini cron)
+    const dataRes = await fetch('/data/dashboard.json?t=' + Date.now());
+    if (!dataRes.ok) throw new Error(`Data error ${dataRes.status} — actualizando en 5 min`);
+    const d = await dataRes.json();
 
-    const now   = cdmxNow();
-    const today = now.toISOString().slice(0,10);
-    const start = new Date(`${today}T15:00:00.000Z`).getTime();
-    const end   = Date.now();
-    const dow   = now.getDay();
-    const target = TARGETS[dow];
+    const now    = cdmxNow();
+    const dow    = d.dow;
+    const target = d.target;
+    const revenue   = d.revenue || 0;
+    const tickets   = d.tickets || 0;
+    const avgTicket = d.avgTicket || 0;
+    const drinksQty = d.drinksQty || 0;
+    const ludoQty   = d.ludoQty || 0;
+    const kidsFoodQty = d.kidsFoodQty || 0;
+    const itemRows  = d.items || [];
 
-    const headers = {'Authorization':`Bearer ${token}`,'Accept':'application/json'};
-
-    const [payRes, ordRes, itemsRes] = await Promise.all([
-      fetch(`${BASE}/api/v1/restaurants/${RID}/analytics/sales/total_payments/?startDate=${start}&endDate=${end}`,{headers}),
-      fetch(`${BASE}/api/v1/restaurants/${RID}/analytics/sales/total_orders/?startDate=${start}&endDate=${end}&offset=360`,{headers}),
-      fetch(`${BASE}/api/v1/restaurants/${RID}/analytics/sales/items_sales_list/?startDate=${start}&endDate=${end}&limit=30`,{headers}),
-    ]);
-
-    const [payData, ordData, itemData] = await Promise.all([payRes.json(), ordRes.json(), itemsRes.json()]);
-
-    // Parse revenue
-    const ridData = payData?.[RID] || {};
-    let revenue = 0;
-    for (const val of Object.values(ridData)) {
-      if (typeof val === 'object') revenue += val.sell || 0;
+    // Show data freshness
+    if (d.updatedAt) {
+      const age = Math.round((Date.now() - new Date(d.updatedAt).getTime()) / 60000);
+      el('last-update').textContent = `datos de hace ${age} min · ${d.updatedAt.slice(11,16)} UTC`;
     }
-
-    // Parse tickets
-    const tickets = Array.isArray(ordData) ? ordData.reduce((s,r)=>s+(r.totalOrders||0),0) : 0;
-    const avgTicket = tickets > 0 ? revenue/tickets : 0;
-
-    // Parse items by category
-    const allItems = itemData?.results || itemData?.data || [];
-    let drinksQty=0, ludoQty=0, kidsFoodQty=0;
-    const itemRows = [];
-
-    allItems.forEach(i => {
-      const menuName = (i.menu?.items?.[0]?.name||'').toLowerCase();
-      const menuType = (i.menu?.items?.[0]?.type||'').toLowerCase();
-      const prodName = (i.product?.name||'').toLowerCase();
-      const qty = i.sellData?.completed?.quantitySell||0;
-      const rev = i.sellData?.completed?.totalAmountSell||0;
-      if (!qty) return;
-      if (/ludoteca/.test(prodName)||/ludoteca/.test(menuName)) ludoQty+=qty;
-      else if (/ni[ñn]/.test(menuName)) kidsFoodQty+=qty;
-      else if (menuType==='drinks'||/bar|fr[íi]o|bebida|vino|cerveza/.test(menuName)) drinksQty+=qty;
-      if (!/ludoteca/.test(prodName)) {
-        itemRows.push({name:(i.product?.name||'?').trim(), qty, rev});
-      }
-    });
 
     const drinksRatio = tickets>0 ? drinksQty/tickets : 0;
     const bentoPct    = ludoQty>0 ? Math.round(kidsFoodQty/ludoQty*100) : null;

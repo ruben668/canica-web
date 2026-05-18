@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metas Operativas · Canica</title>
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#FFF9F1;color:#1a1411;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;padding:24px 20px 60px;max-width:600px;margin:0 auto;-webkit-font-smoothing:antialiased;}
+    .wordmark{font-family:'DM Serif Display',serif;font-size:22px;font-style:italic;color:#1a1411;margin-bottom:4px;}
+    .subtitle{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(26,20,17,.4);margin-bottom:32px;}
+    h1{font-family:'DM Serif Display',serif;font-size:28px;font-weight:400;line-height:1.1;margin-bottom:8px;}
+    h2{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(26,20,17,.4);margin:32px 0 12px;}
+    .number-big{font-family:'DM Serif Display',serif;font-size:48px;font-style:italic;color:#BF5341;line-height:1;margin-bottom:4px;}
+    .number-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,20,17,.5);}
+    .day-grid{display:grid;gap:8px;margin-bottom:0;}
+    .day-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(26,20,17,.04);}
+    .day-row.weekend{background:rgba(191,83,65,.08);border-left:3px solid #BF5341;}
+    .day-name{font-size:12px;font-weight:500;}
+    .day-amount{font-family:'DM Serif Display',serif;font-size:20px;font-style:italic;color:#1a1411;}
+    .day-amount.highlight{color:#BF5341;}
+    .rule{border:none;border-top:1px solid rgba(26,20,17,.1);margin:28px 0;}
+    .formula-box{background:#1a1411;color:#FFF9F1;padding:20px;margin-bottom:8px;}
+    .formula{font-family:'DM Serif Display',serif;font-size:18px;font-style:italic;line-height:1.5;color:#FFF9F1;}
+    .formula span{color:#E37440;}
+    .person-card{padding:16px;background:rgba(26,20,17,.04);margin-bottom:8px;}
+    .person-card h3{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(26,20,17,.4);margin-bottom:10px;}
+    .person-amount{font-family:'DM Serif Display',serif;font-size:36px;font-style:italic;color:#BF5341;}
+    .person-note{font-size:10px;color:rgba(26,20,17,.5);margin-top:4px;}
+    table{width:100%;border-collapse:collapse;margin-bottom:4px;}
+    td,th{padding:8px 10px;text-align:left;border-bottom:1px solid rgba(26,20,17,.08);font-size:11px;}
+    th{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(26,20,17,.4);border-bottom:2px solid rgba(26,20,17,.15);}
+    td:last-child,th:last-child{text-align:right;}
+    .lever{padding:14px;border-left:3px solid #E37440;background:rgba(227,116,64,.06);margin-bottom:8px;}
+    .lever-title{font-size:11px;font-weight:500;margin-bottom:4px;}
+    .lever-script{font-size:10px;color:rgba(26,20,17,.6);font-style:italic;margin-top:6px;padding:8px;background:rgba(26,20,17,.04);}
+    .lever-impact{font-size:10px;color:#BF5341;margin-top:4px;}
+    .alarm{background:#BF5341;color:#FFF9F1;padding:16px;margin-top:24px;}
+    .alarm h3{font-size:9px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;color:rgba(255,249,241,.7);}
+    .alarm p{font-size:12px;line-height:1.6;}
+    .footer{margin-top:40px;padding-top:16px;border-top:1px solid rgba(26,20,17,.1);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,20,17,.3);}
+  </style>
+</head>
+<body>
+
+  <div class="wordmark">canica</div>
+  <div class="subtitle">Metas operativas · Para Rogelio</div>
+
+  <h1>El número<br>que importa</h1>
+
+  <hr class="rule">
+
+  <h2>Meta por día</h2>
+  <div class="day-grid">
+    <div class="day-row"><span class="day-name">Lunes</span><span class="day-amount">$14,000</span></div>
+    <div class="day-row"><span class="day-name">Martes</span><span class="day-amount">$18,000</span></div>
+    <div class="day-row"><span class="day-name">Miércoles</span><span class="day-amount">$18,000</span></div>
+    <div class="day-row"><span class="day-name">Jueves</span><span class="day-amount">$20,000</span></div>
+    <div class="day-row"><span class="day-name">Viernes</span><span class="day-amount">$32,000</span></div>
+    <div class="day-row weekend"><span class="day-name">Sábado ⭐</span><span class="day-amount highlight">$44,000</span></div>
+    <div class="day-row weekend"><span class="day-name">Domingo ⭐</span><span class="day-amount highlight">$52,000</span></div>
+  </div>
+  <div style="font-size:9px;color:rgba(26,20,17,.4);margin-top:6px;">$198K/semana × 4.3 semanas = $850K/mes</div>
+
+  <hr class="rule">
+
+  <h2>¿Cuánto debe gastar cada persona?</h2>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+    <div class="person-card">
+      <h3>Un adulto</h3>
+      <div class="person-amount">$350</div>
+      <div class="person-note">Café + platillo<br>Mínimo aceptable: $90</div>
+    </div>
+    <div class="person-card">
+      <h3>Un niño</h3>
+      <div class="person-amount">$300</div>
+      <div class="person-note">Ludoteca + bento<br>Solo ludoteca: $200</div>
+    </div>
+  </div>
+
+  <div class="formula-box" style="margin-top:8px;">
+    <div class="formula">
+      (Adultos × <span>$350</span>) + (Niños × <span>$300</span>)<br>= Revenue del día
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <h2>Capacidad y rotación</h2>
+  <table>
+    <tr><th>Zona</th><th>Capacidad</th><th>Revenue/turno</th></tr>
+    <tr><td>4 mesas interiores</td><td>8 adultos</td><td>$2,800</td></tr>
+    <tr><td>2 mesas exteriores</td><td>10 adultos</td><td>$3,500</td></tr>
+    <tr><td>Mesa comunal</td><td>10 adultos</td><td>$3,500</td></tr>
+    <tr><td><strong>Total / turno</strong></td><td><strong>28 adultos</strong></td><td><strong>$9,800</strong></td></tr>
+  </table>
+  <div style="font-size:10px;color:rgba(26,20,17,.5);">3 turnos al día → 84 adultos → $29,400</div>
+
+  <hr class="rule">
+
+  <h2>Tus 3 palancas</h2>
+
+  <div class="lever">
+    <div class="lever-title">1 · Upsell en mesa</div>
+    <div style="font-size:10px;color:rgba(26,20,17,.6);">Cuando una mesa solo tiene café, ofrece platillo.</div>
+    <div class="lever-script">"¿Les traigo la carta? El salmón miso y el bowl de pollo están muy buenos hoy."</div>
+    <div class="lever-impact">30% de mesas aceptan → +$3,000/día</div>
+  </div>
+
+  <div class="lever">
+    <div class="lever-title">2 · Segunda bebida</div>
+    <div style="font-size:10px;color:rgba(26,20,17,.6);">Mesa con 2+ horas, ofrece segunda ronda.</div>
+    <div class="lever-script">"¿Otro café o algo frío mientras los niños terminan?"</div>
+    <div class="lever-impact">40% acepta → +$2,000/día</div>
+  </div>
+
+  <div class="lever">
+    <div class="lever-title">3 · Bento para el niño</div>
+    <div style="font-size:10px;color:rgba(26,20,17,.6);">Si el niño está en la ludoteca sin comer, ofrece bento.</div>
+    <div class="lever-script">"¿Le llevamos el bento al niño? Puede comer en la ludoteca."</div>
+    <div class="lever-impact">$200 → $360 por niño. +$160 por conversión.</div>
+  </div>
+
+  <div class="alarm">
+    <h3>🚨 Alarma roja</h3>
+    <p>Si a las <strong>12pm</strong> llevas menos de <strong>$8,000</strong> — activa upsell inmediato.<br><br>
+    Si cierras el día con menos de <strong>$15,000</strong> — reporta qué pasó.</p>
+  </div>
+
+  <div class="footer">
+    canica · mazatlán 83, condesa · preguntas → emma o ruben
+  </div>
+
+</body>
+</html>

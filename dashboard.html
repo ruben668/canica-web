@@ -242,17 +242,31 @@ async function load() {
       el('drinks').className = 'metric-value neutral';
     }
 
-    // Gap section
+    // Gap section — realistic levers based on actual day size
     if (gap>500) {
       el('gap-section').style.display='block';
-      const adultsNeeded = Math.round(gap/350);
-      const bentoConv = Math.round(gap/160);
-      const drinks2 = Math.round(gap/90);
-      el('gap-items').innerHTML = `
-        <div class="gap-item"><span class="gap-label">${adultsNeeded} adulto${adultsNeeded>1?'s':''} más a $350</span><span class="gap-val">${fmt(adultsNeeded*350)}</span></div>
-        <div class="gap-item"><span class="gap-label">${bentoConv} bento${bentoConv>1?'s':''} más</span><span class="gap-val">${fmt(bentoConv*160)}</span></div>
-        <div class="gap-item"><span class="gap-label">Segunda bebida en ${drinks2} mesa${drinks2>1?'s':''}</span><span class="gap-val">${fmt(drinks2*90)}</span></div>
-      `;
+      // Pick the single most impactful lever given current day size
+      const remainingHours = Math.max(19.5 - (now.getHours() + now.getMinutes()/60), 0);
+      const realisticMoreTickets = Math.min(Math.round(remainingHours * 4), Math.round(gap/avgTicket||gap/350));
+      const realisticMoreRevenue = realisticMoreTickets * (avgTicket||350);
+      
+      let gapHtml = '';
+      if (remainingHours > 1) {
+        // Main lever: more tables
+        gapHtml += `<div class="gap-item"><span class="gap-label">~${realisticMoreTickets} mesas más en las próximas ${Math.round(remainingHours)}h</span><span class="gap-val">${fmt(Math.min(realisticMoreRevenue, gap))}</span></div>`;
+      }
+      // Upsell lever: based on current tickets
+      if (tickets > 0 && avgTicket < 350) {
+        const upsellGain = Math.round(tickets * (350 - avgTicket));
+        gapHtml += `<div class="gap-item"><span class="gap-label">Subir ticket prom. a $350 (${tickets} mesas ya activas)</span><span class="gap-val">${fmt(Math.min(upsellGain, gap))}</span></div>`;
+      }
+      // Bento lever: only if kids data exists and is meaningful
+      if (ludoQty > 0 && kidsFoodQty < ludoQty) {
+        const bentoMissed = ludoQty - kidsFoodQty;
+        const bentoGain = bentoMissed * 160;
+        gapHtml += `<div class="gap-item"><span class="gap-label">${bentoMissed} niño${bentoMissed>1?'s':''} sin bento aún</span><span class="gap-val">${fmt(Math.min(bentoGain, gap))}</span></div>`;
+      }
+      el('gap-items').innerHTML = gapHtml || `<div class="gap-item"><span class="gap-label">Activa upsell en mesas actuales</span><span class="gap-val">${fmt(gap)}</span></div>`;
     }
 
     // Items

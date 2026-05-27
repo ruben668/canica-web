@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-05-27T21:21:07.000Z",
+  "updatedAt": "2026-05-27T21:32:24.000Z",
   "dow": 3,
   "target": 18000,
   "revenue": 4130,
-  "tickets": 17,
-  "avgTicket": 242.94117647058823,
+  "tickets": 18,
+  "avgTicket": 229.44444444444446,
   "drinksQty": 0,
   "ludoQty": 0,
   "kidsFoodQty": 0,

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificar Membresía · Canica</title>
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:'IBM Plex Mono',monospace;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#FFF9F1;
+      padding:24px;
+    }
+    .card{
+      width:100%;
+      max-width:380px;
+      text-align:center;
+    }
+    .wordmark{
+      font-family:'DM Serif Display',serif;
+      font-size:22px;
+      font-style:italic;
+      color:#1a1411;
+      margin-bottom:48px;
+      opacity:0.4;
+    }
+    .icon{
+      font-size:72px;
+      margin-bottom:24px;
+      display:block;
+    }
+    .status{
+      font-family:'DM Serif Display',serif;
+      font-size:32px;
+      font-weight:400;
+      margin-bottom:8px;
+    }
+    .status.valid{color:#0B6C31;}
+    .status.invalid{color:#C7243E;}
+    .name{
+      font-size:14px;
+      letter-spacing:0.08em;
+      color:#1a1411;
+      margin-bottom:8px;
+    }
+    .message{
+      font-size:11px;
+      letter-spacing:0.06em;
+      color:rgba(26,20,17,.45);
+      line-height:1.6;
+    }
+    .divider{
+      width:40px;
+      height:1px;
+      background:rgba(26,20,17,.15);
+      margin:32px auto;
+    }
+    .loading{
+      font-size:11px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:rgba(26,20,17,.35);
+    }
+    .pulse{
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{opacity:.35;}
+      50%{opacity:.7;}
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="wordmark">canica</div>
+
+  <div id="loading">
+    <span class="icon pulse">🔍</span>
+    <div class="loading">Verificando membresía...</div>
+  </div>
+
+  <div id="result" style="display:none;">
+    <span class="icon" id="icon"></span>
+    <div class="status" id="status-text"></div>
+    <div class="divider"></div>
+    <div class="name" id="member-name"></div>
+    <div class="message" id="member-message"></div>
+  </div>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+
+  if (!id) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('icon').textContent = '❌';
+    document.getElementById('status-text').textContent = 'Código inválido';
+    document.getElementById('status-text').className = 'status invalid';
+    document.getElementById('member-message').textContent = 'Este código no corresponde a ninguna membresía.';
+  } else {
+    fetch(`/api/member-verify?id=${encodeURIComponent(id)}`)
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('result').style.display = 'block';
+
+        if (d.valid) {
+          document.getElementById('icon').textContent = '✅';
+          document.getElementById('status-text').textContent = 'Membresía activa';
+          document.getElementById('status-text').className = 'status valid';
+        } else {
+          document.getElementById('icon').textContent = '❌';
+          document.getElementById('status-text').textContent = 'No activa';
+          document.getElementById('status-text').className = 'status invalid';
+        }
+
+        if (d.name) {
+          document.getElementById('member-name').textContent = d.name;
+        }
+        document.getElementById('member-message').textContent = d.message || '';
+      })
+      .catch(() => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('icon').textContent = '⚠️';
+        document.getElementById('status-text').textContent = 'Error';
+        document.getElementById('status-text').className = 'status invalid';
+        document.getElementById('member-message').textContent = 'No se pudo verificar. Intenta de nuevo.';
+      });
+  }
+</script>
+</body>
+</html>

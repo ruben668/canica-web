@@ -65,10 +65,17 @@ module.exports = async (req, res) => {
   const email = attendee.email || fields.email || '';
 
   // Phone: try multiple field names Cal.com uses
+  // Phone: Cal.com uses various field names depending on version
   const phone = fields.phone?.value || fields.phone ||
                 fields.whatsapp?.value || fields.whatsapp ||
                 fields.phoneNumber?.value || fields.phoneNumber ||
-                attendee.phoneNumber || '';
+                fields.attendeePhoneNumber?.value || fields.attendeePhoneNumber ||
+                fields.mobile?.value || fields.mobile ||
+                fields.cel?.value || fields.cel ||
+                fields.telefono?.value || fields.telefono ||
+                booking.responses?.phone?.value || booking.responses?.phone ||
+                booking.responses?.attendeePhoneNumber?.value || booking.responses?.attendeePhoneNumber ||
+                attendee.phoneNumber || attendee.phone || '';
 
   // Party size: Cal.com stores custom fields under their label slug
   const partyRaw = fields.party_size?.value || fields.party_size ||

@@ -29,6 +29,42 @@
     {
       "source": "/canva-callback",
       "destination": "/api/canva-callback"
+    },
+    {
+      "source": "/membership",
+      "destination": "/membership.html"
+    },
+    {
+      "source": "/menu",
+      "destination": "/menu.html"
+    },
+    {
+      "source": "/reservations",
+      "destination": "/reservations.html"
+    },
+    {
+      "source": "/hiring",
+      "destination": "/hiring.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/dashboard.html"
+    },
+    {
+      "source": "/checkin",
+      "destination": "/checkin.html"
+    },
+    {
+      "source": "/member",
+      "destination": "/member.html"
+    },
+    {
+      "source": "/gerente",
+      "destination": "/gerente.html"
+    },
+    {
+      "source": "/success",
+      "destination": "/success.html"
     }
   ],
   "outputDirectory": ".",

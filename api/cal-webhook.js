@@ -78,17 +78,26 @@ module.exports = async (req, res) => {
                 attendee.phoneNumber || attendee.phone || '';
 
   // Party size: Cal.com stores custom fields under their label slug
-  const partyRaw = fields.party_size?.value || fields.party_size ||
-                   fields.party?.value || fields.party ||
-                   fields.guests?.value || fields.guests ||
-                   fields.personas?.value || fields.personas ||
-                   fields.cuantas_personas?.value || fields.cuantas_personas || '';
-  const partyNum = parseInt(partyRaw) || 0;
+  // Adults — Cal.com field slug: Cuantos-Adultos
+  const adultsRaw = fields['Cuantos-Adultos']?.value || fields['Cuantos-Adultos'] ||
+                    fields.cuantos_adultos?.value || fields.cuantos_adultos ||
+                    fields.adults?.value || fields.adults ||
+                    fields.party_size?.value || fields.party_size ||
+                    fields.personas?.value || fields.personas || '';
+  const adultsNum = parseInt(adultsRaw) || 0;
 
-  // Children
-  const children = fields.children?.value || fields.children ||
-                   fields.ninos?.value || fields.ninos ||
-                   fields.ninios?.value || fields.ninios || '';
+  // Children — Cal.com field slug: Cuantos-Ni-os
+  const childrenRaw = fields['Cuantos-Ni-os']?.value || fields['Cuantos-Ni-os'] ||
+                      fields['Cuantos-Niños']?.value || fields['Cuantos-Niños'] || '';
+  const childrenNum = parseInt(childrenRaw) || 0;
+
+  const partyNum = adultsNum + childrenNum;
+  const partyRaw = partyNum > 0 ? String(partyNum) : '';
+
+  // Children (legacy)
+  const children = childrenNum > 0 ? String(childrenNum) : (
+                   fields.children?.value || fields.children ||
+                   fields.ninos?.value || fields.ninos || '');
 
   // Notes / special requests
   const notes = fields.notes?.value || fields.notes ||
@@ -116,7 +125,8 @@ module.exports = async (req, res) => {
     phone   ? `📱 ${phone}`       : null,
     ``,
     `📅 <b>${startTime}</b>`,
-    partyNum > 0 ? `👥 ${partyNum} persona${partyNum > 1 ? 's' : ''}` : null,
+    adultsNum > 0 ? `👤 ${adultsNum} adulto${adultsNum > 1 ? 's' : ''}` : (partyNum > 0 ? `👥 ${partyNum} persona${partyNum > 1 ? 's' : ''}` : null),
+    childrenNum > 0 ? `🧒 ${childrenNum} niño${childrenNum > 1 ? 's' : ''}` : null,
     children    ? `🧒 Niños: ${children}` : null,
     notes       ? `📝 ${notes}`          : null,
     ``,
@@ -133,7 +143,8 @@ module.exports = async (req, res) => {
     phone ? `📱 ${phone}` : null,
     ``,
     `📅 <b>${startTime}</b>`,
-    partyNum > 0 ? `👥 ${partyNum} persona${partyNum > 1 ? 's' : ''}` : null,
+    adultsNum > 0 ? `👤 ${adultsNum} adulto${adultsNum > 1 ? 's' : ''}` : (partyNum > 0 ? `👥 ${partyNum} persona${partyNum > 1 ? 's' : ''}` : null),
+    childrenNum > 0 ? `🧒 ${childrenNum} niño${childrenNum > 1 ? 's' : ''}` : null,
     children ? `🧒 Niños: ${children}` : null,
     notes ? `📝 ${notes}` : null,
     ``,

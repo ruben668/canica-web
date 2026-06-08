@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eventos Privados · Canica</title>
+  <meta name="description" content="Celebra en Canica. Cumpleaños, bautizos, reuniones familiares — los niños juegan, los adultos disfrutan. Cotiza tu evento en segundos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital,wght@0,400;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --ivory:#FFF9F1;
+      --black:#1a1411;
+      --rufous:#BF5341;
+      --green:#0B6C31;
+      --yellow:#F9C14F;
+      --mono:'IBM Plex Mono',monospace;
+      --serif:'DM Serif Display',Georgia,serif;
+    }
+    body{background:var(--ivory);color:var(--black);font-family:var(--mono);font-size:13px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+    /* HEADER */
+    .site-header{padding:24px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(26,20,17,.1);}
+    .wordmark{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--black);text-decoration:none;}
+    .nav-link{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(26,20,17,.4);text-decoration:none;}
+
+    /* HERO */
+    .hero{padding:72px 32px 48px;max-width:760px;margin:0 auto;}
+    .hero-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(26,20,17,.4);margin-bottom:16px;}
+    .hero-title{font-family:var(--serif);font-size:52px;font-weight:400;line-height:1.05;margin-bottom:20px;}
+    .hero-title em{font-style:italic;color:var(--rufous);}
+    .hero-desc{font-size:13px;color:rgba(26,20,17,.55);line-height:1.8;max-width:480px;margin-bottom:0;}
+
+    /* CALCULATOR */
+    .calc-wrap{max-width:760px;margin:0 auto;padding:0 32px 80px;}
+
+    .calc-section{margin-bottom:40px;}
+    .calc-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,20,17,.4);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(26,20,17,.1);}
+
+    /* Day picker */
+    .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:16px;}
+    .day-btn{background:rgba(26,20,17,.04);border:1px solid rgba(26,20,17,.1);padding:10px 4px;text-align:center;cursor:pointer;border-radius:2px;transition:all .15s;}
+    .day-btn:hover{background:rgba(26,20,17,.08);}
+    .day-btn.active{background:var(--black);border-color:var(--black);color:var(--ivory);}
+    .day-btn .day-name{font-size:9px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px;}
+    .day-btn .day-price{font-family:var(--serif);font-size:11px;font-style:italic;}
+
+    /* Slot picker */
+    .slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+    .slot-btn{background:rgba(26,20,17,.04);border:1px solid rgba(26,20,17,.1);padding:16px;cursor:pointer;text-align:left;border-radius:2px;transition:all .15s;}
+    .slot-btn:hover{background:rgba(26,20,17,.08);}
+    .slot-btn.active{background:var(--black);border-color:var(--black);color:var(--ivory);}
+    .slot-btn.disabled{opacity:.35;cursor:not-allowed;}
+    .slot-name{font-size:12px;font-weight:500;display:block;margin-bottom:4px;}
+    .slot-time{font-size:10px;color:rgba(26,20,17,.45);}
+    .slot-btn.active .slot-time{color:rgba(255,249,241,.5);}
+
+    /* People counter */
+    .people-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .counter-box{background:rgba(26,20,17,.04);padding:16px;}
+    .counter-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);margin-bottom:4px;}
+    .counter-price{font-size:10px;color:var(--rufous);margin-bottom:12px;}
+    .counter-controls{display:flex;align-items:center;gap:16px;}
+    .counter-btn{width:32px;height:32px;background:var(--black);color:var(--ivory);border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);}
+    .counter-btn:hover{opacity:.75;}
+    .counter-val{font-family:var(--serif);font-size:36px;font-style:italic;min-width:48px;text-align:center;}
+
+    /* Add-ons */
+    .addon-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .addon-item{display:flex;align-items:center;gap:10px;padding:12px;background:rgba(26,20,17,.04);cursor:pointer;border:1px solid transparent;border-radius:2px;transition:all .15s;}
+    .addon-item:hover{background:rgba(26,20,17,.08);}
+    .addon-item.active{border-color:var(--black);background:rgba(26,20,17,.08);}
+    .addon-check{width:18px;height:18px;border:1px solid rgba(26,20,17,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;}
+    .addon-item.active .addon-check{background:var(--black);color:var(--ivory);border-color:var(--black);}
+    .addon-name{font-size:11px;font-weight:500;flex:1;}
+    .addon-price{font-size:10px;color:rgba(26,20,17,.5);}
+
+    /* Total */
+    .total-box{background:var(--black);color:var(--ivory);padding:28px 28px;margin-top:32px;}
+    .total-breakdown{margin-bottom:20px;}
+    .total-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,249,241,.08);font-size:11px;color:rgba(255,249,241,.6);}
+    .total-row:last-child{border-bottom:none;}
+    .total-row.subtotal{color:rgba(255,249,241,.8);font-weight:500;}
+    .total-final{display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid rgba(255,249,241,.15);margin-top:8px;}
+    .total-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,249,241,.45);}
+    .total-amount{font-family:var(--serif);font-size:44px;font-style:italic;color:var(--ivory);}
+    .anticipo-note{font-size:10px;color:rgba(255,249,241,.4);margin-top:6px;}
+
+    /* CTA */
+    .cta-area{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;}
+    .cta-primary{background:var(--rufous);color:var(--ivory);border:none;padding:14px 28px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;}
+    .cta-primary:hover{opacity:.85;}
+    .cta-secondary{background:transparent;color:rgba(255,249,241,.6);border:1px solid rgba(255,249,241,.2);padding:14px 28px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;}
+    .cta-secondary:hover{border-color:rgba(255,249,241,.4);color:var(--ivory);}
+
+    /* Empty state */
+    .empty-msg{font-size:11px;color:rgba(26,20,17,.35);text-align:center;padding:32px;font-style:italic;}
+
+    /* What's included callout */
+    .includes-box{background:rgba(26,20,17,.04);border-left:2px solid var(--rufous);padding:14px 16px;margin-top:16px;font-size:11px;color:rgba(26,20,17,.65);line-height:1.8;}
+
+    @media(max-width:600px){
+      .hero{padding:48px 20px 32px;}
+      .hero-title{font-size:36px;}
+      .calc-wrap{padding:0 20px 60px;}
+      .day-grid{grid-template-columns:repeat(4,1fr);}
+      .people-grid,.addon-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" class="wordmark">canica</a>
+  <a href="/reservations" class="nav-link">Reservaciones →</a>
+</header>
+
+<div class="hero">
+  <div class="hero-label">Eventos privados · Canica</div>
+  <h1 class="hero-title">Los niños <em>juegan.</em><br>Los adultos disfrutan.</h1>
+  <p class="hero-desc">Reserva el espacio para tu cumpleaños, bautizo o reunión familiar. Cotiza tu evento en segundos — el precio se actualiza en tiempo real.</p>
+</div>
+
+<div class="calc-wrap">
+
+  <!-- STEP 1: DAY -->
+  <div class="calc-section">
+    <div class="calc-label">01 — ¿Qué día?</div>
+    <div class="day-grid" id="day-grid">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+
+  <!-- STEP 2: SLOT -->
+  <div class="calc-section">
+    <div class="calc-label">02 — ¿Qué turno?</div>
+    <div class="slot-grid">
+      <div class="slot-btn" id="slot-morning" onclick="selectSlot('morning')">
+        <span class="slot-name">Mañana</span>
+        <span class="slot-time">9:00 am – 12:00 pm</span>
+      </div>
+      <div class="slot-btn" id="slot-afternoon" onclick="selectSlot('afternoon')">
+        <span class="slot-name">Tarde</span>
+        <span class="slot-time" id="slot-afternoon-time">1:00 pm – 4:00 pm</span>
+      </div>
+    </div>
+    <div class="includes-box" id="includes-box" style="display:none;">
+      Incluye: uso exclusivo del espacio · servicio completo del equipo · maestras de ludoteca supervisando · 2 actividades recreativas para los niños
+    </div>
+  </div>
+
+  <!-- STEP 3: PEOPLE -->
+  <div class="calc-section">
+    <div class="calc-label">03 — ¿Cuántos invitados?</div>
+    <div class="people-grid">
+      <div class="counter-box">
+        <div class="counter-label">Adultos</div>
+        <div class="counter-price" id="adult-price-label">$600 c/u · platillo + agua fresca + bebida</div>
+        <div class="counter-controls">
+          <button class="counter-btn" onclick="change('adults',-1)">−</button>
+          <div class="counter-val" id="adults-val">0</div>
+          <button class="counter-btn" onclick="change('adults',1)">+</button>
+        </div>
+      </div>
+      <div class="counter-box">
+        <div class="counter-label">Niños</div>
+        <div class="counter-price">$300 c/u · bento + bebida + ludoteca</div>
+        <div class="counter-controls">
+          <button class="counter-btn" onclick="change('kids',-1)">−</button>
+          <div class="counter-val" id="kids-val">0</div>
+          <button class="counter-btn" onclick="change('kids',1)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: ADD-ONS -->
+  <div class="calc-section">
+    <div class="calc-label">04 — Extras (opcional)</div>
+    <div class="addon-grid">
+      <div class="addon-item" onclick="toggleAddon('pinata')" id="addon-pinata">
+        <div class="addon-check" id="check-pinata"></div>
+        <span class="addon-name">Piñata + relleno</span>
+        <span class="addon-price">$600</span>
+      </div>
+      <div class="addon-item" onclick="toggleAddon('pastel')" id="addon-pastel">
+        <div class="addon-check" id="check-pastel"></div>
+        <span class="addon-name">Pastel de celebración</span>
+        <span class="addon-price">$900</span>
+      </div>
+      <div class="addon-item" onclick="toggleAddon('deco')" id="addon-deco">
+        <div class="addon-check" id="check-deco"></div>
+        <span class="addon-name">Decoración básica</span>
+        <span class="addon-price">$400</span>
+      </div>
+      <div class="addon-item" onclick="toggleAddon('wine')" id="addon-wine">
+        <div class="addon-check" id="check-wine"></div>
+        <span class="addon-name">Carta de vinos abierta</span>
+        <span class="addon-price">$250 p/persona</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="total-box" id="total-box">
+    <div class="empty-msg" id="empty-msg" style="color:rgba(255,249,241,.3);">Selecciona día y turno para ver tu cotización.</div>
+    <div id="total-content" style="display:none;">
+      <div class="total-breakdown" id="breakdown"></div>
+      <div class="total-final">
+        <div>
+          <div class="total-label">Total del evento</div>
+          <div class="anticipo-note" id="anticipo-note"></div>
+        </div>
+        <div class="total-amount" id="total-amount"></div>
+      </div>
+      <div class="cta-area">
+        <a href="#" class="cta-primary" id="cta-stripe" target="_blank">Reservar con anticipo</a>
+        <a href="https://wa.me/13105971480?text=Hola%2C%20me%20gustar%C3%ADa%20reservar%20un%20evento%20privado%20en%20Canica." class="cta-secondary" target="_blank">Hablar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const TARGETS = { 0:52000, 1:14000, 2:18000, 3:18000, 4:20000, 5:32000, 6:44000 };
+const DAYS_ES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const IS_WEEKEND = [true, false, false, false, false, false, true];
+const ADULT_PRICE_WD = 600, ADULT_PRICE_WE = 750, KID_PRICE = 300;
+const MORNING_MULT = 0.5, AFTERNOON_MULT = 1.0;
+const ADDONS = { pinata: 600, pastel: 900, deco: 400, wine: 0 }; // wine is per-person
+
+let state = { day: null, slot: null, adults: 0, kids: 0, addons: new Set() };
+
+function fmt(n) { return '$' + Math.round(n).toLocaleString('es-MX'); }
+
+// Build day buttons
+const grid = document.getElementById('day-grid');
+for (let d = 0; d < 7; d++) {
+  const target = TARGETS[d];
+  const morningRent = Math.round(target * MORNING_MULT);
+  const btn = document.createElement('div');
+  btn.className = 'day-btn';
+  btn.id = 'day-' + d;
+  btn.innerHTML = `<span class="day-name">${DAYS_ES[d].slice(0,3)}</span><span class="day-price">desde ${fmt(morningRent)}</span>`;
+  btn.onclick = () => selectDay(d);
+  grid.appendChild(btn);
+}
+
+function selectDay(d) {
+  state.day = d;
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('day-' + d).classList.add('active');
+  // Update afternoon time for weekends
+  const isWe = IS_WEEKEND[d];
+  document.getElementById('slot-afternoon-time').textContent = isWe ? '2:00 pm – 5:00 pm' : '1:00 pm – 4:00 pm';
+  // Update adult price label
+  const adultPrice = isWe ? ADULT_PRICE_WE : ADULT_PRICE_WD;
+  document.getElementById('adult-price-label').textContent = `${fmt(adultPrice)} c/u · platillo + agua fresca + bebida`;
+  recalc();
+}
+
+function selectSlot(slot) {
+  state.slot = slot;
+  document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('slot-' + slot).classList.add('active');
+  document.getElementById('includes-box').style.display = 'block';
+  recalc();
+}
+
+function change(field, delta) {
+  state[field] = Math.max(0, state[field] + delta);
+  document.getElementById(field === 'adults' ? 'adults-val' : 'kids-val').textContent = state[field];
+  recalc();
+}
+
+function toggleAddon(id) {
+  if (state.addons.has(id)) state.addons.delete(id);
+  else state.addons.add(id);
+  const item = document.getElementById('addon-' + id);
+  const check = document.getElementById('check-' + id);
+  item.classList.toggle('active');
+  check.textContent = state.addons.has(id) ? '✓' : '';
+  recalc();
+}
+
+function recalc() {
+  if (!state.day === null || state.day === null || !state.slot) {
+    document.getElementById('empty-msg').style.display = 'block';
+    document.getElementById('total-content').style.display = 'none';
+    return;
+  }
+
+  const target = TARGETS[state.day];
+  const mult = state.slot === 'morning' ? MORNING_MULT : AFTERNOON_MULT;
+  const rent = Math.round(target * mult);
+  const isWe = IS_WEEKEND[state.day];
+  const adultPrice = isWe ? ADULT_PRICE_WE : ADULT_PRICE_WD;
+  const adultsTotal = state.adults * adultPrice;
+  const kidsTotal = state.kids * KID_PRICE;
+
+  let addonsTotal = 0;
+  const addonLines = [];
+  if (state.addons.has('pinata')) { addonsTotal += 600; addonLines.push(['Piñata + relleno', 600]); }
+  if (state.addons.has('pastel')) { addonsTotal += 900; addonLines.push(['Pastel', 900]); }
+  if (state.addons.has('deco'))   { addonsTotal += 400; addonLines.push(['Decoración básica', 400]); }
+  if (state.addons.has('wine'))   {
+    const wineTotal = (state.adults) * 250;
+    addonsTotal += wineTotal;
+    addonLines.push([`Vinos (${state.adults} adultos × $250)`, wineTotal]);
+  }
+
+  const total = rent + adultsTotal + kidsTotal + addonsTotal;
+  const anticipo = Math.round(rent * 0.5);
+
+  // Build breakdown
+  const slotLabel = state.slot === 'morning'
+    ? (isWe ? 'Renta mañana (9am–12pm)' : 'Renta mañana (9am–12pm)')
+    : (isWe ? 'Renta tarde (2pm–5pm)' : 'Renta tarde (1pm–4pm)');
+
+  let html = '';
+  html += `<div class="total-row"><span>${slotLabel}</span><span>${fmt(rent)}</span></div>`;
+  if (state.adults > 0) html += `<div class="total-row"><span>${state.adults} adultos × ${fmt(adultPrice)}</span><span>${fmt(adultsTotal)}</span></div>`;
+  if (state.kids > 0)   html += `<div class="total-row"><span>${state.kids} niños × ${fmt(KID_PRICE)}</span><span>${fmt(kidsTotal)}</span></div>`;
+  addonLines.forEach(([label, amt]) => {
+    html += `<div class="total-row"><span>${label}</span><span>${fmt(amt)}</span></div>`;
+  });
+
+  document.getElementById('breakdown').innerHTML = html;
+  document.getElementById('total-amount').textContent = fmt(total);
+  document.getElementById('anticipo-note').textContent = `Anticipo para confirmar: ${fmt(anticipo)} (50% de la renta)`;
+
+  // CTA
+  const stripeMsg = encodeURIComponent(`Hola, me gustaría reservar un evento en Canica. Cotización: ${fmt(total)}. ¿Pueden confirmarme disponibilidad?`);
+  document.getElementById('cta-stripe').href = `https://wa.me/13105971480?text=${stripeMsg}`;
+
+  document.getElementById('empty-msg').style.display = 'none';
+  document.getElementById('total-content').style.display = 'block';
+}
+</script>
+
+</body>
+</html>

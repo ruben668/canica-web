@@ -65,6 +65,10 @@
     {
       "source": "/success",
       "destination": "/success.html"
+    },
+    {
+      "source": "/eventos",
+      "destination": "/eventos.html"
     }
   ],
   "outputDirectory": ".",

@@ -209,12 +209,17 @@
       <div class="addon-item" onclick="toggleAddon('deco')" id="addon-deco">
         <div class="addon-check" id="check-deco"></div>
         <span class="addon-name">Decoración básica</span>
-        <span class="addon-price">$400</span>
+        <span class="addon-price">$400 fijo</span>
       </div>
-      <div class="addon-item" onclick="toggleAddon('wine')" id="addon-wine">
-        <div class="addon-check" id="check-wine"></div>
-        <span class="addon-name">Carta de vinos abierta</span>
-        <span class="addon-price">$250 p/persona</span>
+      <div class="addon-item" onclick="toggleAddon('drinks2')" id="addon-drinks2">
+        <div class="addon-check" id="check-drinks2"></div>
+        <span class="addon-name">2 bebidas por adulto</span>
+        <span class="addon-price">$350 p/adulto</span>
+      </div>
+      <div class="addon-item" onclick="toggleAddon('drinks3')" id="addon-drinks3">
+        <div class="addon-check" id="check-drinks3"></div>
+        <span class="addon-name">3 bebidas por adulto</span>
+        <span class="addon-price">$520 p/adulto</span>
       </div>
     </div>
   </div>
@@ -246,7 +251,7 @@ const DAYS_ES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sá
 const IS_WEEKEND = [true, false, false, false, false, false, true];
 const ADULT_PRICE_WD = 600, ADULT_PRICE_WE = 750, KID_PRICE = 300;
 const MORNING_MULT = 0.5, AFTERNOON_MULT = 1.0;
-const ADDONS = { pinata: 600, pastel: 900, deco: 400, wine: 0 }; // wine is per-person
+const ADDONS = { pinata: 600, pastel: 900, deco: 400 };
 
 let state = { day: null, eventType: null, slot: null, adults: 0, kids: 0, addons: new Set() };
 
@@ -307,12 +312,21 @@ function change(field, delta) {
 }
 
 function toggleAddon(id) {
+  // Drinks packages are mutually exclusive
+  if (id === 'drinks2' || id === 'drinks3') {
+    const other = id === 'drinks2' ? 'drinks3' : 'drinks2';
+    state.addons.delete(other);
+    const otherEl = document.getElementById('addon-' + other);
+    const otherCheck = document.getElementById('check-' + other);
+    if (otherEl) otherEl.classList.remove('active');
+    if (otherCheck) otherCheck.textContent = '';
+  }
   if (state.addons.has(id)) state.addons.delete(id);
   else state.addons.add(id);
   const item = document.getElementById('addon-' + id);
   const check = document.getElementById('check-' + id);
-  item.classList.toggle('active');
-  check.textContent = state.addons.has(id) ? '✓' : '';
+  if (item) item.classList.toggle('active');
+  if (check) check.textContent = state.addons.has(id) ? '✓' : '';
   recalc();
 }
 
@@ -336,10 +350,15 @@ function recalc() {
   if (state.addons.has('pinata')) { addonsTotal += 600; addonLines.push(['Piñata + relleno', 600]); }
   if (state.addons.has('pastel')) { addonsTotal += 900; addonLines.push(['Pastel', 900]); }
   if (state.addons.has('deco'))   { addonsTotal += 400; addonLines.push(['Decoración básica', 400]); }
-  if (state.addons.has('wine'))   {
-    const wineTotal = (state.adults) * 250;
-    addonsTotal += wineTotal;
-    addonLines.push([`Vinos (${state.adults} adultos × $250)`, wineTotal]);
+  if (state.addons.has('drinks2') && state.adults > 0) {
+    const d2 = state.adults * 350;
+    addonsTotal += d2;
+    addonLines.push([`2 bebidas por adulto (${state.adults} × $350)`, d2]);
+  }
+  if (state.addons.has('drinks3') && state.adults > 0) {
+    const d3 = state.adults * 520;
+    addonsTotal += d3;
+    addonLines.push([`3 bebidas por adulto (${state.adults} × $520)`, d3]);
   }
 
   // Birthday includes piñata ($600) + pastel ($900) in rental

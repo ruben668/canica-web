@@ -140,6 +140,15 @@
     </div>
   </div>
 
+  <!-- DATE PICKER -->
+  <div class="calc-section">
+    <div class="calc-label">01b — ¿Qué fecha tienes en mente?</div>
+    <input type="date" id="event-date" 
+      style="font-family:var(--mono);font-size:13px;background:rgba(26,20,17,.04);border:1px solid rgba(26,20,17,.1);padding:12px 16px;width:100%;color:var(--black);border-radius:2px;"
+      onchange="state.date=this.value; recalc();">
+    <p style="font-size:10px;color:rgba(26,20,17,.35);margin-top:6px;">Sujeto a disponibilidad. Te confirmaremos en menos de 24 horas.</p>
+  </div>
+
   <!-- BIRTHDAY TOGGLE -->
   <div class="calc-section">
     <div class="calc-label">02 — ¿Es un cumpleaños?</div>
@@ -240,9 +249,9 @@
       </div>
       <div id="ref-code" style="display:none;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,249,241,.35);margin-bottom:14px;font-family:var(--mono);"></div>
       <div class="cta-area">
-        <a href="#" class="cta-primary" id="cta-stripe" target="_blank">Confirmar por WhatsApp</a>
+        <a href="#" class="cta-primary" id="cta-stripe" target="_blank">Solicitar cotización por WhatsApp</a>
       </div>
-      <p style="font-size:10px;color:rgba(255,249,241,.3);margin-top:12px;line-height:1.6;">Te responderemos en menos de 24 horas para confirmar disponibilidad y enviarte el link de pago del anticipo.</p>
+      <p style="font-size:10px;color:rgba(255,249,241,.3);margin-top:12px;line-height:1.6;">Tu solicitud queda pendiente hasta que confirmemos disponibilidad. Te responderemos en menos de 24 horas y te enviaremos el link de pago del anticipo.</p>
     </div>
   </div>
 
@@ -256,7 +265,7 @@ const ADULT_PRICE_WD = 600, ADULT_PRICE_WE = 750, KID_PRICE = 300;
 const MORNING_MULT = 0.5, AFTERNOON_MULT = 1.0;
 const ADDONS = { pinata: 600, pastel: 900, deco: 400 };
 
-let state = { day: null, eventType: null, slot: null, adults: 0, kids: 0, addons: new Set() };
+let state = { day: null, date: null, eventType: null, slot: null, adults: 0, kids: 0, addons: new Set() };
 
 function selectType(type) {
   state.eventType = type;
@@ -428,7 +437,39 @@ function recalc() {
   document.getElementById('total-amount').textContent = fmt(total);
   document.getElementById('anticipo-note').textContent = `Anticipo para confirmar: ${fmt(anticipo)} (50% de la renta)`;
 
-  // CTA handled by refCode block above
+  // Build reference code and WhatsApp message
+  const dayNames2 = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+  const slotCode = state.slot === 'morning' ? 'MAÑANA' : 'TARDE';
+  const refCode = `${dayNames2[state.day]}-${slotCode}-${state.adults}A-${state.kids}N`;
+  const dayLabel2 = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][state.day];
+  const slotLabel2 = state.slot === 'morning' ? '9am–12pm' : (IS_WEEKEND[state.day] ? '2pm–5pm' : '1pm–4pm');
+  const eventTypeLabel = state.eventType === 'birthday' ? 'Cumpleaños' : 'Otro evento';
+  const dateDisplay = state.date
+    ? new Date(state.date + 'T12:00:00').toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long', year:'numeric'})
+    : `${dayLabel2} (fecha por confirmar)`;
+
+  const msgLines = [
+    `Hola 👋 Quisiera solicitar una cotización para un evento en Canica.`,
+    ``,
+    `📋 Referencia: ${refCode}`,
+    ``,
+    `📅 Fecha: ${dateDisplay}`,
+    `⏰ Turno: ${slotLabel2}`,
+    `👥 ${state.adults} adultos · ${state.kids} niños`,
+    `🎉 Tipo: ${eventTypeLabel}`,
+    state.addons.has('drinks2') ? `🥂 Paquete 2 bebidas por adulto` : null,
+    state.addons.has('drinks3') ? `🍾 Paquete 3 bebidas por adulto` : null,
+    ``,
+    `💰 Total estimado: ${fmt(total)}`,
+    `   Anticipo: ${fmt(anticipo)}`,
+    ``,
+    `¿Tienen disponibilidad? Quedo pendiente de su confirmación.`,
+  ].filter(l => l !== null);
+
+  const waMsg = encodeURIComponent(msgLines.join('\n'));
+  document.getElementById('cta-stripe').href = `https://wa.me/13105971480?text=${waMsg}`;
+  document.getElementById('ref-code').textContent = `Referencia: ${refCode}`;
+  document.getElementById('ref-code').style.display = 'block';
 
   document.getElementById('empty-msg').style.display = 'none';
   document.getElementById('total-content').style.display = 'block';

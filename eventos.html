@@ -119,8 +119,9 @@
 
 <div class="hero">
   <div class="hero-label">Eventos privados · Canica</div>
-  <h1 class="hero-title">Los niños <em>juegan.</em><br>Los adultos disfrutan.</h1>
-  <p class="hero-desc">Reserva el espacio para tu cumpleaños, bautizo o reunión familiar. Cotiza tu evento en segundos — el precio se actualiza en tiempo real.</p>
+  <h1 class="hero-title">Celebra en<br>un lugar <em>especial.</em></h1>
+  <p class="hero-desc">Canica es el único espacio en Condesa donde los adultos comen bien y los niños juegan supervisados — sin que ninguno tenga que ceder. Reserva el espacio cualquier día de la semana para tu cumpleaños, bautizo o reunión familiar.</p>
+  <p class="hero-desc" style="margin-top:12px;">El evento incluye: uso exclusivo del espacio · servicio completo del equipo · maestras de ludoteca · 2 actividades recreativas personalizadas para los niños · piñata y pastel para cumpleaños.</p>
 </div>
 
 <div class="calc-wrap">
@@ -133,9 +134,24 @@
     </div>
   </div>
 
+  <!-- BIRTHDAY TOGGLE -->
+  <div class="calc-section">
+    <div class="calc-label">02 — ¿Es un cumpleaños?</div>
+    <div class="slot-grid">
+      <div class="slot-btn" id="type-birthday" onclick="selectType('birthday')">
+        <span class="slot-name">🎂 Sí, es un cumpleaños</span>
+        <span class="slot-time">Piñata + pastel incluidos en la renta</span>
+      </div>
+      <div class="slot-btn" id="type-other" onclick="selectType('other')">
+        <span class="slot-name">Otro evento</span>
+        <span class="slot-time">Bautizo, baby shower, reunión...</span>
+      </div>
+    </div>
+  </div>
+
   <!-- STEP 2: SLOT -->
   <div class="calc-section">
-    <div class="calc-label">02 — ¿Qué turno?</div>
+    <div class="calc-label">03 — ¿Qué turno?</div>
     <div class="slot-grid">
       <div class="slot-btn" id="slot-morning" onclick="selectSlot('morning')">
         <span class="slot-name">Mañana</span>
@@ -153,7 +169,7 @@
 
   <!-- STEP 3: PEOPLE -->
   <div class="calc-section">
-    <div class="calc-label">03 — ¿Cuántos invitados?</div>
+    <div class="calc-label">04 — ¿Cuántos invitados?</div>
     <div class="people-grid">
       <div class="counter-box">
         <div class="counter-label">Adultos</div>
@@ -178,7 +194,7 @@
 
   <!-- STEP 4: ADD-ONS -->
   <div class="calc-section">
-    <div class="calc-label">04 — Extras (opcional)</div>
+    <div class="calc-label">05 — Extras (opcional)</div>
     <div class="addon-grid">
       <div class="addon-item" onclick="toggleAddon('pinata')" id="addon-pinata">
         <div class="addon-check" id="check-pinata"></div>
@@ -232,7 +248,21 @@ const ADULT_PRICE_WD = 600, ADULT_PRICE_WE = 750, KID_PRICE = 300;
 const MORNING_MULT = 0.5, AFTERNOON_MULT = 1.0;
 const ADDONS = { pinata: 600, pastel: 900, deco: 400, wine: 0 }; // wine is per-person
 
-let state = { day: null, slot: null, adults: 0, kids: 0, addons: new Set() };
+let state = { day: null, eventType: null, slot: null, adults: 0, kids: 0, addons: new Set() };
+
+function selectType(type) {
+  state.eventType = type;
+  document.querySelectorAll('#type-birthday, #type-other').forEach(b => b.classList.remove('active'));
+  document.getElementById('type-' + type).classList.add('active');
+  // If birthday, hide piñata and pastel from add-ons (they're included)
+  const hide = type === 'birthday';
+  ['pinata','pastel'].forEach(id => {
+    const el = document.getElementById('addon-' + id);
+    if (el) el.style.display = hide ? 'none' : '';
+    if (hide) state.addons.delete(id);
+  });
+  recalc();
+}
 
 function fmt(n) { return '$' + Math.round(n).toLocaleString('es-MX'); }
 
@@ -312,6 +342,9 @@ function recalc() {
     addonLines.push([`Vinos (${state.adults} adultos × $250)`, wineTotal]);
   }
 
+  // Birthday includes piñata ($600) + pastel ($900) in rental
+  let birthdayIncludes = 0;
+  if (state.eventType === 'birthday') birthdayIncludes = 1500;
   const total = rent + adultsTotal + kidsTotal + addonsTotal;
   const anticipo = Math.round(rent * 0.5);
 
@@ -322,6 +355,9 @@ function recalc() {
 
   let html = '';
   html += `<div class="total-row"><span>${slotLabel}</span><span>${fmt(rent)}</span></div>`;
+  if (state.eventType === 'birthday') {
+    html += `<div class="total-row" style="color:rgba(255,249,241,.4);font-style:italic"><span>  ↳ Piñata + relleno y pastel incluidos</span><span>✓</span></div>`;
+  }
   if (state.adults > 0) html += `<div class="total-row"><span>${state.adults} adultos × ${fmt(adultPrice)}</span><span>${fmt(adultsTotal)}</span></div>`;
   if (state.kids > 0)   html += `<div class="total-row"><span>${state.kids} niños × ${fmt(KID_PRICE)}</span><span>${fmt(kidsTotal)}</span></div>`;
   addonLines.forEach(([label, amt]) => {

@@ -19,7 +19,7 @@
       --mono:'IBM Plex Mono',monospace;
       --serif:'DM Serif Display',Georgia,serif;
     }
-    body{background:var(--ivory);color:var(--black);font-family:var(--mono);font-size:13px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    body{background:var(--ivory);color:var(--black);font-family:var(--mono);font-size:13px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:80px;}
 
     /* HEADER */
     .site-header{padding:24px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(26,20,17,.1);}
@@ -117,7 +117,9 @@
 <body>
 
 <header class="site-header">
-  <a href="/" class="wordmark">canica</a>
+  <a href="/" style="display:block;">
+      <img src="assets/canica-wordmark-vector.svg" alt="canica" style="height:28px;width:auto;display:block;">
+    </a>
   <a href="/reservations" class="nav-link">Reservaciones →</a>
 </header>
 

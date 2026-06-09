@@ -69,6 +69,10 @@
     {
       "source": "/eventos",
       "destination": "/eventos.html"
+    },
+    {
+      "source": "/menu-naira",
+      "destination": "/menu-naira.html"
     }
   ],
   "outputDirectory": ".",

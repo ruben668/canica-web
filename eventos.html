@@ -201,7 +201,7 @@
 
   <!-- STEP 4: ADD-ONS -->
   <div class="calc-section">
-    <div class="calc-label">05 — Extras (opcional)</div>
+    <div class="calc-label">05 — Bebidas (opcional)</div>
     <div class="addon-grid">
       <div class="addon-item" onclick="toggleAddon('pinata')" id="addon-pinata">
         <div class="addon-check" id="check-pinata"></div>
@@ -212,11 +212,6 @@
         <div class="addon-check" id="check-pastel"></div>
         <span class="addon-name">Pastel de celebración</span>
         <span class="addon-price">$900</span>
-      </div>
-      <div class="addon-item" onclick="toggleAddon('deco')" id="addon-deco">
-        <div class="addon-check" id="check-deco"></div>
-        <span class="addon-name">Decoración básica</span>
-        <span class="addon-price">$400 fijo</span>
       </div>
       <div class="addon-item" onclick="toggleAddon('drinks2')" id="addon-drinks2">
         <div class="addon-check" id="check-drinks2"></div>
@@ -297,6 +292,7 @@ function updateChecklist() {
   if (isBday) {
     items.push({ text: 'Piñata + relleno', extra: false });
     items.push({ text: 'Pastel de celebración', extra: false });
+    items.push({ text: 'Decoración básica', extra: false });
   }
   // Add selected extras
   if (state.addons.has('deco')) items.push({ text: 'Decoración básica', extra: true });
@@ -394,7 +390,6 @@ function recalc() {
   const addonLines = [];
   if (state.addons.has('pinata')) { addonsTotal += 600; addonLines.push(['Piñata + relleno', 600]); }
   if (state.addons.has('pastel')) { addonsTotal += 900; addonLines.push(['Pastel', 900]); }
-  if (state.addons.has('deco'))   { addonsTotal += 400; addonLines.push(['Decoración básica', 400]); }
   if (state.addons.has('drinks2') && state.adults > 0) {
     const d2 = state.adults * 350;
     addonsTotal += d2;
@@ -408,7 +403,7 @@ function recalc() {
 
   // Birthday includes piñata ($600) + pastel ($900) in rental
   let birthdayIncludes = 0;
-  if (state.eventType === 'birthday') birthdayIncludes = 1500;
+  if (state.eventType === 'birthday') birthdayIncludes = 1900; // piñata $600 + pastel $900 + deco $400
   const total = rent + adultsTotal + kidsTotal + addonsTotal;
   const anticipo = Math.round(rent * 0.5);
 
@@ -420,7 +415,7 @@ function recalc() {
   let html = '';
   html += `<div class="total-row"><span>${slotLabel}</span><span>${fmt(rent)}</span></div>`;
   if (state.eventType === 'birthday') {
-    html += `<div class="total-row" style="color:rgba(255,249,241,.4);font-style:italic"><span>  ↳ Piñata + relleno y pastel incluidos</span><span>✓</span></div>`;
+    html += `<div class="total-row" style="color:rgba(255,249,241,.4);font-style:italic"><span>  ↳ Piñata + relleno, pastel y decoración incluidos</span><span>✓</span></div>`;
   }
   if (state.adults > 0) html += `<div class="total-row"><span>${state.adults} adultos × ${fmt(adultPrice)}</span><span>${fmt(adultsTotal)}</span></div>`;
   if (state.kids > 0)   html += `<div class="total-row"><span>${state.kids} niños × ${fmt(KID_PRICE)}</span><span>${fmt(kidsTotal)}</span></div>`;

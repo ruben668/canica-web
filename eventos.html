@@ -238,10 +238,11 @@
         </div>
         <div class="total-amount" id="total-amount"></div>
       </div>
+      <div id="ref-code" style="display:none;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,249,241,.35);margin-bottom:14px;font-family:var(--mono);"></div>
       <div class="cta-area">
-        <a href="#" class="cta-primary" id="cta-stripe" target="_blank">Reservar con anticipo</a>
-        <a href="https://wa.me/13105971480?text=Hola%2C%20me%20gustar%C3%ADa%20reservar%20un%20evento%20privado%20en%20Canica." class="cta-secondary" target="_blank">Hablar por WhatsApp</a>
+        <a href="#" class="cta-primary" id="cta-stripe" target="_blank">Confirmar por WhatsApp</a>
       </div>
+      <p style="font-size:10px;color:rgba(255,249,241,.3);margin-top:12px;line-height:1.6;">Te responderemos en menos de 24 horas para confirmar disponibilidad y enviarte el link de pago del anticipo.</p>
     </div>
   </div>
 
@@ -427,9 +428,7 @@ function recalc() {
   document.getElementById('total-amount').textContent = fmt(total);
   document.getElementById('anticipo-note').textContent = `Anticipo para confirmar: ${fmt(anticipo)} (50% de la renta)`;
 
-  // CTA
-  const stripeMsg = encodeURIComponent(`Hola, me gustaría reservar un evento en Canica. Cotización: ${fmt(total)}. ¿Pueden confirmarme disponibilidad?`);
-  document.getElementById('cta-stripe').href = `https://wa.me/13105971480?text=${stripeMsg}`;
+  // CTA handled by refCode block above
 
   document.getElementById('empty-msg').style.display = 'none';
   document.getElementById('total-content').style.display = 'block';

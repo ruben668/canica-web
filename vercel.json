@@ -78,6 +78,11 @@
   "outputDirectory": ".",
   "redirects": [
     {
+      "source": "/reservations",
+      "destination": "https://canica-fun.resos.com/booking",
+      "permanent": false
+    },
+    {
       "source": "/(.*)",
       "has": [
         {

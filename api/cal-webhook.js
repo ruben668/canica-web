@@ -4,7 +4,6 @@
 
 const BOT_TOKEN    = '8580935482:AAFK-y4drZtUBaxNTL0cV6YseKiG0cyw3Os';
 const RUBEN        = '6525841557';
-const ROGELIO      = '8806737832';
 
 // Deduplicate: track recent booking UIDs to avoid duplicate notifications
 const recentUIDs = new Set();
@@ -135,26 +134,7 @@ module.exports = async (req, res) => {
       : `<i>Confirma respondiendo al cliente directamente.</i>`,
   ].filter(l => l !== null).join('\n');
 
-  // Rogelio gets a shorter operational version — just what he needs to prepare
-  const rogelioLines = [
-    isLargeGroup ? `⚠️ <b>GRUPO GRANDE — Nueva reserva</b>` : `🍽 <b>Nueva reserva</b>`,
-    ``,
-    `👤 <b>${name}</b>`,
-    phone ? `📱 ${phone}` : null,
-    ``,
-    `📅 <b>${startTime}</b>`,
-    adultsNum > 0 ? `👤 ${adultsNum} adulto${adultsNum > 1 ? 's' : ''}` : (partyNum > 0 ? `👥 ${partyNum} persona${partyNum > 1 ? 's' : ''}` : null),
-    childrenNum > 0 ? `🧒 ${childrenNum} niño${childrenNum > 1 ? 's' : ''}` : null,
-    children ? `🧒 Niños: ${children}` : null,
-    notes ? `📝 ${notes}` : null,
-    ``,
-    isLargeGroup ? `⚠️ Prepara mesa grande, confirma disponibilidad.` : `Confirma que la mesa esté lista.`,
-  ].filter(l => l !== null).join('\n');
-
-  await Promise.all([
-    sendTelegram(RUBEN, lines),
-    sendTelegram(ROGELIO, rogelioLines),
-  ]);
+  await sendTelegram(RUBEN, lines);
 
   console.log(`Booking: ${name} — ${startTime} — party: ${partyNum} — uid: ${uid}`);
   res.status(200).json({ received: true, booking: name });

@@ -50,14 +50,17 @@
       <p style="font-family:var(--body);font-size:13px;color:rgba(26,20,17,.55);margin-top:var(--sp-3);max-width:48ch;">El café recibe sin reserva — pero los fines de semana se llenan rápido. Reserva con anticipación y tu mesa estará lista.</p>
     </div>
 
-    <!-- ResOS booking embed -->
-    <div style="margin:var(--sp-6) 0;border:1px solid var(--rule);border-radius:2px;overflow:hidden;">
-      <iframe
-        src="https://canica-fun.resos.com/booking"
-        style="width:100%;min-height:700px;height:800px;border:none;display:block;"
-        title="Reservar mesa en Canica"
->
-      </iframe>
+    <!-- ResOS booking — direct link (iframe blocked in some browsers) -->
+    <div style="margin:var(--sp-6) 0;">
+      <a
+        href="https://canica-fun.resos.com/booking"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn--primary"
+        style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:14px;padding:16px 32px;">
+        Reservar mesa →
+      </a>
+      <p style="font-family:var(--body);font-size:12px;color:rgba(26,20,17,.4);margin-top:12px;">Abre el calendario de reservas en una nueva ventana.</p>
     </div>
 
     <p style="font-family:var(--body);font-size:11px;opacity:.35;margin-top:var(--sp-4);letter-spacing:.04em;">Recibirás confirmación por correo. Cancelaciones con 24h de anticipación.</p>

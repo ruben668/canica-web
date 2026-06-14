@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Host · Canica</title>
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#1a1411;color:#FFF9F1;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;padding:20px;min-height:100vh;}
+    
+    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid rgba(255,249,241,.1);}
+    .wordmark{font-family:'DM Serif Display',serif;font-size:18px;font-style:italic;}
+    .clock{font-size:11px;letter-spacing:.1em;color:rgba(255,249,241,.4);}
+    .date-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,249,241,.35);margin-bottom:20px;}
+    
+    /* Timeline */
+    .timeline{display:flex;flex-direction:column;gap:6px;}
+    .slot{background:rgba(255,249,241,.05);border-radius:2px;overflow:hidden;}
+    .slot.busy{background:rgba(191,83,65,.12);border-left:3px solid #BF5341;}
+    .slot.now{background:rgba(11,108,49,.15);border-left:3px solid #0B6C31;}
+    .slot.past{opacity:.4;}
+    
+    .slot-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;}
+    .slot-time{font-family:'DM Serif Display',serif;font-size:20px;font-style:italic;}
+    .slot-count{font-size:11px;letter-spacing:.1em;color:rgba(255,249,241,.5);}
+    .slot-count.has-res{color:#F9C14F;}
+    
+    .reservations{padding:0 14px 12px;}
+    .res-item{padding:8px 0;border-top:1px solid rgba(255,249,241,.07);display:flex;justify-content:space-between;align-items:flex-start;}
+    .res-name{font-size:13px;font-weight:500;}
+    .res-detail{font-size:11px;color:rgba(255,249,241,.45);margin-top:2px;}
+    .res-right{text-align:right;}
+    .res-people{font-family:'DM Serif Display',serif;font-size:22px;font-style:italic;color:#F9C14F;line-height:1;}
+    .res-phone{font-size:10px;color:rgba(255,249,241,.35);margin-top:2px;}
+    .wa-btn{display:inline-block;margin-top:6px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#0B6C31;text-decoration:none;border:1px solid rgba(11,108,49,.4);padding:4px 8px;}
+    
+    .empty-slot{padding:8px 14px 12px;font-size:11px;color:rgba(255,249,241,.2);font-style:italic;}
+    
+    .loading{text-align:center;padding:60px 20px;color:rgba(255,249,241,.3);font-size:12px;}
+    .refresh-note{margin-top:32px;font-size:10px;color:rgba(255,249,241,.2);text-align:center;letter-spacing:.08em;}
+    
+    .summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:20px;}
+    .summary-box{background:rgba(255,249,241,.05);padding:12px;text-align:center;}
+    .summary-num{font-family:'DM Serif Display',serif;font-size:32px;font-style:italic;color:#F9C14F;line-height:1;}
+    .summary-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,249,241,.35);margin-top:4px;}
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="wordmark">canica</div>
+  <div class="clock" id="clock">—</div>
+</div>
+
+<div class="date-label" id="date-label">Cargando...</div>
+
+<div id="summary" class="summary" style="display:none">
+  <div class="summary-box">
+    <div class="summary-num" id="total-res">—</div>
+    <div class="summary-label">Reservaciones</div>
+  </div>
+  <div class="summary-box">
+    <div class="summary-num" id="total-people">—</div>
+    <div class="summary-label">Personas</div>
+  </div>
+  <div class="summary-box">
+    <div class="summary-num" id="next-slot">—</div>
+    <div class="summary-label">Próxima hora</div>
+  </div>
+</div>
+
+<div id="timeline" class="timeline">
+  <div class="loading">Cargando reservaciones...</div>
+</div>
+
+<div class="refresh-note">Actualiza cada 5 min · <span id="last-update">—</span></div>
+
+<script>
+const RESOS_KEY_HINT = 'fetched via /api/host-data';
+const HOURS = [9,10,11,12,13,14,15,16,17,18,19];
+
+function cdmxNow() {
+  return new Date(new Date().toLocaleString('en-US', {timeZone: 'America/Mexico_City'}));
+}
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function updateClock() {
+  const now = cdmxNow();
+  const h = now.getHours(), m = now.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h > 12 ? h-12 : h === 0 ? 12 : h;
+  document.getElementById('clock').textContent = `${h12}:${pad(m)} ${ampm}`;
+  
+  const days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('date-label').textContent = 
+    `${days[now.getDay()]} ${now.getDate()} de ${months[now.getMonth()]}`;
+}
+
+async function loadReservations() {
+  try {
+    const r = await fetch('/api/host-data');
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    renderTimeline(data.reservations || []);
+    document.getElementById('last-update').textContent = 
+      new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit', timeZone:'America/Mexico_City'});
+  } catch(e) {
+    document.getElementById('timeline').innerHTML = 
+      `<div class="loading" style="color:rgba(199,36,62,.6)">Error al cargar: ${e.message}</div>`;
+  }
+}
+
+function renderTimeline(reservations) {
+  const now = cdmxNow();
+  const currentHour = now.getHours();
+  
+  // Group by hour
+  const byHour = {};
+  HOURS.forEach(h => byHour[h] = []);
+  
+  reservations.forEach(res => {
+    const dt = new Date(res.dateTime);
+    const cdmx = new Date(dt.toLocaleString('en-US', {timeZone: 'America/Mexico_City'}));
+    const h = cdmx.getHours();
+    if (byHour[h] !== undefined) byHour[h].push({...res, localTime: cdmx});
+  });
+
+  const totalRes = reservations.length;
+  const totalPeople = reservations.reduce((s, r) => s + (r.people || 0), 0);
+  
+  // Find next slot
+  let nextSlot = '—';
+  for (const h of HOURS) {
+    if (h >= currentHour && byHour[h].length > 0) {
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const h12 = h > 12 ? h-12 : h;
+      nextSlot = `${h12}${ampm}`;
+      break;
+    }
+  }
+  
+  document.getElementById('total-res').textContent = totalRes;
+  document.getElementById('total-people').textContent = totalPeople;
+  document.getElementById('next-slot').textContent = nextSlot;
+  document.getElementById('summary').style.display = 'grid';
+
+  const html = HOURS.filter(h => h >= currentHour - 1).map(h => {
+    const resos = byHour[h];
+    const isPast = h < currentHour;
+    const isNow = h === currentHour;
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const h12 = h > 12 ? h-12 : h === 0 ? 12 : h;
+    const timeStr = `${h12}:00 ${ampm}`;
+    
+    let cls = 'slot';
+    if (isPast) cls += ' past';
+    else if (isNow) cls += ' now';
+    else if (resos.length > 0) cls += ' busy';
+    
+    const countLabel = resos.length > 0 
+      ? `${resos.length} reserv. · ${resos.reduce((s,r) => s+(r.people||0), 0)} personas`
+      : 'sin reservaciones';
+    
+    const resHTML = resos.length > 0
+      ? resos.map(r => {
+          const name = r.guestName || r.customerName || '?';
+          const people = r.people || '?';
+          const phone = r.phone || '';
+          const waLink = phone ? `https://wa.me/${phone.replace(/\D/g,'')}?text=Hola%20${encodeURIComponent(name)}%2C%20te%20escribimos%20de%20Canica%20para%20confirmar%20tu%20reservaci%C3%B3n.` : '';
+          return `<div class="res-item">
+            <div>
+              <div class="res-name">${name}</div>
+              <div class="res-detail">${r.timeStr || ''}</div>
+              ${phone ? `<div class="res-phone">${phone}</div>` : ''}
+              ${waLink ? `<a class="wa-btn" href="${waLink}" target="_blank">WhatsApp →</a>` : ''}
+            </div>
+            <div class="res-right">
+              <div class="res-people">${people}</div>
+              <div class="res-detail">personas</div>
+            </div>
+          </div>`;
+        }).join('')
+      : `<div class="empty-slot">Sin reservaciones</div>`;
+    
+    return `<div class="${cls}">
+      <div class="slot-header">
+        <div class="slot-time">${timeStr}</div>
+        <div class="slot-count ${resos.length > 0 ? 'has-res' : ''}">${countLabel}</div>
+      </div>
+      ${resos.length > 0 ? `<div class="reservations">${resHTML}</div>` : resHTML}
+    </div>`;
+  }).join('');
+  
+  document.getElementById('timeline').innerHTML = html || '<div class="loading">No hay más reservaciones hoy.</div>';
+}
+
+updateClock();
+setInterval(updateClock, 10000);
+loadReservations();
+setInterval(loadReservations, 300000); // every 5 min
+</script>
+</body>
+</html>

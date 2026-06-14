@@ -86,6 +86,23 @@ module.exports = async (req, res) => {
     }
   }
 
+  // Add manual reservations (large groups, special cases)
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const manualPath = path.join(__dirname, '../data/manual-reservations.json');
+    if (fs.existsSync(manualPath)) {
+      const manual = JSON.parse(fs.readFileSync(manualPath, 'utf8'));
+      manual.forEach(m => {
+        if (m.dateTime && m.dateTime.includes(today)) {
+          reservations.push(m);
+        }
+      });
+    }
+  } catch(e) {
+    console.error('Manual reservations error:', e.message);
+  }
+
   // Sort by time
   reservations.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
 

@@ -8,7 +8,11 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-store');
 
-  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' });
+  // Support ?date=YYYY-MM-DD for browsing past/future days
+  const qDate = req.query?.date || (req.url?.includes('date=') ? new URL('https://x.com' + req.url).searchParams.get('date') : null);
+  const today = qDate && /^\d{4}-\d{2}-\d{2}$/.test(qDate)
+    ? qDate
+    : new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' });
   const reservations = [];
 
   // Fetch Resos

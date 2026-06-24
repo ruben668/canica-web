@@ -232,6 +232,66 @@
       text-align: center;
     }
 
+    /* ── Date picker ── */
+    .date-picker-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .date-input {
+      flex: 1;
+      border: 1px solid var(--rule);
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 13px;
+      padding: 10px 12px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .date-input:focus { border-color: var(--ink); }
+    .date-btn {
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--ivory);
+      font-family: var(--body);
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+    .today-btn {
+      border: 1px solid var(--rule);
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--body);
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 10px 10px;
+      cursor: pointer;
+    }
+
+    /* ── QR ── */
+    .tools-section { margin-bottom: 28px; }
+    .tools-title {
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .qr-card {
+      border: 1px solid var(--rule);
+      padding: 20px;
+      text-align: center;
+    }
+    .qr-card img { width: 160px; height: 160px; image-rendering: pixelated; }
+    .qr-label { font-size: 11px; color: var(--muted); margin-top: 10px; }
+    .qr-url { font-size: 10px; color: var(--green); margin-top: 4px; letter-spacing: .04em; }
+
     .loading-msg {
       text-align: center;
       padding: 40px 0;
@@ -258,6 +318,7 @@
 <div class="tabs">
   <div class="tab active" onclick="switchTab('reservaciones')">Reservaciones</div>
   <div class="tab" onclick="switchTab('miembros')">Miembros</div>
+  <div class="tab" onclick="switchTab('herramientas')">Más</div>
 </div>
 
 <!-- RESERVACIONES -->
@@ -304,6 +365,32 @@
   <div class="footer-note">Actualiza cada 10 min · última: <span id="last-mem-update">—</span></div>
 </div>
 
+<!-- HERRAMIENTAS -->
+<div class="panel" id="panel-herramientas">
+
+  <div class="tools-section">
+    <div class="tools-title">Menú QR</div>
+    <div class="qr-card">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&color=1A1411&bgcolor=FFF9F1&data=https%3A%2F%2Fwww.canica.fun%2Fmenu" alt="QR Menú">
+      <div class="qr-label">Muéstrale esto al cliente para ver el menú</div>
+      <div class="qr-url">www.canica.fun/menu</div>
+    </div>
+  </div>
+
+  <div class="tools-section">
+    <div class="tools-title">Ver reservaciones por fecha</div>
+    <div class="date-picker-row">
+      <input class="date-input" type="date" id="date-picker" />
+      <button class="today-btn" onclick="resetToToday()">Hoy</button>
+      <button class="date-btn" onclick="loadByDate()">Ver</button>
+    </div>
+    <div id="date-results">
+      <div class="loading-msg" style="padding:20px 0">Elige una fecha y presiona Ver.</div>
+    </div>
+  </div>
+
+</div>
+
 <script>
 const HOURS = [9,10,11,12,13,14,15,16,17,18,19];
 
@@ -332,8 +419,8 @@ setInterval(updateClock, 15000);
 
 // ── Tabs ──
 function switchTab(name) {
+  const panels = ['reservaciones','miembros','herramientas'];
   document.querySelectorAll('.tab').forEach((t,i) => {
-    const panels = ['reservaciones','miembros'];
     t.classList.toggle('active', panels[i] === name);
   });
   document.querySelectorAll('.panel').forEach(p => {
@@ -473,6 +560,52 @@ function renderMembers(members, mrr) {
 
   document.getElementById('members-list').innerHTML = html;
 }
+
+// ── Date picker ──
+function resetToToday() {
+  const today = new Date().toLocaleDateString('en-CA', {timeZone:'America/Mexico_City'});
+  document.getElementById('date-picker').value = today;
+  loadByDate();
+}
+
+async function loadByDate() {
+  const date = document.getElementById('date-picker').value;
+  if (!date) return;
+  const el = document.getElementById('date-results');
+  el.innerHTML = '<div class="loading-msg">Cargando...</div>';
+  try {
+    const r = await fetch(`/api/host-data?date=${date}`);
+    const data = await r.json();
+    const res = data.reservations || [];
+    if (!res.length) {
+      el.innerHTML = '<div class="loading-msg">Sin reservaciones ese día.</div>';
+      return;
+    }
+    const html = res.map(r => {
+      const name = r.guestName || '?';
+      const people = r.people || '?';
+      const note = r.note || '';
+      return `<div class="member-card">
+        <div>
+          <div class="member-name">${name}</div>
+          <div class="member-meta">${r.timeStr || ''} · ${note || 'sin notas'}</div>
+        </div>
+        <div style="font-family:var(--display);font-size:28px;font-style:italic;color:var(--yellow)">${people}</div>
+      </div>`;
+    }).join('');
+    const total = res.reduce((s, r) => s + (r.people || 0), 0);
+    el.innerHTML = `<div class="section-label" style="margin-bottom:10px">${res.length} reservaciones · ${total} personas</div>${html}`;
+  } catch(e) {
+    el.innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
+  }
+}
+
+// Pre-fill date picker with today
+(function() {
+  const today = new Date().toLocaleDateString('en-CA', {timeZone:'America/Mexico_City'});
+  const el = document.getElementById('date-picker');
+  if (el) el.value = today;
+})();
 
 // ── Init ──
 loadReservations();

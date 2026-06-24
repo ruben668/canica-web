@@ -3,205 +3,482 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Host · Canica</title>
-  <meta name="robots" content="noindex">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <title>Staff · Canica</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{background:#1a1411;color:#FFF9F1;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;padding:20px;min-height:100vh;}
-    
-    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid rgba(255,249,241,.1);}
-    .wordmark{font-family:'DM Serif Display',serif;font-size:18px;font-style:italic;}
-    .clock{font-size:11px;letter-spacing:.1em;color:rgba(255,249,241,.4);}
-    .date-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,249,241,.35);margin-bottom:20px;}
-    
-    /* Timeline */
-    .timeline{display:flex;flex-direction:column;gap:6px;}
-    .slot{background:rgba(255,249,241,.05);border-radius:2px;overflow:hidden;}
-    .slot.busy{background:rgba(191,83,65,.12);border-left:3px solid #BF5341;}
-    .slot.now{background:rgba(11,108,49,.15);border-left:3px solid #0B6C31;}
-    .slot.past{opacity:.4;}
-    
-    .slot-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;}
-    .slot-time{font-family:'DM Serif Display',serif;font-size:20px;font-style:italic;}
-    .slot-count{font-size:11px;letter-spacing:.1em;color:rgba(255,249,241,.5);}
-    .slot-count.has-res{color:#F9C14F;}
-    
-    .reservations{padding:0 14px 12px;}
-    .res-item{padding:8px 0;border-top:1px solid rgba(255,249,241,.07);display:flex;justify-content:space-between;align-items:flex-start;}
-    .res-name{font-size:13px;font-weight:500;}
-    .res-detail{font-size:11px;color:rgba(255,249,241,.45);margin-top:2px;}
-    .res-right{text-align:right;}
-    .res-people{font-family:'DM Serif Display',serif;font-size:22px;font-style:italic;color:#F9C14F;line-height:1;}
-    .res-phone{font-size:10px;color:rgba(255,249,241,.35);margin-top:2px;}
-    .wa-btn{display:inline-block;margin-top:6px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#0B6C31;text-decoration:none;border:1px solid rgba(11,108,49,.4);padding:4px 8px;}
-    
-    .empty-slot{padding:8px 14px 12px;font-size:11px;color:rgba(255,249,241,.2);font-style:italic;}
-    
-    .loading{text-align:center;padding:60px 20px;color:rgba(255,249,241,.3);font-size:12px;}
-    .refresh-note{margin-top:32px;font-size:10px;color:rgba(255,249,241,.2);text-align:center;letter-spacing:.08em;}
-    
-    .summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:20px;}
-    .summary-box{background:rgba(255,249,241,.05);padding:12px;text-align:center;}
-    .summary-num{font-family:'DM Serif Display',serif;font-size:32px;font-style:italic;color:#F9C14F;line-height:1;}
-    .summary-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,249,241,.35);margin-top:4px;}
+    :root {
+      --ivory: #FFF9F1;
+      --ink: #1A1411;
+      --green: #107039;
+      --green-dim: rgba(16,112,57,.15);
+      --rufous: #be352b;
+      --rufous-dim: rgba(190,53,43,.12);
+      --yellow: #f8be58;
+      --muted: rgba(26,20,17,.45);
+      --rule: rgba(26,20,17,.1);
+      --display: 'Cormorant Garamond', Georgia, serif;
+      --body: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { font-size:14px; }
+    body {
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: var(--body);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .topbar {
+      background: var(--ink);
+      color: var(--ivory);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .wordmark {
+      font-family: var(--display);
+      font-size: 22px;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: .01em;
+    }
+    .topbar-right { text-align: right; }
+    .clock { font-size: 13px; font-weight: 500; }
+    .date-str { font-size: 10px; opacity: .45; letter-spacing: .1em; text-transform: uppercase; margin-top: 1px; }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--rule);
+      background: var(--ivory);
+      position: sticky;
+      top: 53px;
+      z-index: 9;
+    }
+    .tab {
+      flex: 1;
+      padding: 12px 0;
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      transition: all .2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tab.active {
+      color: var(--ink);
+      border-bottom-color: var(--ink);
+    }
+
+    /* ── Panels ── */
+    .panel { display: none; padding: 20px; }
+    .panel.active { display: block; }
+
+    /* ── Summary row ── */
+    .summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .summary-box {
+      border: 1px solid var(--rule);
+      padding: 12px 8px;
+      text-align: center;
+    }
+    .summary-num {
+      font-family: var(--display);
+      font-size: 36px;
+      font-style: italic;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .summary-num.green { color: var(--green); }
+    .summary-label {
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── Timeline ── */
+    .section-label {
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .slot {
+      border: 1px solid var(--rule);
+      margin-bottom: 6px;
+      overflow: hidden;
+    }
+    .slot.now { border-color: var(--green); background: var(--green-dim); }
+    .slot.busy { border-color: rgba(190,53,43,.3); background: var(--rufous-dim); }
+    .slot.past { opacity: .35; }
+    .slot-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 14px;
+    }
+    .slot-time {
+      font-family: var(--display);
+      font-size: 22px;
+      font-style: italic;
+      line-height: 1;
+    }
+    .slot-badge {
+      font-size: 10px;
+      letter-spacing: .08em;
+      color: var(--muted);
+    }
+    .slot-badge.filled { color: var(--rufous); font-weight: 500; }
+    .slot-badge.now-badge { color: var(--green); font-weight: 500; }
+
+    .res-list { padding: 0 14px 10px; border-top: 1px solid var(--rule); }
+    .res-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .res-item:last-child { border-bottom: none; }
+    .res-name { font-size: 13px; font-weight: 500; line-height: 1.3; }
+    .res-meta { font-size: 10px; color: var(--muted); margin-top: 3px; }
+    .res-note { font-size: 10px; color: var(--rufous); margin-top: 3px; }
+    .res-count {
+      font-family: var(--display);
+      font-size: 28px;
+      font-style: italic;
+      color: var(--yellow);
+      line-height: 1;
+      white-space: nowrap;
+      padding-left: 12px;
+    }
+    .wa-btn {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-decoration: none;
+      border: 1px solid rgba(16,112,57,.35);
+      padding: 4px 9px;
+    }
+    .empty-note {
+      padding: 10px 0;
+      font-size: 11px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── Members ── */
+    .members-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 16px;
+    }
+    .mrr-label { font-size: 10px; color: var(--muted); letter-spacing: .08em; }
+    .mrr-value {
+      font-family: var(--display);
+      font-size: 28px;
+      font-style: italic;
+      color: var(--green);
+    }
+    .member-card {
+      border: 1px solid var(--rule);
+      padding: 13px 14px;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .member-name { font-size: 13px; font-weight: 500; }
+    .member-meta { font-size: 10px; color: var(--muted); margin-top: 3px; }
+    .member-tier {
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      border: 1px solid var(--rule);
+      padding: 4px 8px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .member-tier.familia { border-color: var(--yellow); color: #9a7200; }
+    .member-tier.individual { border-color: var(--green); color: var(--green); }
+
+    /* ── Footer ── */
+    .footer-note {
+      margin-top: 28px;
+      font-size: 9px;
+      letter-spacing: .08em;
+      color: rgba(26,20,17,.25);
+      text-align: center;
+    }
+
+    .loading-msg {
+      text-align: center;
+      padding: 40px 0;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .error-msg {
+      color: var(--rufous);
+      font-size: 11px;
+      padding: 16px 0;
+    }
   </style>
 </head>
 <body>
 
-<div class="header">
+<div class="topbar">
   <div class="wordmark">canica</div>
-  <div class="clock" id="clock">—</div>
-</div>
-
-<div class="date-label" id="date-label">Cargando...</div>
-
-<div id="summary" class="summary" style="display:none">
-  <div class="summary-box">
-    <div class="summary-num" id="total-res">—</div>
-    <div class="summary-label">Reservaciones</div>
-  </div>
-  <div class="summary-box">
-    <div class="summary-num" id="total-people">—</div>
-    <div class="summary-label">Personas</div>
-  </div>
-  <div class="summary-box">
-    <div class="summary-num" id="next-slot">—</div>
-    <div class="summary-label">Próxima hora</div>
+  <div class="topbar-right">
+    <div class="clock" id="clock">—</div>
+    <div class="date-str" id="date-str">—</div>
   </div>
 </div>
 
-<div id="timeline" class="timeline">
-  <div class="loading">Cargando reservaciones...</div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('reservaciones')">Reservaciones</div>
+  <div class="tab" onclick="switchTab('miembros')">Miembros</div>
 </div>
 
-<div class="refresh-note">Actualiza cada 5 min · <span id="last-update">—</span></div>
+<!-- RESERVACIONES -->
+<div class="panel active" id="panel-reservaciones">
+  <div class="summary">
+    <div class="summary-box">
+      <div class="summary-num" id="total-res">—</div>
+      <div class="summary-label">Reservas</div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-num" id="total-people">—</div>
+      <div class="summary-label">Personas</div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-num green" id="next-time">—</div>
+      <div class="summary-label">Próxima</div>
+    </div>
+  </div>
+
+  <div class="section-label">Horario de hoy</div>
+  <div id="timeline">
+    <div class="loading-msg">Cargando reservaciones...</div>
+  </div>
+  <div class="footer-note">Actualiza cada 5 min · última: <span id="last-res-update">—</span></div>
+</div>
+
+<!-- MIEMBROS -->
+<div class="panel" id="panel-miembros">
+  <div class="members-header">
+    <div>
+      <div class="section-label">Membresías activas</div>
+      <div class="mrr-value" id="mrr-value">—</div>
+      <div class="mrr-label">MXN / mes</div>
+    </div>
+    <div style="text-align:right">
+      <div class="summary-num" id="total-members">—</div>
+      <div class="summary-label">miembros</div>
+    </div>
+  </div>
+
+  <div id="members-list">
+    <div class="loading-msg">Cargando miembros...</div>
+  </div>
+  <div class="footer-note">Actualiza cada 10 min · última: <span id="last-mem-update">—</span></div>
+</div>
 
 <script>
-const RESOS_KEY_HINT = 'fetched via /api/host-data';
 const HOURS = [9,10,11,12,13,14,15,16,17,18,19];
 
 function cdmxNow() {
-  return new Date(new Date().toLocaleString('en-US', {timeZone: 'America/Mexico_City'}));
+  return new Date(new Date().toLocaleString('en-US', {timeZone:'America/Mexico_City'}));
+}
+function pad(n) { return String(n).padStart(2,'0'); }
+function fmtTime(h, m=0) {
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h > 12 ? h-12 : h === 0 ? 12 : h;
+  return `${h12}:${pad(m)} ${ampm}`;
 }
 
-function pad(n) { return String(n).padStart(2, '0'); }
-
+// ── Clock ──
 function updateClock() {
   const now = cdmxNow();
   const h = now.getHours(), m = now.getMinutes();
-  const ampm = h >= 12 ? 'PM' : 'AM';
-  const h12 = h > 12 ? h-12 : h === 0 ? 12 : h;
-  document.getElementById('clock').textContent = `${h12}:${pad(m)} ${ampm}`;
-  
-  const days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  document.getElementById('clock').textContent = fmtTime(h, m);
+  const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  document.getElementById('date-label').textContent = 
-    `${days[now.getDay()]} ${now.getDate()} de ${months[now.getMonth()]}`;
+  document.getElementById('date-str').textContent =
+    `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]}`;
+}
+updateClock();
+setInterval(updateClock, 15000);
+
+// ── Tabs ──
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const panels = ['reservaciones','miembros'];
+    t.classList.toggle('active', panels[i] === name);
+  });
+  document.querySelectorAll('.panel').forEach(p => {
+    p.classList.toggle('active', p.id === `panel-${name}`);
+  });
 }
 
+// ── Reservations ──
 async function loadReservations() {
   try {
     const r = await fetch('/api/host-data');
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const data = await r.json();
     renderTimeline(data.reservations || []);
-    document.getElementById('last-update').textContent = 
-      new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit', timeZone:'America/Mexico_City'});
+    document.getElementById('last-res-update').textContent =
+      new Date().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit',timeZone:'America/Mexico_City'});
   } catch(e) {
-    document.getElementById('timeline').innerHTML = 
-      `<div class="loading" style="color:rgba(199,36,62,.6)">Error al cargar: ${e.message}</div>`;
+    document.getElementById('timeline').innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
   }
 }
 
 function renderTimeline(reservations) {
   const now = cdmxNow();
-  const currentHour = now.getHours();
-  
+  const curH = now.getHours();
+
   // Group by hour
   const byHour = {};
   HOURS.forEach(h => byHour[h] = []);
-  
   reservations.forEach(res => {
     const dt = new Date(res.dateTime);
-    const cdmx = new Date(dt.toLocaleString('en-US', {timeZone: 'America/Mexico_City'}));
-    const h = cdmx.getHours();
-    if (byHour[h] !== undefined) byHour[h].push({...res, localTime: cdmx});
+    const local = new Date(dt.toLocaleString('en-US',{timeZone:'America/Mexico_City'}));
+    const h = local.getHours();
+    if (byHour[h] !== undefined) byHour[h].push({...res, localHour: h, localMin: local.getMinutes()});
   });
 
-  const totalRes = reservations.length;
-  const totalPeople = reservations.reduce((s, r) => s + (r.people || 0), 0);
-  
-  // Find next slot
-  let nextSlot = '—';
+  const total = reservations.length;
+  const totalPeople = reservations.reduce((s,r) => s + (r.people||0), 0);
+
+  // Next upcoming slot
+  let nextTime = '—';
   for (const h of HOURS) {
-    if (h >= currentHour && byHour[h].length > 0) {
-      const ampm = h >= 12 ? 'PM' : 'AM';
-      const h12 = h > 12 ? h-12 : h;
-      nextSlot = `${h12}${ampm}`;
+    if (h >= curH && byHour[h].length > 0) {
+      const earliest = byHour[h].reduce((min, r) => r.localMin < min ? r.localMin : min, 59);
+      nextTime = fmtTime(h, byHour[h][0].localMin || 0);
       break;
     }
   }
-  
-  document.getElementById('total-res').textContent = totalRes;
-  document.getElementById('total-people').textContent = totalPeople;
-  document.getElementById('next-slot').textContent = nextSlot;
-  document.getElementById('summary').style.display = 'grid';
 
-  const html = HOURS.filter(h => h >= currentHour - 1).map(h => {
-    const resos = byHour[h];
-    const isPast = h < currentHour;
-    const isNow = h === currentHour;
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    const h12 = h > 12 ? h-12 : h === 0 ? 12 : h;
-    const timeStr = `${h12}:00 ${ampm}`;
-    
+  document.getElementById('total-res').textContent = total;
+  document.getElementById('total-people').textContent = totalPeople;
+  document.getElementById('next-time').textContent = nextTime;
+
+  const html = HOURS.map(h => {
+    const items = byHour[h];
+    const isPast = h < curH;
+    const isNow = h === curH;
+
     let cls = 'slot';
     if (isPast) cls += ' past';
     else if (isNow) cls += ' now';
-    else if (resos.length > 0) cls += ' busy';
-    
-    const countLabel = resos.length > 0 
-      ? `${resos.length} reserv. · ${resos.reduce((s,r) => s+(r.people||0), 0)} personas`
-      : 'sin reservaciones';
-    
-    const resHTML = resos.length > 0
-      ? resos.map(r => {
-          const name = r.guestName || r.customerName || '?';
+    else if (items.length > 0) cls += ' busy';
+
+    const badgeText = items.length > 0
+      ? `${items.length} reserva${items.length>1?'s':''} · ${items.reduce((s,r)=>s+(r.people||0),0)} personas`
+      : 'libre';
+    const badgeCls = isNow ? 'slot-badge now-badge' : items.length > 0 ? 'slot-badge filled' : 'slot-badge';
+
+    let resHTML = '';
+    if (items.length > 0) {
+      resHTML = `<div class="res-list">` +
+        items.map(r => {
+          const name = r.guestName || '?';
           const people = r.people || '?';
           const phone = r.phone || '';
-          const waLink = phone ? `https://wa.me/${phone.replace(/\D/g,'')}?text=Hola%20${encodeURIComponent(name)}%2C%20te%20escribimos%20de%20Canica%20para%20confirmar%20tu%20reservaci%C3%B3n.` : '';
+          const note = r.note || '';
+          const waMsg = encodeURIComponent(`Hola ${name}, te escribimos de Canica para confirmar tu reservación de hoy. ¡Te esperamos!`);
+          const waHref = phone ? `https://wa.me/${phone.replace(/\D/g,'')}?text=${waMsg}` : '';
+          const timeLabel = r.timeStr || fmtTime(r.localHour || h, r.localMin || 0);
           return `<div class="res-item">
             <div>
               <div class="res-name">${name}</div>
-              <div class="res-detail">${r.timeStr || ''}</div>
-              ${phone ? `<div class="res-phone">${phone}</div>` : ''}
-              ${waLink ? `<a class="wa-btn" href="${waLink}" target="_blank">WhatsApp →</a>` : ''}
+              <div class="res-meta">${timeLabel}${r.source === 'manual' ? ' · manual' : ''}</div>
+              ${note ? `<div class="res-note">${note}</div>` : ''}
+              ${waHref ? `<a class="wa-btn" href="${waHref}" target="_blank">WhatsApp →</a>` : ''}
             </div>
-            <div class="res-right">
-              <div class="res-people">${people}</div>
-              <div class="res-detail">personas</div>
-            </div>
+            <div class="res-count">${people}<br><span style="font-family:var(--body);font-size:9px;color:var(--muted);font-style:normal">personas</span></div>
           </div>`;
-        }).join('')
-      : `<div class="empty-slot">Sin reservaciones</div>`;
-    
+        }).join('') +
+        `</div>`;
+    }
+
     return `<div class="${cls}">
       <div class="slot-header">
-        <div class="slot-time">${timeStr}</div>
-        <div class="slot-count ${resos.length > 0 ? 'has-res' : ''}">${countLabel}</div>
+        <div class="slot-time">${fmtTime(h)}</div>
+        <div class="${badgeCls}">${badgeText}</div>
       </div>
-      ${resos.length > 0 ? `<div class="reservations">${resHTML}</div>` : resHTML}
+      ${resHTML}
     </div>`;
   }).join('');
-  
-  document.getElementById('timeline').innerHTML = html || '<div class="loading">No hay más reservaciones hoy.</div>';
+
+  document.getElementById('timeline').innerHTML = html;
 }
 
-updateClock();
-setInterval(updateClock, 10000);
+// ── Members ──
+async function loadMembers() {
+  try {
+    const r = await fetch('/api/members-active');
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    renderMembers(data.members || [], data.mrr || 0);
+    document.getElementById('last-mem-update').textContent =
+      new Date().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit',timeZone:'America/Mexico_City'});
+  } catch(e) {
+    document.getElementById('members-list').innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
+  }
+}
+
+function renderMembers(members, mrr) {
+  document.getElementById('total-members').textContent = members.length;
+  document.getElementById('mrr-value').textContent = `$${mrr.toLocaleString('es-MX')}`;
+
+  if (!members.length) {
+    document.getElementById('members-list').innerHTML = '<div class="loading-msg">No hay miembros activos.</div>';
+    return;
+  }
+
+  const html = members.map(m => {
+    const tierCls = m.tier === 'Familia' ? 'member-tier familia' : 'member-tier individual';
+    return `<div class="member-card">
+      <div>
+        <div class="member-name">${m.name}</div>
+        <div class="member-meta">$${m.amount.toLocaleString('es-MX')} MXN/mes · próximo cobro ${m.nextBilling}</div>
+      </div>
+      <div class="${tierCls}">${m.tier}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('members-list').innerHTML = html;
+}
+
+// ── Init ──
 loadReservations();
-setInterval(loadReservations, 300000); // every 5 min
+loadMembers();
+setInterval(loadReservations, 300000);   // every 5 min
+setInterval(loadMembers, 600000);         // every 10 min
 </script>
 </body>
 </html>

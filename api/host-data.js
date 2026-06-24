@@ -9,8 +9,11 @@ module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
 
   // Support ?date=YYYY-MM-DD for browsing past/future days
-  const qDate = req.query?.date || (req.url?.includes('date=') ? new URL('https://x.com' + req.url).searchParams.get('date') : null);
-  const today = qDate && /^\d{4}-\d{2}-\d{2}$/.test(qDate)
+  let qDate = null;
+  try {
+    qDate = req.query?.date || new URL(req.url, 'https://x.com').searchParams.get('date');
+  } catch(e) {}
+  const today = (qDate && /^\d{4}-\d{2}-\d{2}$/.test(qDate))
     ? qDate
     : new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' });
   const reservations = [];

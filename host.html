@@ -318,11 +318,16 @@
 <div class="tabs">
   <div class="tab active" onclick="switchTab('reservaciones')">Reservaciones</div>
   <div class="tab" onclick="switchTab('miembros')">Miembros</div>
-  <div class="tab" onclick="switchTab('herramientas')">Más</div>
+  <div class="tab" onclick="switchTab('herramientas')">Menú QR</div>
 </div>
 
 <!-- RESERVACIONES -->
 <div class="panel active" id="panel-reservaciones">
+  <div class="date-picker-row" style="margin-bottom:16px">
+    <input class="date-input" type="date" id="date-picker" />
+    <button class="today-btn" onclick="resetToToday()">Hoy</button>
+    <button class="date-btn" onclick="loadByDate()">Ver</button>
+  </div>
   <div class="summary">
     <div class="summary-box">
       <div class="summary-num" id="total-res">—</div>
@@ -377,18 +382,6 @@
     </div>
   </div>
 
-  <div class="tools-section">
-    <div class="tools-title">Ver reservaciones por fecha</div>
-    <div class="date-picker-row">
-      <input class="date-input" type="date" id="date-picker" />
-      <button class="today-btn" onclick="resetToToday()">Hoy</button>
-      <button class="date-btn" onclick="loadByDate()">Ver</button>
-    </div>
-    <div id="date-results">
-      <div class="loading-msg" style="padding:20px 0">Elige una fecha y presiona Ver.</div>
-    </div>
-  </div>
-
 </div>
 
 <script>
@@ -434,7 +427,7 @@ async function loadReservations() {
     const r = await fetch('/api/host-data');
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const data = await r.json();
-    renderTimeline(data.reservations || []);
+    renderTimeline(data.reservations || [], data.date);
     document.getElementById('last-res-update').textContent =
       new Date().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit',timeZone:'America/Mexico_City'});
   } catch(e) {
@@ -442,8 +435,10 @@ async function loadReservations() {
   }
 }
 
-function renderTimeline(reservations) {
+function renderTimeline(reservations, viewDate) {
   const now = cdmxNow();
+  const todayStr = now.toLocaleDateString('en-CA', {timeZone:'America/Mexico_City'});
+  const isToday = !viewDate || viewDate === todayStr;
   const curH = now.getHours();
 
   // Group by hour
@@ -475,7 +470,7 @@ function renderTimeline(reservations) {
 
   const html = HOURS.map(h => {
     const items = byHour[h];
-    const isPast = h < curH;
+    const isPast = isToday && h < curH;
     const isNow = h === curH;
 
     let cls = 'slot';
@@ -571,14 +566,14 @@ function resetToToday() {
 async function loadByDate() {
   const date = document.getElementById('date-picker').value;
   if (!date) return;
-  const el = document.getElementById('date-results');
-  el.innerHTML = '<div class="loading-msg">Cargando...</div>';
+  document.getElementById('timeline').innerHTML = '<div class="loading-msg">Cargando...</div>';
   try {
     const r = await fetch(`/api/host-data?date=${date}`);
     const data = await r.json();
     const res = data.reservations || [];
     if (!res.length) {
-      el.innerHTML = '<div class="loading-msg">Sin reservaciones ese día.</div>';
+      renderTimeline([], date);
+      return;
       return;
     }
     const html = res.map(r => {
@@ -594,9 +589,9 @@ async function loadByDate() {
       </div>`;
     }).join('');
     const total = res.reduce((s, r) => s + (r.people || 0), 0);
-    el.innerHTML = `<div class="section-label" style="margin-bottom:10px">${res.length} reservaciones · ${total} personas</div>${html}`;
+    renderTimeline(res, date);
   } catch(e) {
-    el.innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
+    document.getElementById('timeline').innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
   }
 }
 

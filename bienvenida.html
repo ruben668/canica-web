@@ -2,81 +2,262 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Canica</title>
+  <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ivory: #FFF9F1;
+      --ink:   #1A1411;
+      --green: #107039;
+      --rule:  rgba(26,20,17,.1);
+      --muted: rgba(26,20,17,.4);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html, body {
+      height: 100%;
+    }
+
     body {
-      background: #FFF9F1;
-      color: #1A1411;
+      background: var(--ivory);
+      color: var(--ink);
       font-family: 'JetBrains Mono', monospace;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 24px;
+      padding: env(safe-area-inset-top, 24px) 28px env(safe-area-inset-bottom, 32px);
+      min-height: 100dvh;
+    }
+
+    /* ── Header ── */
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: .01em;
+      margin-bottom: 6px;
+    }
+    .tagline {
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 48px;
       text-align: center;
     }
-    .wordmark {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 36px;
-      font-style: italic;
-      letter-spacing: .02em;
-      margin-bottom: 40px;
-    }
-    .cta-grid {
+
+    /* ── Buttons ── */
+    .btn-list {
+      width: 100%;
+      max-width: 340px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      width: 100%;
-      max-width: 320px;
+      gap: 10px;
     }
-    .cta-btn {
-      display: block;
-      padding: 18px 24px;
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
       text-decoration: none;
-      font-size: 11px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      transition: all .2s;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity .15s, transform .15s;
     }
-    .cta-btn.primary {
-      background: #1A1411;
-      color: #FFF9F1;
+    .btn:active { opacity: .75; transform: scale(.98); }
+
+    .btn.primary {
+      background: var(--ink);
+      color: var(--ivory);
     }
-    .cta-btn.secondary {
-      border: 1px solid rgba(26,20,17,.25);
-      color: #1A1411;
+    .btn.outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--rule);
     }
-    .cta-btn:active { opacity: .8; transform: scale(.98); }
-    .tagline {
+    .btn.green {
+      background: var(--green);
+      color: var(--ivory);
+    }
+
+    .btn-left { display: flex; flex-direction: column; gap: 3px; }
+    .btn-title { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 500; }
+    .btn-sub   { font-size: 10px; opacity: .55; }
+    .btn-icon  { font-size: 16px; opacity: .7; flex-shrink: 0; margin-left: 12px; }
+
+    /* ── WiFi modal ── */
+    .overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(26,20,17,.55);
+      z-index: 100;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .overlay.open { display: flex; }
+
+    .wifi-sheet {
+      background: var(--ivory);
+      width: 100%;
+      max-width: 400px;
+      padding: 32px 28px 40px;
+      border-top: 1px solid var(--rule);
+    }
+    .wifi-sheet h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 18px;
+      font-size: 28px;
       font-style: italic;
-      color: rgba(26,20,17,.5);
-      margin-bottom: 40px;
-      line-height: 1.5;
+      font-weight: 400;
+      margin-bottom: 20px;
     }
-    .divider {
+    .wifi-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .wifi-row:last-of-type { border-bottom: none; }
+    .wifi-label { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .wifi-val   { font-size: 13px; font-weight: 500; letter-spacing: .04em; }
+    .copy-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+      border: 1px solid var(--rule);
+      background: transparent;
+      padding: 6px 12px;
+      cursor: pointer;
+      color: var(--ink);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); }
+    .close-btn {
+      margin-top: 24px;
+      width: 100%;
+      padding: 16px;
+      background: var(--ink);
+      color: var(--ivory);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 40px;
       font-size: 9px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(26,20,17,.3);
-      margin: 8px 0;
+      letter-spacing: .1em;
+      color: rgba(26,20,17,.2);
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="wordmark">canica</div>
-  <p class="tagline">Un lugar para padres e hijos<br>sin tener que elegir.</p>
 
-  <div class="cta-grid">
-    <a class="cta-btn primary" href="/menu">Ver menú</a>
-    <div class="divider">o</div>
-    <a class="cta-btn secondary" href="/membership">Únete como miembro</a>
+  <div class="logo">canica</div>
+  <p class="tagline">Condesa · CDMX</p>
+
+  <nav class="btn-list">
+
+    <!-- 1. Menú -->
+    <a class="btn primary" href="/menu">
+      <div class="btn-left">
+        <span class="btn-title">Menú</span>
+        <span class="btn-sub">Ver nuestra carta</span>
+      </div>
+      <span class="btn-icon">→</span>
+    </a>
+
+    <!-- 2. Club de Fans (Loyalz) -->
+    <a class="btn outline" href="https://app.loyalzclub.com/getpass/1087591?utm_source=qr" target="_blank" rel="noopener">
+      <div class="btn-left">
+        <span class="btn-title">Club de Fans</span>
+        <span class="btn-sub">Acumula puntos y gana recompensas</span>
+      </div>
+      <span class="btn-icon">★</span>
+    </a>
+
+    <!-- 3. Membresía -->
+    <a class="btn green" href="/membership">
+      <div class="btn-left">
+        <span class="btn-title">Canica Commons</span>
+        <span class="btn-sub">Acceso ilimitado desde $950/mes</span>
+      </div>
+      <span class="btn-icon">◆</span>
+    </a>
+
+    <!-- 4. WiFi -->
+    <button class="btn outline" onclick="document.getElementById('wifi-overlay').classList.add('open')">
+      <div class="btn-left">
+        <span class="btn-title">WiFi</span>
+        <span class="btn-sub">Conéctate gratis</span>
+      </div>
+      <span class="btn-icon">⌘</span>
+    </button>
+
+  </nav>
+
+  <p class="footer">mazatlán 83 · lun–dom 9–19:30h</p>
+
+  <!-- WiFi Sheet -->
+  <div class="overlay" id="wifi-overlay" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="wifi-sheet">
+      <h2>WiFi Canica</h2>
+
+      <div class="wifi-row">
+        <div>
+          <div class="wifi-label">Red</div>
+          <div class="wifi-val" id="ssid-val">Canica_Guests</div>
+        </div>
+        <button class="copy-btn" onclick="copyVal('ssid-val', this)">Copiar</button>
+      </div>
+
+      <div class="wifi-row">
+        <div>
+          <div class="wifi-label">Contraseña</div>
+          <div class="wifi-val" id="pass-val">canica2024</div>
+        </div>
+        <button class="copy-btn" onclick="copyVal('pass-val', this)">Copiar</button>
+      </div>
+
+      <button class="close-btn" onclick="document.getElementById('wifi-overlay').classList.remove('open')">
+        Cerrar
+      </button>
+    </div>
   </div>
+
+  <script>
+    function copyVal(id, btn) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+      }).catch(() => {
+        // Fallback for older browsers
+        const el = document.createElement('textarea');
+        el.value = text;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        btn.textContent = '✓ Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  </script>
+
 </body>
 </html>

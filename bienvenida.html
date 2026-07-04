@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #FFF9F1;
+      color: #1A1411;
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-style: italic;
+      letter-spacing: .02em;
+      margin-bottom: 40px;
+    }
+    .cta-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 100%;
+      max-width: 320px;
+    }
+    .cta-btn {
+      display: block;
+      padding: 18px 24px;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      transition: all .2s;
+    }
+    .cta-btn.primary {
+      background: #1A1411;
+      color: #FFF9F1;
+    }
+    .cta-btn.secondary {
+      border: 1px solid rgba(26,20,17,.25);
+      color: #1A1411;
+    }
+    .cta-btn:active { opacity: .8; transform: scale(.98); }
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-style: italic;
+      color: rgba(26,20,17,.5);
+      margin-bottom: 40px;
+      line-height: 1.5;
+    }
+    .divider {
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(26,20,17,.3);
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wordmark">canica</div>
+  <p class="tagline">Un lugar para padres e hijos<br>sin tener que elegir.</p>
+
+  <div class="cta-grid">
+    <a class="cta-btn primary" href="/menu">Ver menú</a>
+    <div class="divider">o</div>
+    <a class="cta-btn secondary" href="/membership">Únete como miembro</a>
+  </div>
+</body>
+</html>

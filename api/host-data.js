@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
   if (RESOS_KEY) {
     try {
       const auth = 'Basic ' + Buffer.from(`${RESOS_KEY}:`).toString('base64');
-      const r = await fetch('https://api.resos.com/v1/bookings?limit=100', {
+      const r = await fetch('https://api.resos.com/v1/bookings?limit=500', {
         headers: { 'Authorization': auth, 'Accept': 'application/json' }
       });
       const bookings = await r.json();

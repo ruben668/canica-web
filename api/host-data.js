@@ -18,14 +18,23 @@ module.exports = async (req, res) => {
     : new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' });
   const reservations = [];
 
-  // Fetch Resos
+  // Fetch Resos (paginated — API max is 100 per page)
   if (RESOS_KEY) {
     try {
       const auth = 'Basic ' + Buffer.from(`${RESOS_KEY}:`).toString('base64');
-      const r = await fetch('https://api.resos.com/v1/bookings?limit=500', {
-        headers: { 'Authorization': auth, 'Accept': 'application/json' }
-      });
-      const bookings = await r.json();
+      const allBookings = [];
+      let skip = 0;
+      while (true) {
+        const r = await fetch(`https://api.resos.com/v1/bookings?limit=100&skip=${skip}`, {
+          headers: { 'Authorization': auth, 'Accept': 'application/json' }
+        });
+        const page = await r.json();
+        if (!Array.isArray(page) || page.length === 0) break;
+        allBookings.push(...page);
+        if (page.length < 100) break;
+        skip += 100;
+      }
+      const bookings = allBookings;
       if (Array.isArray(bookings)) {
         bookings.forEach(b => {
           const dt = b.dateTime || b.date || '';

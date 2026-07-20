@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cancelar membresía · Canica Commons</title>
+<title>Gestionar membresía · Canica Commons</title>
 <meta name="robots" content="noindex" />
 <meta name="theme-color" content="#FFF9F1" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFF9F1'/><text x='50' y='66' font-family='Georgia,serif' font-style='italic' font-size='52' text-anchor='middle' fill='%23BF5341'>c</text></svg>" />
@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="styles.css" />
 <style>
   .cancel-wrap {
-    max-width: 560px;
+    max-width: 480px;
     margin: 0 auto;
     padding: 60px 24px 80px;
   }
@@ -25,7 +25,7 @@
     line-height: 1.15;
     margin-bottom: 8px;
   }
-  .cancel-wrap .kicker {
+  .kicker {
     font-size: 10px;
     letter-spacing: .14em;
     text-transform: uppercase;
@@ -33,46 +33,41 @@
     margin-bottom: 36px;
     display: block;
   }
-  .step-list {
-    list-style: none;
-    counter-reset: steps;
-    margin-bottom: 40px;
+  .form-label {
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(26,20,17,.5);
+    display: block;
+    margin-bottom: 8px;
   }
-  .step-list li {
-    counter-increment: steps;
-    display: flex;
-    gap: 18px;
-    padding: 18px 0;
-    border-bottom: 1px solid rgba(26,20,17,.08);
-    font-size: 14px;
-    line-height: 1.6;
-  }
-  .step-list li::before {
-    content: counter(steps, decimal-leading-zero);
+  .form-input {
+    width: 100%;
+    border: 1px solid rgba(26,20,17,.2);
+    background: #FFF9F1;
     font-family: var(--body);
-    font-size: 11px;
-    color: rgba(26,20,17,.3);
-    letter-spacing: .1em;
-    flex-shrink: 0;
-    padding-top: 3px;
-    width: 24px;
+    font-size: 14px;
+    padding: 13px 14px;
+    outline: none;
+    margin-bottom: 12px;
+    color: var(--ink);
+    -webkit-appearance: none;
   }
+  .form-input:focus { border-color: var(--ink); }
   .notice-box {
-    border: 1px solid rgba(26,20,17,.12);
-    padding: 18px 20px;
-    font-size: 13px;
+    border: 1px solid rgba(26,20,17,.1);
+    padding: 14px 16px;
+    font-size: 12px;
     line-height: 1.7;
-    color: rgba(26,20,17,.7);
-    margin-bottom: 36px;
+    color: rgba(26,20,17,.6);
+    margin-bottom: 20px;
   }
-  .notice-box strong { color: var(--ink); }
-  .contact-block {
-    background: rgba(26,20,17,.03);
-    padding: 20px;
-    font-size: 13px;
-    line-height: 1.8;
+  .error-msg {
+    font-size: 12px;
+    color: var(--rufous, #be352b);
+    margin-bottom: 12px;
+    display: none;
   }
-  .contact-block a { color: var(--ink); }
 </style>
 </head>
 <body class="subpage">
@@ -85,41 +80,74 @@
 <div class="cancel-wrap">
 
   <span class="kicker">Canica Commons · Membresía</span>
-  <h1>Cancelar tu<br><em>membresía.</em></h1>
+  <h1>Gestionar tu<br><em>membresía.</em></h1>
 
-  <div class="notice-box">
-    <strong>Política de reembolsos:</strong> Una vez procesado el cargo del mes en curso, no se realizan reembolsos por ese período. Tu membresía permanece activa hasta el final del ciclo de facturación ya pagado.
-  </div>
-
-  <p style="font-size:14px;color:rgba(26,20,17,.6);margin-bottom:24px;line-height:1.7">
-    Puedes cancelar en cualquier momento, sin penalización. Sigue estos pasos:
+  <p style="font-size:14px;line-height:1.7;color:rgba(26,20,17,.65);margin-bottom:32px">
+    Ingresa el correo con el que te registraste. Te llevaremos al portal de Stripe donde puedes cancelar, actualizar tu tarjeta o revisar tus pagos.
   </p>
 
-  <ol class="step-list">
-    <li>
-      <span>Escribe a <a href="mailto:informacion@canica.fun"><strong>informacion@canica.fun</strong></a> con el asunto <strong>"Cancelar membresía"</strong> e incluye el nombre y correo con el que te registraste.</span>
-    </li>
-    <li>
-      <span>Te confirmaremos la cancelación en un plazo de 24 horas hábiles. Tu membresía permanecerá activa hasta el final del período ya pagado.</span>
-    </li>
-    <li>
-      <span>Recibirás un correo de confirmación de Stripe. No se realizarán cargos posteriores.</span>
-    </li>
-  </ol>
-
-  <div class="contact-block">
-    <strong>¿Tienes preguntas?</strong><br>
-    Escríbenos a <a href="mailto:informacion@canica.fun">informacion@canica.fun</a><br>
-    o visítanos en Mazatlán 83, Condesa, CDMX.<br>
-    Horario: lun–dom 9:00–19:30 h.
+  <div class="notice-box">
+    ⚠ Una vez procesado el cargo del mes en curso, no se realizan reembolsos por ese período. Tu membresía permanece activa hasta el final del ciclo ya pagado.
   </div>
 
-  <div style="margin-top:32px">
-    <a href="/membership" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,20,17,.4);text-decoration:none">← Ver membresías</a>
-  </div>
+  <label class="form-label" for="email-input">Correo electrónico</label>
+  <input class="form-input" id="email-input" type="email" placeholder="tu@correo.com" autocomplete="email" />
+  <div class="error-msg" id="error-msg"></div>
+
+  <button class="btn btn--primary" id="portal-btn" onclick="openPortal()" style="width:100%;padding:15px;margin-bottom:24px">
+    Acceder a mi membresía →
+  </button>
+
+  <a href="/membership" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,20,17,.35);text-decoration:none">← Ver membresías</a>
 
 </div>
 </main>
+
+<script>
+async function openPortal() {
+  const email = document.getElementById('email-input').value.trim();
+  const btn   = document.getElementById('portal-btn');
+  const err   = document.getElementById('error-msg');
+
+  err.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    err.textContent = 'Por favor ingresa un correo válido.';
+    err.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Buscando...';
+
+  try {
+    const res  = await fetch('/api/cancel-portal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      err.textContent = data.error || 'No encontramos una membresía con ese correo.';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Acceder a mi membresía →';
+    }
+  } catch (e) {
+    err.textContent = 'Error de conexión. Intenta de nuevo.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Acceder a mi membresía →';
+  }
+}
+
+document.getElementById('email-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') openPortal();
+});
+</script>
 
 </body>
 </html>

@@ -27,6 +27,10 @@
     "api/host-data.js": {
       "memory": 256,
       "maxDuration": 10
+    },
+    "api/cancel-portal.js": {
+      "memory": 256,
+      "maxDuration": 10
     }
   },
   "rewrites": [

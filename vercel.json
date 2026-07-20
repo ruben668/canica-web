@@ -93,6 +93,10 @@
     {
       "source": "/cancelar",
       "destination": "/cancelar.html"
+    },
+    {
+      "source": "/actividades",
+      "destination": "/actividades.html"
     }
   ],
   "outputDirectory": ".",

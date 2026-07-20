@@ -131,7 +131,17 @@
 
 <section>
   <div class="container">
-    <p class="cal-week" id="week-label">Semana del — al — de julio</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:12px">
+      <p class="cal-week" id="week-label" style="margin-bottom:0">Semana del — al —</p>
+      <div style="display:flex;align-items:center;gap:0;border:1px solid rgba(26,20,17,.15)">
+        <button id="prev-week" onclick="shiftWeek(-1)" aria-label="Semana anterior"
+          style="font-family:var(--body);font-size:11px;letter-spacing:.1em;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:rgba(26,20,17,.5);border-right:1px solid rgba(26,20,17,.15)">←</button>
+        <button id="today-btn" onclick="goToToday()"
+          style="font-family:var(--body);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:var(--ink)">Esta semana</button>
+        <button id="next-week" onclick="shiftWeek(1)" aria-label="Semana siguiente"
+          style="font-family:var(--body);font-size:11px;letter-spacing:.1em;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:rgba(26,20,17,.5);border-left:1px solid rgba(26,20,17,.15)">→</button>
+      </div>
+    </div>
 
     <div id="calendar">
 
@@ -332,29 +342,59 @@
 </main>
 
 <script>
-// Auto-populate date labels for current week (Mon–Sun)
-(function() {
+// Week navigation
+const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+function getMondayOfWeek(offset) {
   const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
-  const dow = today.getDay(); // 0=Sun
-  // Get Monday of current week
+  const dow = today.getDay();
   const monday = new Date(today);
-  monday.setDate(today.getDate() - (dow === 0 ? 6 : dow - 1));
+  monday.setDate(today.getDate() - (dow === 0 ? 6 : dow - 1) + offset * 7);
+  monday.setHours(0,0,0,0);
+  return monday;
+}
 
-  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  const days = ['lun','mar','mié','jue','vie','sáb','dom'];
+let currentOffset = 0;
 
-  // Set week label
+function renderWeek(offset) {
+  currentOffset = offset;
+  const monday = getMondayOfWeek(offset);
   const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
-  document.getElementById('week-label').textContent =
-    `Semana del ${monday.getDate()} al ${sunday.getDate()} de ${months[sunday.getMonth()]}`;
 
-  // Set individual day dates
+  // Week label
+  const fromStr = monday.getMonth() === sunday.getMonth()
+    ? `${monday.getDate()} al ${sunday.getDate()} de ${MONTHS[sunday.getMonth()]}`
+    : `${monday.getDate()} de ${MONTHS[monday.getMonth()]} al ${sunday.getDate()} de ${MONTHS[sunday.getMonth()]}`;
+  document.getElementById('week-label').textContent = `Semana del ${fromStr}`;
+
+  // Day dates
   document.querySelectorAll('.day-date[data-day]').forEach(el => {
-    const offset = parseInt(el.dataset.day);
-    const d = new Date(monday); d.setDate(monday.getDate() + offset);
-    el.textContent = `${d.getDate()} de ${months[d.getMonth()]}`;
+    const dayOffset = parseInt(el.dataset.day);
+    const d = new Date(monday); d.setDate(monday.getDate() + dayOffset);
+    el.textContent = `${d.getDate()} de ${MONTHS[d.getMonth()]}`;
   });
-})();
+
+  // Dim past days only on current week
+  const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+  today.setHours(0,0,0,0);
+  document.querySelectorAll('.day-block').forEach((block, i) => {
+    const d = new Date(monday); d.setDate(monday.getDate() + i);
+    block.style.opacity = (offset === 0 && d < today) ? '0.35' : '1';
+  });
+
+  // Prev button — disable if going back more than 1 week
+  document.getElementById('prev-week').style.opacity = offset <= -1 ? '0.3' : '1';
+  document.getElementById('prev-week').disabled = offset <= -1;
+  
+  // Today button style
+  document.getElementById('today-btn').style.fontWeight = offset === 0 ? '500' : '400';
+  document.getElementById('today-btn').style.color = offset === 0 ? 'rgba(26,20,17,.35)' : 'var(--ink)';
+}
+
+function shiftWeek(delta) { renderWeek(currentOffset + delta); }
+function goToToday() { renderWeek(0); }
+
+renderWeek(0);
 </script>
 
 </body>

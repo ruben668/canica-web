@@ -194,10 +194,27 @@
   </a>
 </nav>
 <script>
-async function checkout(plan) {
-  const btn = event.target;
+const PLAN_LABELS = {
+  basica:   { name: 'Primer niño', price: '$950' },
+  familiar: { name: 'Tópe familiar', price: '$2,500' },
+  club:     { name: 'Dos niños', price: '$1,650' },
+};
+
+function checkout(plan) {
+  const info = PLAN_LABELS[plan] || { name: plan, price: '' };
+  document.getElementById('modal-plan-name').textContent = info.name;
+  document.getElementById('modal-plan-price').textContent = info.price;
+  document.getElementById('confirm-modal').dataset.plan = plan;
+  document.getElementById('confirm-modal').style.display = 'flex';
+}
+
+async function proceedCheckout() {
+  const modal = document.getElementById('confirm-modal');
+  const plan = modal.dataset.plan;
+  const btn = document.getElementById('confirm-btn');
   btn.disabled = true;
   btn.textContent = 'Cargando...';
+  modal.style.display = 'none';
   try {
     const res = await fetch('/api/checkout', {
       method: 'POST',
@@ -210,14 +227,42 @@ async function checkout(plan) {
     } else {
       alert('Error al procesar. Intenta de nuevo.');
       btn.disabled = false;
-      btn.textContent = 'Unirme como familia fundadora';
+      btn.textContent = 'Confirmar suscripción →';
     }
   } catch(e) {
     alert('Error de conexión. Intenta de nuevo.');
     btn.disabled = false;
-    btn.textContent = 'Unirme como familia fundadora';
+    btn.textContent = 'Confirmar suscripción →';
   }
 }
+
+function closeModal() {
+  document.getElementById('confirm-modal').style.display = 'none';
+}
 </script>
+
+<!-- Confirmation Modal -->
+<div id="confirm-modal" style="display:none;position:fixed;inset:0;background:rgba(26,20,17,.6);z-index:999;align-items:flex-end;justify-content:center;font-family:var(--body)">
+  <div style="background:#FFF9F1;width:100%;max-width:480px;padding:36px 28px 44px;border-top:2px solid #1A1411">
+    <div style="font-family:var(--display);font-size:26px;font-style:italic;margin-bottom:20px">Antes de continuar</div>
+
+    <div style="font-size:13px;line-height:1.7;margin-bottom:20px">
+      Estás a punto de suscribirte a <strong>Canica Commons — <span id="modal-plan-name"></span></strong>.
+      <br>El cargo mensual de <strong><span id="modal-plan-price"></span> MXN</strong> se aplicará automáticamente cada mes.
+    </div>
+
+    <div style="border:1px solid rgba(26,20,17,.12);padding:16px;margin-bottom:24px;font-size:12px;line-height:1.8">
+      <div>✓ &nbsp;Cargo mensual automático a tu tarjeta</div>
+      <div>✓ &nbsp;Cancela cuando quieras desde <a href="/cancelar" style="color:inherit;text-decoration:underline">canica.fun/cancelar</a></div>
+      <div>✓ &nbsp;Sin penalización por cancelación</div>
+      <div style="margin-top:8px;color:rgba(26,20,17,.6);font-size:11px">⚠ Una vez que se procesa el cobro del mes en curso, no se realizan reembolsos por ese período.</div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button onclick="closeModal()" style="flex:1;padding:14px;border:1px solid rgba(26,20,17,.2);background:transparent;font-family:var(--body);font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;color:rgba(26,20,17,.6)">Cancelar</button>
+      <button id="confirm-btn" onclick="proceedCheckout()" style="flex:2;padding:14px;border:none;background:#1A1411;color:#FFF9F1;font-family:var(--body);font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">Confirmar suscripción →</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

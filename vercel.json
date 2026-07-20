@@ -85,6 +85,10 @@
     {
       "source": "/bienvenida",
       "destination": "/bienvenida.html"
+    },
+    {
+      "source": "/cancelar",
+      "destination": "/cancelar.html"
     }
   ],
   "outputDirectory": ".",

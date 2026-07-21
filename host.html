@@ -787,9 +787,12 @@ async function loadTodayVisits() {
 }
 
 // Load when tab is opened
-document.querySelector('[onclick="switchTab('checkin')"]').addEventListener('click', () => {
-  loadTodayVisits();
-});
+// Load today visits when check-in tab becomes active
+const _origSwitchTab = switchTab;
+function switchTab(name) {
+  _origSwitchTab(name);
+  if (name === 'checkin') loadTodayVisits();
+}
 </script>
 
 </body>

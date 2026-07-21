@@ -1,230 +1,819 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-<meta charset="UTF-8" />
-<script>if(location.hostname==='canica.fun'){location.replace('https://www.canica.fun'+location.pathname+location.search);}</script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Canica · Café y ludoteca · Condesa, CDMX</title>
-<meta name="description" content="Canica es un espacio para padres e hijos en la Condesa, CDMX. Café de verdad para adultos. Ludoteca supervisada para niños. Membresías familiares." />
-<meta name="theme-color" content="#FFF9F1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canica — Havre 73, Juárez, Ciudad de México</title>
+  <meta name="description" content="Un lugar para padres e hijos en la Colonia Juárez. Café de verdad para adultos. Espacio de juego para niños. Dos ritmos, un lugar.">
+  <link rel="canonical" href="https://canica.fun">
+  <meta property="og:title" content="Canica — Havre 73, Juárez, Ciudad de México">
+  <meta property="og:description" content="Dos ritmos, un lugar.">
+  <meta property="og:url" content="https://canica.fun">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"Canica","address":{"@type":"PostalAddress","streetAddress":"Havre 73","addressLocality":"Juárez, Cuauhtémoc","addressRegion":"Ciudad de México","postalCode":"06600","addressCountry":"MX"},"url":"https://canica.fun"}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
 
-<meta property="og:title" content="Canica · Café y ludoteca · Condesa, CDMX" />
-<meta property="og:description" content="Café y ludoteca en la Condesa. Dos ritmos, un lugar." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://canica.fun/" />
+    /* ── MARBLE WORDMARK ── */
+    .wordmark { display: flex; gap: 5px; align-items: center; text-decoration: none; }
+    .marble {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--canica-display); font-size: 14px; font-weight: 400;
+      color: white; flex-shrink: 0; font-style: italic;
+    }
+    .m1 { background: var(--canica-rufous); }
+    .m2 { background: var(--canica-apricot); }
+    .m3 { background: var(--canica-green); }
+    .m4 { background: var(--canica-violet); }
+    .m5 { background: var(--canica-yellow); color: #000; }
+    .m6 { background: var(--canica-pink); color: #000; }
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
-<link rel="canonical" href="https://canica.fun/" />
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "CafeOrCoffeeShop",
-  "name": "Canica",
-  "description": "Café y ludoteca en la Condesa. Un espacio para padres e hijos. Dos ritmos, un lugar.",
-  "url": "https://canica.fun",
-  "telephone": "+13105971480",
-  "email": "hola@canica.fun",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Avenida Mazatlán 83",
-    "addressLocality": "Condesa",
-    "addressRegion": "Ciudad de México",
-    "postalCode": "06140",
-    "addressCountry": "MX"
-  },
-  "openingHours": "Mo-Su 09:00-19:30",
-  "servesCuisine": ["Café", "Desayunos", "Brunch"],
-  "sameAs": ["https://www.instagram.com/canicafun"]
-}
-</script>
-<link rel="stylesheet" href="styles.css" />
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--nav-h); background: var(--canica-ivory);
+      display: flex; align-items: center; padding: 0 var(--gutter);
+      justify-content: space-between;
+    }
+    .nav-right { display: flex; align-items: center; gap: var(--space-l); }
+    .nav-links { display: flex; gap: var(--space-m); list-style: none; }
+    .nav-links a {
+      font-family: var(--canica-body); font-size: var(--fs-micro);
+      letter-spacing: var(--tracking-mono); text-transform: uppercase;
+      color: var(--canica-black); opacity: 0.5; transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-cart { font-size: 18px; cursor: pointer; opacity: 0.6; }
+    .nav-member {
+      font-family: var(--canica-body); font-size: var(--fs-micro);
+      letter-spacing: var(--tracking-mono); text-transform: uppercase;
+      padding: 8px 18px; border: 1px solid var(--canica-black);
+      color: var(--canica-black); background: transparent; cursor: pointer;
+      transition: all 0.2s; text-decoration: none;
+    }
+    .nav-member:hover { background: var(--canica-black); color: var(--canica-ivory); }
+
+    /* ── HERO ── */
+    #hero {
+      margin-top: var(--nav-h);
+      display: grid; grid-template-columns: 1fr 1fr;
+      height: calc(100vh - var(--nav-h)); min-height: 460px; max-height: 820px;
+    }
+    .hero-col { overflow: hidden; }
+    .hero-ph { width: 100%; height: 100%; object-fit: cover; }
+    .ph-child { background: #c2ad95; display: flex; align-items: center; justify-content: center; }
+    .ph-food  { background: #7a8c6e; display: flex; align-items: center; justify-content: center; }
+    .ph-label { font-family: var(--canica-body); font-size: var(--fs-micro); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+    /* ── TAGLINE ── */
+    .tagline-strip {
+      padding: 18px var(--gutter); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+      text-align: center;
+    }
+    .tagline-strip p {
+      font-family: var(--canica-body); font-size: var(--fs-micro);
+      letter-spacing: var(--tracking-mono); text-transform: uppercase;
+      color: var(--canica-blue); line-height: 1.8; opacity: 0.9;
+    }
+
+    /* ── MENU PAGE ── */
+    #menu {
+      padding: var(--space-xl) var(--gutter);
+      display: grid; grid-template-columns: 1fr 280px;
+      gap: var(--space-xl); max-width: 1100px; margin: 0 auto;
+      align-items: start;
+    }
+    .menu-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-l); }
+    .menu-section-label {
+      font-family: var(--canica-body); font-size: var(--fs-micro);
+      letter-spacing: var(--tracking-mono); text-transform: uppercase;
+      opacity: 0.45; padding-bottom: 8px; margin-bottom: var(--space-s);
+      border-bottom: 1px solid var(--rule);
+    }
+    .menu-item { margin-bottom: 14px; }
+    .menu-item-name { font-family: var(--canica-display); font-size: 14px; margin-bottom: 2px; }
+    .menu-item-desc { font-family: var(--canica-body); font-size: var(--fs-caption); opacity: 0.5; line-height: 1.4; }
+
+    /* ── DAY MENU CARD (pink, slightly rotated) ── */
+    .day-card-wrap { position: relative; padding-top: 40px; }
+    .day-card {
+      background: var(--canica-pink);
+      padding: 28px 22px;
+      position: relative;
+      transform: rotate(2deg);
+    }
+    .day-card-stripe {
+      height: 7px;
+      background: repeating-linear-gradient(90deg,
+        var(--canica-rufous) 0 10px, var(--canica-yellow) 10px 20px,
+        var(--canica-green) 20px 30px, var(--canica-violet) 30px 40px,
+        var(--canica-blue) 40px 50px);
+      margin-bottom: 20px;
+    }
+    .day-card-title {
+      font-family: var(--canica-body); font-size: var(--fs-micro);
+      letter-spacing: var(--tracking-mono); text-transform: uppercase;
+      font-weight: 600; text-align: center; margin-bottom: 20px;
+      padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.15);
+    }
+    .day-section { margin-bottom: 18px; }
+    .day-section h4 {
+      font-family: var(--canica-body); font-size: 9px;
+      letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+      opacity: 0.7; margin-bottom: 6px;
+    }
+    .day-section p {
+      font-family: var(--canica-display); font-size: 12px; line-height: 1.6;
+    }
+
+    /* ── INTRO ── */
+    #intro {
+      padding: var(--space-xl) var(--gutter);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl); max-width: var(--max-w); margin: 0 auto;
+      align-items: center; border-top: 1px solid var(--rule);
+    }
+    .intro-label { font-family: var(--canica-body); font-size: var(--fs-micro); letter-spacing: var(--tracking-mono); text-transform: uppercase; opacity: 0.4; margin-bottom: var(--space-m); }
+    .intro-heading { font-family: var(--canica-display); font-size: var(--fs-display-m); font-weight: 400; line-height: 1.05; margin-bottom: var(--space-m); }
+    .intro-heading em { font-style: italic; }
+    .intro-text { font-family: var(--canica-body); font-size: var(--fs-body); opacity: 0.65; line-height: 1.8; margin-bottom: var(--space-s); max-width: 420px; }
+    .intro-actions { display: flex; gap: var(--space-s); margin-top: var(--space-m); flex-wrap: wrap; }
+    .btn {
+      font-family: var(--canica-body); font-size: var(--fs-micro); letter-spacing: var(--tracking-mono);
+      text-transform: uppercase; padding: 12px 26px; border: 1px solid var(--canica-black);
+      background: transparent; color: var(--canica-black); cursor: pointer; transition: all 0.2s; text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover, .btn.fill { background: var(--canica-black); color: var(--canica-ivory); }
+    .btn.fill:hover { opacity: 0.8; }
+    .intro-img { width: 100%; aspect-ratio: 4/5; background: #c0aa8a; display: flex; align-items: center; justify-content: center; position: relative; }
+    .intro-img-label { font-family: var(--canica-body); font-size: var(--fs-micro); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.35; }
+    .intro-badge {
+      position: absolute; bottom: -14px; right: -14px;
+      background: var(--canica-apricot); color: white; padding: 18px 22px; text-align: center;
+    }
+    .intro-badge strong { font-family: var(--canica-display); font-size: 28px; display: block; }
+    .intro-badge span { font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; opacity: 0.85; }
+
+    /* ── GALLERY ── */
+    #gallery { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 280px 280px; gap: 3px; }
+    .g { overflow: hidden; }
+    .g:first-child { grid-row: 1/3; }
+    .gph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: var(--canica-body); font-size: var(--fs-micro); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); transition: transform 0.5s; }
+    .g:hover .gph { transform: scale(1.03); }
+    .g1{background:#6a5848} .g2{background:#486a50} .g3{background:#484868} .g4{background:#686040} .g5{background:#306060}
+
+    /* ── MEMBERSHIPS ── */
+    #memberships { padding: var(--space-xl) var(--gutter); border-top: 1px solid var(--rule); }
+    .mem-container { max-width: var(--max-w); margin: 0 auto; }
+    .mem-header { margin-bottom: var(--space-l); }
+    .section-label { font-family: var(--canica-body); font-size: var(--fs-micro); letter-spacing: var(--tracking-mono); text-transform: uppercase; opacity: 0.4; margin-bottom: 12px; }
+    .section-title { font-family: var(--canica-display); font-size: var(--fs-display-s); font-weight: 400; line-height: 1.1; }
+    .section-title em { font-style: italic; }
+    .mem-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+    .mem-card { padding: var(--space-l) var(--space-m); border: 1px solid var(--rule); display: flex; flex-direction: column; transition: border-color 0.2s; }
+    .mem-card:hover { border-color: var(--canica-black); }
+    .mem-tier { font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; opacity: 0.45; margin-bottom: var(--space-m); }
+    .mem-price { font-family: var(--canica-display); font-size: var(--fs-display-s); margin-bottom: 4px; }
+    .mem-period { font-family: var(--canica-body); font-size: var(--fs-caption); opacity: 0.45; margin-bottom: var(--space-m); }
+    .mem-rule { height: 1px; background: var(--rule); margin-bottom: var(--space-m); }
+    .mem-features { list-style: none; flex: 1; margin-bottom: var(--space-m); }
+    .mem-features li { font-family: var(--canica-body); font-size: var(--fs-caption); padding: 7px 0; border-bottom: 1px solid var(--rule); opacity: 0.7; line-height: 1.5; }
+    .mem-btn { font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; padding: 12px; border: 1px solid currentColor; background: transparent; cursor: pointer; transition: all 0.2s; width: 100%; margin-top: auto; }
+    .mem-btn:hover { background: var(--canica-black); color: var(--canica-ivory); border-color: var(--canica-black); }
+    .mem-note { font-family: var(--canica-body); font-size: 9px; letter-spacing: 0.05em; opacity: 0.3; text-align: center; margin-top: var(--space-m); }
+
+    /* ── PROGRAMA ── */
+    #programa { padding: var(--space-xl) var(--gutter); border-top: 1px solid var(--rule); max-width: var(--max-w); margin: 0 auto; }
+    .prog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: var(--space-l); }
+    .prog-card { padding: var(--space-m); border: 1px solid var(--rule); }
+    .prog-chip { display: inline-block; font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; padding: 4px 10px; border-radius: var(--radius-pill); margin-bottom: 14px; }
+    .chip-duo   { background: var(--canica-apricot); color: white; }
+    .chip-kids  { background: var(--canica-pink); color: white; }
+    .chip-adult { background: var(--canica-violet); color: white; }
+    .chip-food  { background: var(--canica-yellow); color: black; }
+    .chip-event { background: var(--canica-blue); color: white; }
+    .prog-date { font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; opacity: 0.4; margin-bottom: 10px; }
+    .prog-title { font-family: var(--canica-display); font-size: var(--fs-headline); font-weight: 400; line-height: 1.15; margin-bottom: 10px; }
+    .prog-title em { font-style: italic; }
+    .prog-body { font-family: var(--canica-body); font-size: var(--fs-caption); opacity: 0.55; line-height: 1.65; }
+
+    /* ── RESERVACIONES ── */
+    #reservaciones { padding: var(--space-xl) var(--gutter); border-top: 1px solid var(--rule); }
+    .res-wrap { max-width: 560px; margin: 0 auto; }
+    .res-lead { font-family: var(--canica-body); font-size: var(--fs-body); opacity: 0.6; line-height: 1.8; margin-top: var(--space-s); margin-bottom: var(--space-l); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; }
+    .form-field { border-bottom: 1px solid var(--rule); padding: 14px 0; display: flex; flex-direction: column; }
+    .form-field.full { grid-column: 1/-1; }
+    .form-label { font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; opacity: 0.4; margin-bottom: 6px; }
+    .form-input { font-family: var(--canica-display); font-size: var(--fs-body-l); background: none; border: none; outline: none; color: var(--canica-black); width: 100%; appearance: none; }
+    .form-input::placeholder { opacity: 0.3; }
+    .form-submit { width: 100%; font-family: var(--canica-body); font-size: var(--fs-micro); letter-spacing: var(--tracking-mono); text-transform: uppercase; padding: 15px; background: var(--canica-black); color: var(--canica-ivory); border: none; cursor: pointer; margin-top: var(--space-m); transition: opacity 0.2s; }
+    .form-submit:hover { opacity: 0.75; }
+
+    /* ── VISITA ── */
+    #visita { padding: var(--space-xl) var(--gutter); border-top: 1px solid var(--rule); display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-l); max-width: var(--max-w); margin: 0 auto; }
+    .vis-label { font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; opacity: 0.4; margin-bottom: var(--space-m); }
+    .vis-body { font-family: var(--canica-body); font-size: var(--fs-body); opacity: 0.6; line-height: 1.9; }
+    .vis-body a { border-bottom: 1px solid var(--rule); padding-bottom: 1px; transition: border-color 0.2s; }
+    .vis-body a:hover { border-color: var(--canica-black); opacity: 1; }
+
+    /* ── FOOTER ── */
+    footer { padding: var(--space-l) var(--gutter); border-top: 1px solid var(--rule); display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: var(--space-l); }
+    .foot-brand .wordmark { margin-bottom: var(--space-s); }
+    .foot-addr { font-family: var(--canica-body); font-size: var(--fs-caption); opacity: 0.35; line-height: 1.9; }
+    .foot-col-label { font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; opacity: 0.3; margin-bottom: var(--space-s); }
+    .foot-col a { display: block; font-family: var(--canica-body); font-size: var(--fs-caption); opacity: 0.5; margin-bottom: 8px; transition: opacity 0.2s; }
+    .foot-col a:hover { opacity: 1; }
+    .foot-bottom { padding: var(--space-s) var(--gutter); border-top: 1px solid var(--rule); display: flex; justify-content: space-between; font-family: var(--canica-body); font-size: 9px; letter-spacing: 0.04em; opacity: 0.25; }
+
+    /* ── MODAL ── */
+    .overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding: var(--space-m); opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: var(--canica-ivory); max-width: 440px; width: 100%; padding: var(--space-l) var(--space-m); position: relative; transform: translateY(12px); transition: transform 0.25s; }
+    .overlay.open .modal { transform: translateY(0); }
+    .modal-x { position: absolute; top: 14px; right: 18px; background: none; border: none; font-size: 20px; cursor: pointer; opacity: 0.35; }
+    .modal-x:hover { opacity: 1; }
+    .modal-lbl { font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; opacity: 0.4; margin-bottom: 8px; }
+    .modal-h { font-family: var(--canica-display); font-size: var(--fs-headline); margin-bottom: var(--space-m); }
+    .modal-plan { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: var(--canica-black); color: var(--canica-ivory); margin-bottom: var(--space-m); }
+    .modal-plan-name { font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; }
+    .modal-plan-price { font-family: var(--canica-display); font-size: var(--fs-headline); }
+    #stripe-el { border-bottom: 1px solid var(--rule); padding: 14px 0; margin-bottom: var(--space-s); min-height: 44px; display: flex; align-items: center; }
+    #stripe-el p { font-family: var(--canica-body); font-size: var(--fs-caption); opacity: 0.35; }
+    .modal-btn { width: 100%; font-family: var(--canica-body); font-size: 9px; letter-spacing: var(--tracking-mono); text-transform: uppercase; padding: 14px; border: none; background: var(--canica-black); color: var(--canica-ivory); cursor: pointer; margin-top: var(--space-m); transition: opacity 0.2s; }
+    .modal-btn:hover { opacity: 0.75; }
+    .modal-legal { font-family: var(--canica-body); font-size: 9px; opacity: 0.3; text-align: center; margin-top: var(--space-s); line-height: 1.6; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:960px){
+      #hero{grid-template-columns:1fr;}
+      #hero .hero-col:last-child{display:none;}
+      #menu{grid-template-columns:1fr;gap:var(--space-l);}
+      .menu-cols{grid-template-columns:1fr;}
+      .day-card-wrap{padding-top:0;}
+      .day-card{transform:none;}
+      #intro{grid-template-columns:1fr;gap:var(--space-l);}
+      .intro-badge{right:0;}
+      #gallery{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
+      #gallery .g:first-child{grid-row:auto;grid-column:1/-1;height:240px;}
+      .mem-grid{grid-template-columns:1fr;max-width:360px;}
+      .prog-grid{grid-template-columns:1fr 1fr;}
+      #visita{grid-template-columns:1fr 1fr;}
+      footer{grid-template-columns:1fr 1fr;}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;}
+      #hero{height:65vw;min-height:280px;}
+      .prog-grid{grid-template-columns:1fr;}
+      #visita{grid-template-columns:1fr;}
+      footer{grid-template-columns:1fr;gap:var(--space-m);}
+      .foot-bottom{flex-direction:column;gap:4px;}
+      .form-row{grid-template-columns:1fr;}
+    }
+  </style>
 </head>
-<body class="landing">
-<script>
-function openPage(id) { document.getElementById(id).style.display='block'; document.body.style.overflow='hidden'; }
-function closePage(id) { document.getElementById(id).style.display='none'; document.body.style.overflow=''; }
-</script>
+<body>
 
-<!-- Brandmark -->
-<a class="bead-mark" href="index.html" aria-label="Canica home">
-  <img src="assets/canica-wordmark-vector.svg" alt="canica" />
-</a>
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="wordmark" aria-label="Canica">
+    <div class="marble m1">c</div>
+    <div class="marble m2">a</div>
+    <div class="marble m3">n</div>
+    <div class="marble m4">i</div>
+    <div class="marble m5">c</div>
+    <div class="marble m6">a</div>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#" onclick="openMenuPage();return false;">Menús</a></li>
+      <li><a href="#programa">Programa</a></li>
+      <li><a href="#memberships">Membresías</a></li>
+      <li><a href="#reservaciones">Reservar</a></li>
+      <li><a href="#visita">About</a></li>
+    </ul>
+    <a href="#memberships" class="nav-member">Ser miembro</a>
+    <span class="nav-cart">🛒</span>
+  </div>
+</nav>
 
-<!-- Tiny status dot -->
-<a class="status-dot" href="reservations.html" aria-label="Reservations">
-  <span class="status-dot__dot"></span>
-  <span class="status-dot__txt">abierto hoy</span>
-</a>
-
-<!-- ====================================================
-     Section 01 — Restaurant / hero
-     ==================================================== -->
-<section class="hero" id="restaurant">
-  <div class="hero__photo" style="background-image: url('assets/photo-hero-exterior.jpg');"></div>
-
-  <div class="hero__copy">
-    <span class="kicker">Canica · Mazatlán 83, Condesa</span>
-    <h1>Dos ritmos. <em>Un solo lugar.</em></h1>
-    <p class="lead">Café de especialidad y cocina de verdad para los adultos. Ludoteca supervisada para los niños.</p>
-    <div class="hero__actions">
-      <a class="btn btn--primary" href="menu.html">Ver el menú →</a>
-      <a class="btn btn--ghost" href="reservations.html">Reservar una mesa</a>
-    </div>
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-col">
+    <div class="hero-ph ph-child"><span class="ph-label">Niño leyendo</span></div>
+  </div>
+  <div class="hero-col">
+    <div class="hero-ph ph-food"><span class="ph-label">Detalle comida</span></div>
   </div>
 </section>
 
-<!-- ====================================================
-     Section 02 — Playground / programme
-     ==================================================== -->
-<!-- Section 02 — La ludoteca (full experience) -->
-<section class="hero hero--reverse" id="playground">
-  <div class="hero__photo" style="background-image: url('assets/photo-hero-playground.jpg');"></div>
+<!-- TAGLINE -->
+<div class="tagline-strip">
+  <p>BUILT FOR EASE, DISCOVERY, AND BOOKING. CLEAR NAVIGATION, MODULAR DESIGN, AND CONSISTENT<br>TONE ACROSS HOMEPAGE, MENUS, PROGRAMS, AND SHOP.</p>
+</div>
 
-  <div class="hero__copy">
-    <span class="kicker">02 · La ludoteca</span>
-    <h2>Aquí los niños <em>juegan.</em><br>Y ustedes pueden respirar.</h2>
-    <p class="lead">Un espacio diseñado bajo el principio del juego libre. Los niños construyen, inventan y exploran a su propio ritmo, guiados por su curiosidad y no por adultos.</p>
-    <div class="hero__actions">
-      <button class="btn btn--primary" onclick="openPage('ludoteca-page')">La ludoteca →</button>
+<!-- MENU -->
+<section id="menu">
+  <div class="menu-cols">
+    <div>
+      <p class="menu-section-label">Plates &amp; Snacks</p>
+      <div class="menu-item"><div class="menu-item-name">Fresh rustic breads, flavored butters</div></div>
+      <div class="menu-item"><div class="menu-item-name">Raw seasonal vegetables</div></div>
+      <div class="menu-item"><div class="menu-item-name">Toasted, seasoned nut plate</div></div>
+
+      <p class="menu-section-label" style="margin-top:var(--space-m)">Bowls</p>
+      <div class="menu-item">
+        <div class="menu-item-name">Signature fruit smoothies</div>
+        <div class="menu-item-desc">almond, oat, or coconut milk, natural spices</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-name">Greek yogurt or jocoque, granola</div>
+        <div class="menu-item-desc">seasonal fruits, honey</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-name">Frozen acaí blended with banana</div>
+        <div class="menu-item-desc">topped with seeds, granola, coconut</div>
+      </div>
+
+      <p class="menu-section-label" style="margin-top:var(--space-m)">Plates to Share</p>
+      <div class="menu-item"><div class="menu-item-name">Jocoque, or labneh with honey and olive oil</div></div>
+      <div class="menu-item"><div class="menu-item-name">Hummus</div></div>
+      <div class="menu-item"><div class="menu-item-name">Toasted sourdough bread or warm pita</div></div>
+      <div class="menu-item"><div class="menu-item-name">Roasted seasonal vegetables, herbs, house dressing</div></div>
+    </div>
+    <div>
+      <p class="menu-section-label">Sweets</p>
+      <div class="menu-item"><div class="menu-item-name">Seasonal fruits</div></div>
+      <div class="menu-item"><div class="menu-item-name">Yogurt</div></div>
+
+      <p class="menu-section-label" style="margin-top:var(--space-m)">Drinks</p>
+      <div class="menu-item"><div class="menu-item-name">Espresso</div></div>
+      <div class="menu-item"><div class="menu-item-name">Lungo</div></div>
+      <div class="menu-item"><div class="menu-item-name">Fresh fruit juices</div></div>
+      <div class="menu-item"><div class="menu-item-name">Herbal teas</div></div>
+      <div class="menu-item"><div class="menu-item-name">Natural wine</div></div>
+      <div class="menu-item"><div class="menu-item-name">Beer</div></div>
     </div>
   </div>
-</section>
 
-<!-- Section 03 — Membership -->
-<section class="hero" id="membership">
-  <div class="hero__photo" style="background-image: url('assets/photo-interior-family.jpg');"></div>
-
-  <div class="hero__copy">
-    <span class="kicker">03 · Canica Commons</span>
-    <h2>Tu lugar, sin tener que <em>pensarlo.</em></h2>
-    <p class="lead">Acceso ilimitado entre semana. Sin calcular entradas. Las primeras 100 familias fundadoras bloquean este precio para siempre.</p>
-
-    <!-- Kid selector — each button goes directly to checkout -->
-    <div style="margin:var(--sp-5) 0 var(--sp-3);">
-      <p style="font-family:var(--body);font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.45;margin-bottom:var(--sp-3);">Cuántos niños</p>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn--primary" onclick="checkoutKids(1)" style="flex:1;padding:12px 8px;font-size:11px;line-height:1.4;">1 niño<br><span style="font-family:var(--display);font-size:17px;font-style:italic;">$950</span><br><span style="font-size:11px;opacity:.6;">/mes</span></button>
-        <button class="btn" onclick="checkoutKids(2)" style="flex:1;padding:12px 8px;font-size:11px;line-height:1.4;">2 niños<br><span style="font-family:var(--display);font-size:17px;font-style:italic;">$1,650</span><br><span style="font-size:11px;opacity:.6;">/mes</span></button>
-        <button class="btn" onclick="checkoutKids(3)" style="flex:1;padding:12px 8px;font-size:11px;line-height:1.4;">3+ niños<br><span style="font-family:var(--display);font-size:17px;font-style:italic;">$2,500</span><br><span style="font-size:11px;opacity:.6;">/mes</span></button>
+  <!-- Pink day menu card -->
+  <div class="day-card-wrap">
+    <div class="day-card">
+      <div class="day-card-stripe"></div>
+      <div class="day-card-title">Menú del día</div>
+      <div class="day-section">
+        <h4>Soup of the day</h4>
+        <p>Root vegetables, beans,<br>peas, seasonal herbs</p>
+      </div>
+      <div class="day-section">
+        <h4>Signature bowls</h4>
+        <p>Coconut rice, quinoa,<br>couscous, farro, brown<br>rice base</p>
+      </div>
+      <div class="day-section">
+        <h4>Roasted</h4>
+        <p>Roasted carrots,<br>zucchini, chickpeas,<br>greens</p>
+      </div>
+      <div class="day-section">
+        <h4>Sweets of the day</h4>
+        <p>Seasonal fruits<br>Yogurt</p>
       </div>
     </div>
-    <p style="font-family:var(--body);font-size:11px;opacity:.35;margin:0;">Tópe familiar: $2,500/mes · Cancela cuando quieras.</p>
   </div>
 </section>
 
+<!-- INTRO -->
+<section id="intro">
+  <div>
+    <p class="intro-label">Sobre Canica</p>
+    <h2 class="intro-heading">Dos ritmos.<br>Un solo lugar.<br><em>Sin compromisos.</em></h2>
+    <p class="intro-text">Los adultos quieren café de verdad, comida honesta y media hora sin interrupciones. Los niños quieren explorar, moverse y construir.</p>
+    <p class="intro-text">Canica es el único espacio en la Juárez donde ambas cosas pasan al mismo tiempo.</p>
+    <div class="intro-actions">
+      <button class="btn fill" onclick="openModal('Familiar','$2,500/mes')">Ser miembro</button>
+      <a href="#reservaciones" class="btn">Reservar mesa</a>
+    </div>
+  </div>
+  <div>
+    <div class="intro-img">
+      <span class="intro-img-label">Foto editorial</span>
+      <div class="intro-badge">
+        <strong>+600</strong>
+        <span>familias al mes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" aria-label="Galería">
+  <div class="g"><div class="gph g1">Espacio</div></div>
+  <div class="g"><div class="gph g2">Ludoteca</div></div>
+  <div class="g"><div class="gph g3">Bar</div></div>
+  <div class="g"><div class="gph g4">Comida</div></div>
+  <div class="g"><div class="gph g5">Terraza</div></div>
+</section>
+
+<!-- MEMBERSHIPS -->
+<section id="memberships">
+  <div class="mem-container">
+    <div class="mem-header">
+      <p class="section-label">Membresías</p>
+      <h2 class="section-title" style="margin-top:12px">Tu lugar.<br><em>Sin tener que pensarlo.</em></h2>
+      <p style="font-family:var(--canica-body);font-size:var(--fs-body);opacity:.55;max-width:420px;margin-top:var(--space-s);line-height:1.8;">Una suscripción mensual. Acceso a ludoteca, prioridad en reservas, descuentos en el café. Llegas, te sientas, pides.</p>
+    </div>
+    <div class="mem-grid">
+      <div class="mem-card">
+        <div class="mem-tier">Básica</div>
+        <div class="mem-price">$1,500</div>
+        <div class="mem-period">MXN / mes · por familia</div>
+        <div class="mem-rule"></div>
+        <ul class="mem-features">
+          <li>8 entradas a ludoteca al mes</li>
+          <li>Reservas con 48h de anticipación</li>
+          <li>5% descuento en café</li>
+          <li>Acceso a programa</li>
+        </ul>
+        <button class="mem-btn" onclick="openModal('Básica','$1,500/mes')">Suscribirme</button>
+      </div>
+      <div class="mem-card" style="border-color:var(--canica-apricot)">
+        <div class="mem-tier">Familiar · más popular</div>
+        <div class="mem-price" style="color:var(--canica-apricot)">$2,500</div>
+        <div class="mem-period">MXN / mes · por familia</div>
+        <div class="mem-rule" style="background:var(--canica-apricot);opacity:.3"></div>
+        <ul class="mem-features">
+          <li>Ludoteca ilimitada</li>
+          <li>Reservas con 72h de anticipación</li>
+          <li>10% descuento en café</li>
+          <li>2 invitados al mes</li>
+          <li>Acceso prioritario a programa</li>
+          <li>Puntos dobles en Loyalz</li>
+        </ul>
+        <button class="mem-btn" style="color:var(--canica-apricot);border-color:var(--canica-apricot)" onclick="openModal('Familiar','$2,500/mes')">Suscribirme</button>
+      </div>
+      <div class="mem-card">
+        <div class="mem-tier">Canica Club</div>
+        <div class="mem-price">$4,000</div>
+        <div class="mem-period">MXN / mes · por familia</div>
+        <div class="mem-rule"></div>
+        <ul class="mem-features">
+          <li>Ludoteca ilimitada, sin restricción</li>
+          <li>Mesa fija fines de semana</li>
+          <li>15% descuento en café</li>
+          <li>4 invitados al mes</li>
+          <li>Eventos privados</li>
+          <li>Puntos 3× en Loyalz</li>
+          <li>Welcome pack Canica</li>
+        </ul>
+        <button class="mem-btn" onclick="openModal('Canica Club','$4,000/mes')">Suscribirme</button>
+      </div>
+    </div>
+    <p class="mem-note">Cancela cuando quieras. Sin permanencia. Cargo mensual automático vía Stripe.</p>
+  </div>
+</section>
+
+<!-- PROGRAMA -->
+<section id="programa">
+  <p class="section-label">Programa</p>
+  <h2 class="section-title" style="margin-top:12px">Siempre hay algo<br><em>pasando.</em></h2>
+  <div class="prog-grid">
+    <div class="prog-card">
+      <span class="prog-chip chip-kids">Niños</span>
+      <p class="prog-date">Sábados · 10 a.m.</p>
+      <h3 class="prog-title"><em>Cooking</em> with your hands</h3>
+      <p class="prog-body">Masa, ingredientes de temporada, receta sencilla. Para niños de 4 a 8 años.</p>
+    </div>
+    <div class="prog-card">
+      <span class="prog-chip chip-duo">Duo</span>
+      <p class="prog-date">Domingos · 11 a.m.</p>
+      <h3 class="prog-title">After breakfast,<br><em>live music</em></h3>
+      <p class="prog-body">Menú especial con música acústica. La mesa que da ganas de quedarse.</p>
+    </div>
+    <div class="prog-card">
+      <span class="prog-chip chip-adult">Adultos</span>
+      <p class="prog-date">Jueves · 7 p.m.</p>
+      <h3 class="prog-title">Discussions<br><em>and drink</em></h3>
+      <p class="prog-body">Vinos naturales con maridaje de temporada. Productores distintos cada semana.</p>
+    </div>
+    <div class="prog-card">
+      <span class="prog-chip chip-duo">Duo</span>
+      <p class="prog-date">Miércoles · 10 a.m.</p>
+      <h3 class="prog-title">Yoga,<br><em>after the storm</em></h3>
+      <p class="prog-body">Para mamás con bebés de 0 a 18 meses. Ludoteca disponible antes y después.</p>
+    </div>
+    <div class="prog-card">
+      <span class="prog-chip chip-food">Café</span>
+      <p class="prog-date">Primer viernes del mes</p>
+      <h3 class="prog-title">Chef <em>invitado</em></h3>
+      <p class="prog-body">Un cocinero diferente cada mes. Menú degustación por tiempo limitado.</p>
+    </div>
+    <div class="prog-card">
+      <span class="prog-chip chip-kids">Niños</span>
+      <p class="prog-date">Todos los días</p>
+      <h3 class="prog-title"><em>Wood</em> building</h3>
+      <p class="prog-body">Bloques, piezas, estructuras. Construcción libre supervisada en la ludoteca.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVACIONES -->
+<section id="reservaciones">
+  <div class="res-wrap">
+    <p class="section-label">Reservaciones</p>
+    <h2 class="section-title" style="margin-top:12px">Asegura<br><em>tu mesa.</em></h2>
+    <p class="res-lead">Para grupos de seis o más. Te confirmamos en menos de 24 horas.</p>
+    <form id="res-form">
+      <div class="form-row">
+        <div class="form-field"><label class="form-label">Nombre</label><input class="form-input" type="text" name="name" placeholder="Tu nombre" required></div>
+        <div class="form-field"><label class="form-label">WhatsApp</label><input class="form-input" type="tel" name="phone" placeholder="+52 55"></div>
+      </div>
+      <div class="form-field full"><label class="form-label">Correo</label><input class="form-input" type="email" name="email" placeholder="correo@ejemplo.com" required></div>
+      <div class="form-row">
+        <div class="form-field"><label class="form-label">Fecha</label><input class="form-input" type="date" name="date" required></div>
+        <div class="form-field"><label class="form-label">Horario</label>
+          <select class="form-input" name="time" required>
+            <option value="" disabled selected>Seleccionar</option>
+            <option>9:00 a.m.</option><option>10:00 a.m.</option><option>11:00 a.m.</option>
+            <option>12:00 p.m.</option><option>1:00 p.m.</option><option>2:00 p.m.</option>
+            <option>3:00 p.m.</option><option>4:00 p.m.</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label class="form-label">Personas</label>
+          <select class="form-input" name="guests" required>
+            <option value="" disabled selected>Cuántos</option>
+            <option>1–2</option><option>3–5</option><option>6–8</option><option>9+</option>
+          </select>
+        </div>
+        <div class="form-field"><label class="form-label">Niños</label>
+          <select class="form-input" name="children">
+            <option value="" disabled selected>Cuántos</option>
+            <option>Ninguno</option><option>1</option><option>2</option><option>3+</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field full"><label class="form-label">Notas</label><textarea class="form-input" name="notes" placeholder="Ocasión especial, alergias, lo que necesitemos saber." style="resize:none;min-height:56px;"></textarea></div>
+      <button type="submit" class="form-submit">Enviar solicitud</button>
+    </form>
+  </div>
+</section>
+
+<!-- VISITA -->
+<section id="visita">
+  <div>
+    <p class="vis-label">Dónde estamos</p>
+    <p class="vis-body">Havre 73<br>Juárez, Cuauhtémoc<br>Ciudad de México, <em>Mexico</em> 06600<br><br><a href="https://maps.google.com/?q=Havre+73+Juárez+CDMX" target="_blank" rel="noopener">Ver en Google Maps</a></p>
+  </div>
+  <div>
+    <p class="vis-label">Horarios</p>
+    <p class="vis-body">Lunes – Viernes<br>9 a.m. – 6 p.m.<br><br>Sábado – Domingo<br>9 a.m. – 5 p.m.</p>
+  </div>
+  <div>
+    <p class="vis-label">Contacto</p>
+    <p class="vis-body"><a href="mailto:hola@canica.fun">hola@canica.fun</a><br><a href="https://instagram.com/canica" target="_blank" rel="noopener">@canica</a><br><br>Eventos privados<br><a href="mailto:eventos@canica.fun">eventos@canica.fun</a></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-brand">
+    <div class="wordmark" style="margin-bottom:var(--space-s)">
+      <div class="marble m1">c</div><div class="marble m2">a</div><div class="marble m3">n</div>
+      <div class="marble m4">i</div><div class="marble m5">c</div><div class="marble m6">a</div>
+    </div>
+    <p class="foot-addr">Havre 73, Juárez<br>Cuauhtémoc, Ciudad de México<br><em>Mexico</em> 06600</p>
+  </div>
+  <div class="foot-col">
+    <p class="foot-col-label">Visítanos</p>
+    <a href="#menu">Menús</a><a href="#programa">Programa</a>
+    <a href="#reservaciones">Reservar</a><a href="#visita">Ubicación</a>
+  </div>
+  <div class="foot-col">
+    <p class="foot-col-label">Membresías</p>
+    <a href="#memberships">Básica</a><a href="#memberships">Familiar</a><a href="#memberships">Canica Club</a>
+  </div>
+  <div class="foot-col">
+    <p class="foot-col-label">Contacto</p>
+    <a href="mailto:hola@canica.fun">hola@canica.fun</a>
+    <a href="https://instagram.com/canica" target="_blank">Instagram</a>
+    <a href="#reservaciones">Eventos privados</a>
+  </div>
+</footer>
+<div class="foot-bottom">
+  <span>© 2025 Canica</span>
+  <span>Havre 73, Juárez, Ciudad de México, <em>Mexico</em></span>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal()">×</button>
+    <p class="modal-lbl">Membresía</p>
+    <h3 class="modal-h" id="modal-h">Canica Familiar</h3>
+    <div class="modal-plan">
+      <span class="modal-plan-name" id="modal-plan-name">Plan Familiar</span>
+      <span class="modal-plan-price" id="modal-plan-price">$2,500/mes</span>
+    </div>
+    <div id="stripe-el"><p>Stripe se activa con tu clave pública.</p></div>
+    <button class="modal-btn">Confirmar suscripción</button>
+    <p class="modal-legal">Cargo mensual automático. Cancela cuando quieras. Procesado por Stripe.</p>
+  </div>
+</div>
+
 <script>
-async function checkoutKids(n) {
-  const plan = n === 1 ? 'primer_nino' : n === 2 ? 'dos_ninos' : 'tope_familiar';
-  const btn = event.currentTarget;
-  const orig = btn.innerHTML;
-  btn.disabled = true;
-  btn.textContent = 'Cargando...';
-  try {
-    const res = await fetch('/api/checkout', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({plan})
-    });
-    const data = await res.json();
-    if (data.url) { window.location.href = data.url; }
-    else { alert('Error al procesar. Intenta de nuevo.'); btn.disabled=false; btn.innerHTML=orig; }
-  } catch(e) {
-    alert('Error de conexión. Intenta de nuevo.');
-    btn.disabled=false; btn.innerHTML=orig;
-  }
+// Menu tabs — handled by direct links since layout is flat
+// Modal
+function openModal(plan, price) {
+  document.getElementById('modal-h').textContent = 'Canica ' + plan;
+  document.getElementById('modal-plan-name').textContent = 'Plan ' + plan;
+  document.getElementById('modal-plan-price').textContent = price;
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+document.getElementById('overlay').addEventListener('click', e => { if(e.target.id==='overlay') closeModal(); });
+
+// Reservation
+document.getElementById('res-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(e.target));
+  alert('Gracias, ' + d.name + '. Solicitud recibida. Te confirmamos en menos de 24 horas.');
+  e.target.reset();
+});
+
+// Stripe (wire when ready)
+// const stripe = Stripe('pk_live_...');
+
+// Menu full-page
+function openMenuPage() {
+  document.getElementById('menu-fullpage').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function closeMenuPage() {
+  document.getElementById('menu-fullpage').style.display = 'none';
+  document.body.style.overflow = '';
 }
 </script>
 
-<!-- ====================================================
-     Quiet info strip
-     ==================================================== -->
-<section class="info">
-  <div class="info__row">
-    <p class="info__line"><em>abierto</em> todos los días 9–19:30h</p>
-    <p class="info__line">mazatlán 83 · condesa · cdmx</p>
-    <p class="info__line"><a href="reservations.html">reservar →</a></p>
-  </div>
-</section>
+<!-- MENU FULL PAGE -->
+<div id="menu-fullpage" style="display:none;position:fixed;inset:0;z-index:300;background:var(--canica-ivory);overflow-y:auto;">
 
-<!-- ====================================================
-     Footer
-     ==================================================== -->
-<footer class="site-footer-min">
-  <div class="footer-row">
-    <p><em>canica</em> · Mazatlán 83, Condesa · Ciudad de México</p>
-    <p>
-      <a href="https://www.instagram.com/canicafun?igsh=cmVuZWxmbHBqbHRv" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
-      &nbsp;·&nbsp;
-      <a href="mailto:hola@canica.fun">hola@canica.fun</a>
-    </p>
-  </div>
-  <p class="footer-meta">
-    <a href="/eventos" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(26,20,17,.2);">Eventos privados</a>
-    &nbsp;·&nbsp; © 2026 Canica · Identidad por Mestiza Estudio
-  </p>
-</footer>
-
-
-
-
-
-
-<!-- LUDOTECA OVERLAY -->
-<div id="ludoteca-page" style="display:none;position:fixed;inset:0;z-index:300;background:#FFF9F1;overflow-y:auto;">
-
-<div style="position:sticky;top:0;z-index:10;background:#FFF9F1;border-bottom:1px solid rgba(26,20,17,.1);height:64px;display:flex;align-items:center;padding:0 clamp(20px,5vw,60px);justify-content:space-between;">
-    <img src="assets/canica-wordmark-vector.svg" alt="canica" style="height:26px;width:auto;">
-    <button onclick="closePage('ludoteca-page')" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:none;border:none;cursor:pointer;color:rgba(26,20,17,.5);padding:12px 0 12px 16px;min-height:44px;">← Volver</button>
+  <!-- Nav -->
+  <div style="position:sticky;top:0;z-index:10;background:var(--canica-ivory);border-bottom:1px solid var(--rule);height:var(--nav-h);display:flex;align-items:center;padding:0 var(--gutter);justify-content:space-between;">
+    <div class="wordmark">
+      <div class="marble m1">c</div><div class="marble m2">a</div><div class="marble m3">n</div>
+      <div class="marble m4">i</div><div class="marble m5">c</div><div class="marble m6">a</div>
+    </div>
+    <button onclick="closeMenuPage()" style="font-family:var(--canica-body);font-size:var(--fs-micro);letter-spacing:var(--tracking-mono);text-transform:uppercase;background:none;border:none;cursor:pointer;opacity:.5;">&#8592; Volver</button>
   </div>
 
-  <div style="max-width:1200px;margin:0 auto;padding:48px clamp(20px,5vw,60px) 72px;" class="ludo-grid">
+  <!-- Three-column layout -->
+  <div style="display:grid;grid-template-columns:160px 1fr 240px;">
 
-    <!-- LEFT: Razón de ser -->
-    <div>
-      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#be352b;margin-bottom:24px;">Bienvenidos a Canica</p>
-
-      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(26px,3.5vw,42px);font-weight:400;line-height:1.15;color:#1a1411;margin-bottom:32px;letter-spacing:-.01em;">La <em style="font-style:italic;">primera</em> vez que no tienen que elegir entre ustedes y sus hijos.</h2>
-
-      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(16px,1.5vw,19px);line-height:1.85;color:rgba(26,20,17,.72);margin-bottom:20px;">Un lugar pensado para padres como ustedes. Como papás nuevos, sabemos lo difícil que puede ser encontrar tiempo para ser adultos. Tiempo para platicar con calma, leer, jugar, tomar un café sin prisa o una copa de vino a gusto.</p>
-
-      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(16px,1.5vw,19px);line-height:1.85;color:rgba(26,20,17,.72);margin-bottom:20px;">Creamos Canica para devolverles ese espacio. Un lugar donde pueden disfrutar su tiempo como individuos, sin culpa y sin remordimientos. Donde estar con sus hijos no significa dejarse a ustedes mismos de lado.</p>
-
-      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(16px,1.5vw,19px);line-height:1.85;color:rgba(26,20,17,.65);font-style:italic;margin-bottom:20px;">La ludoteca Canica está diseñada bajo el principio del juego libre. Creemos que la mejor ludoteca no es la que lo explica todo, sino la que invita a imaginar. Un espacio donde los niños construyen, inventan y exploran a su propio ritmo, guiados por su curiosidad y no por adultos.</p>
-
-      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(16px,1.5vw,19px);line-height:1.85;color:rgba(26,20,17,.72);">Los invitamos a retomar su espacio, aunque sea por un momento. A quedarse. A volver.</p>
+    <!-- Left nav -->
+    <div style="border-right:1px solid var(--rule);padding:var(--space-l) var(--space-m);position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));overflow-y:auto;">
+      <div style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.35;margin-bottom:var(--space-m);">Menú</div>
+      <a href="#m-masa" style="display:block;font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.55;margin-bottom:9px;text-decoration:none;">Con masa madre</a>
+      <a href="#m-caliente" style="display:block;font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.55;margin-bottom:9px;text-decoration:none;">Espresso bar</a>
+      <a href="#m-frio" style="display:block;font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.55;margin-bottom:9px;text-decoration:none;">Bebidas frías</a>
+      <a href="#m-infusiones" style="display:block;font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.55;margin-bottom:9px;text-decoration:none;">Infusiones & tés</a>
+      <a href="#m-cerveza" style="display:block;font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.55;margin-bottom:9px;text-decoration:none;">Cerveza</a>
+      <a href="#m-vino" style="display:block;font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.55;margin-bottom:9px;text-decoration:none;">Vino natural</a>
+      <hr style="border:none;border-top:1px solid var(--rule);margin:var(--space-m) 0;">
+      <a href="#m-ninos" style="display:block;font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.55;margin-bottom:9px;text-decoration:none;">Para los niños</a>
+      <a href="#m-pan" style="display:block;font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.55;margin-bottom:9px;text-decoration:none;">Pan & dulce</a>
+      <hr style="border:none;border-top:1px solid var(--rule);margin:var(--space-m) 0;">
+      <a href="#m-ludoteca" style="display:block;font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.55;margin-bottom:9px;text-decoration:none;">Ludoteca</a>
+      <a href="#m-tienda" style="display:block;font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.55;margin-bottom:9px;text-decoration:none;">Tienda</a>
     </div>
 
-    <!-- RIGHT: Precios — same classes as menu.html -->
-    <div>
-      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#be352b;margin-bottom:0;">Entrada a la ludoteca</p>
-      <ul class="items">
-        <li>
-          <div><h3 class="name">Lunes</h3><p class="ingredients">Tiempo libre · No aplica festivos</p></div>
-          <span class="price">$100</span>
-        </li>
-        <li>
-          <div><h3 class="name">Martes – domingo</h3><p class="ingredients">Tiempo libre</p></div>
-          <span class="price">$200</span>
-        </li>
-      </ul>
+    <!-- Center content -->
+    <div style="padding:var(--space-l);">
 
+      <div id="m-masa" style="margin-bottom:var(--space-xl);">
+        <p style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.4;padding-bottom:10px;margin-bottom:var(--space-m);border-bottom:1px solid var(--rule);">Con masa madre</p>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid var(--rule);"><div><div style="font-family:var(--canica-display);font-size:15px;">Avo Toast</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.45;">Pan de masa madre, aguacate</div></div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$190</div></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid var(--rule);"><div><div style="font-family:var(--canica-display);font-size:15px;">Toast de Camote</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.45;">Pan de masa madre, camote asado</div></div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$230</div></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid var(--rule);"><div><div style="font-family:var(--canica-display);font-size:15px;">Huevos Revueltos con Tocino Crujiente</div></div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$220</div></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid var(--rule);"><div><div style="font-family:var(--canica-display);font-size:15px;">Huevos Cazuela</div></div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$220</div></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;"><div><div style="font-family:var(--canica-display);font-size:15px;">Huevos Rotos</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.45;">Dos huevos sobre papas cambray bañadas en salsa de tomate. Acompañados de lajas de jamón serrano horneado.</div></div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$240</div></div>
+      </div>
 
+      <div id="m-caliente" style="margin-bottom:var(--space-xl);">
+        <p style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.4;padding-bottom:10px;margin-bottom:var(--space-m);border-bottom:1px solid var(--rule);">Espresso bar</p>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Espresso</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$55</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Americano</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$65</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Cappuccino</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$70</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Latte</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$75</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Babyccino</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$55</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Fun Latte</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$110</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;"><div style="font-family:var(--canica-display);font-size:15px;">Cold Brew</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$65</div></div>
+      </div>
+
+      <div id="m-frio" style="margin-bottom:var(--space-xl);">
+        <p style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.4;padding-bottom:10px;margin-bottom:var(--space-m);border-bottom:1px solid var(--rule);">Bebidas frías</p>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Ice Latte</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$80</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Matcha Latte</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$95</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Chai Latte</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$90</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Kettle Matcha Latte</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$120</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div><div style="font-family:var(--canica-display);font-size:15px;">Canica Latte</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.45;">Espresso, leche, coulis de mango</div></div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$120</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Horchata Bubble Tea</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$120</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Suero</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$70</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Limonada</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$60</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Naranjada</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$60</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Vaso de jugo</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$60</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;"><div style="font-family:var(--canica-display);font-size:15px;">Topo Chico</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$60</div></div>
+      </div>
+
+      <div id="m-infusiones" style="margin-bottom:var(--space-xl);">
+        <p style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.4;padding-bottom:10px;margin-bottom:var(--space-m);border-bottom:1px solid var(--rule);">Infusiones & tés</p>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Masala Chai</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$55</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Tierra quemada</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$55</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Rooibos toronjil</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$55</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Frutos rojos</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$55</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Sencha</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$65</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;"><div><div style="font-family:var(--canica-display);font-size:15px;">Tea HOA</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.45;">Para la mesa</div></div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$350</div></div>
+      </div>
+
+      <div id="m-cerveza" style="margin-bottom:var(--space-xl);">
+        <p style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.4;padding-bottom:10px;margin-bottom:var(--space-m);border-bottom:1px solid var(--rule);">Cerveza</p>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Carta Blanca</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$60</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Heineken 0.0</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$65</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">High Miller</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$80</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Michelob Ultra</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$80</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;"><div style="font-family:var(--canica-display);font-size:15px;">Clamato</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$60</div></div>
+      </div>
+
+      <div id="m-vino" style="margin-bottom:var(--space-xl);">
+        <p style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.4;padding-bottom:10px;margin-bottom:var(--space-m);border-bottom:1px solid var(--rule);">Vino natural</p>
+        <p style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.4;margin-bottom:var(--space-m);font-style:italic;">Copa / Botella</p>
+        <div style="font-family:var(--canica-body);font-size:9px;letter-spacing:.15em;text-transform:uppercase;opacity:.4;margin:var(--space-s) 0;">Blancos & espumosos</div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Prosecco Brut</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$180 / $900</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Pinot Grigio, Armonico</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$200 / $990</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Moscatel Tamarix</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$260 / $1,300</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Mimosa</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$250</div></div>
+        <div style="font-family:var(--canica-body);font-size:9px;letter-spacing:.15em;text-transform:uppercase;opacity:.4;margin:var(--space-m) 0 var(--space-s);">Tintos & rosados</div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Garnacha, Madrid</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$230 / $1,100</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Malbec, Campale. Argentina</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$1,200</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Pinot Noir, Nacha by Chacra</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$1,500</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;"><div style="font-family:var(--canica-display);font-size:15px;">Nebbiolo, Camerano. Italia</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;white-space:nowrap;">$2,400</div></div>
+      </div>
+
+      <div id="m-ninos" style="margin-bottom:var(--space-xl);">
+        <p style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.4;padding-bottom:10px;margin-bottom:var(--space-m);border-bottom:1px solid var(--rule);">Para los niños</p>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div><div style="font-family:var(--canica-display);font-size:15px;">Ludoteca — primera hora</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.45;">Supervisión incluida</div></div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$200</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Ludoteca — hora extra</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$100</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div><div style="font-family:var(--canica-display);font-size:15px;">Clase de estimulación</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.45;">Con Luisa</div></div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$430</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;"><div style="font-family:var(--canica-display);font-size:15px;">Paquete 5 clases</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$2,000</div></div>
+      </div>
+
+      <div id="m-pan" style="margin-bottom:var(--space-xl);">
+        <p style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.4;padding-bottom:10px;margin-bottom:var(--space-m);border-bottom:1px solid var(--rule);">Pan & dulce</p>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Croissant de almendra</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$80</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Chocolatin</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$65</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Concha</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$65</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Galleta</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$65</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Muffin de frambuesa</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$65</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Kouign Aman</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$45</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Friand</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$65</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;"><div style="font-family:var(--canica-display);font-size:15px;">Tarta</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$90</div></div>
+      </div>
+
+      <div id="m-ludoteca" style="margin-bottom:var(--space-xl);">
+        <p style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.4;padding-bottom:10px;margin-bottom:var(--space-m);border-bottom:1px solid var(--rule);">Ludoteca</p>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div><div style="font-family:var(--canica-display);font-size:15px;">Entrada primera hora</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.45;">Supervisión incluida</div></div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$200</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Hora adicional</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$100</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;"><div style="font-family:var(--canica-display);font-size:15px;">Book Club</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$500</div></div>
+      </div>
+
+      <div id="m-tienda" style="margin-bottom:var(--space-xl);">
+        <p style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.4;padding-bottom:10px;margin-bottom:var(--space-m);border-bottom:1px solid var(--rule);">Tienda</p>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Axolote Xochimilco</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$931</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Jaguar Negro</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$1,029</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Cocodrilo</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$1,029</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);"><div style="font-family:var(--canica-display);font-size:15px;">Mariposa 88</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$931</div></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;"><div style="font-family:var(--canica-display);font-size:15px;">Abeja Maya Melipona</div><div style="font-family:var(--canica-body);font-size:var(--fs-caption);opacity:.6;">$882</div></div>
+      </div>
+
+      <p style="font-family:var(--canica-body);font-size:9px;opacity:.25;margin-top:var(--space-xl);letter-spacing:.04em;">Havre 73, Juárez, Cuauhtémoc, Ciudad de México, <em>Mexico</em> · Precios en MXN · IVA incluido</p>
     </div>
 
+    <!-- Right: Day card -->
+    <div style="border-left:1px solid var(--rule);padding:var(--space-l) var(--space-m);position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));overflow-y:auto;">
+      <div style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;opacity:.35;margin-bottom:var(--space-m);">Menú del día</div>
+      <div style="background:var(--canica-pink);padding:24px 20px;transform:rotate(1.5deg);">
+        <div style="height:6px;background:repeating-linear-gradient(90deg,var(--canica-rufous) 0 9px,var(--canica-yellow) 9px 18px,var(--canica-green) 18px 27px,var(--canica-violet) 27px 36px,var(--canica-blue) 36px 45px);margin-bottom:18px;"></div>
+        <div style="font-family:var(--canica-body);font-size:9px;letter-spacing:var(--tracking-mono);text-transform:uppercase;font-weight:600;text-align:center;margin-bottom:18px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.15);">Menú del día</div>
+        <div style="margin-bottom:14px;"><div style="font-family:var(--canica-body);font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:.7;margin-bottom:5px;">Sopa del día</div><div style="font-family:var(--canica-display);font-size:12px;line-height:1.6;">Raíz de vegetales, lentejas, poro, hierbas frescas</div></div>
+        <div style="margin-bottom:14px;"><div style="font-family:var(--canica-body);font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:.7;margin-bottom:5px;">Plato signature</div><div style="font-family:var(--canica-display);font-size:12px;line-height:1.6;">Quinoa, camote, feta, tomate uva tostada</div></div>
+        <div><div style="font-family:var(--canica-body);font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:.7;margin-bottom:5px;">Dulces del día</div><div style="font-family:var(--canica-display);font-size:12px;line-height:1.6;">Fruta de temporada<br>Yogurt</div></div>
+      </div>
+    </div>
   </div>
-
-  <footer class="site-footer-min" style="margin-top:0;">
-    <div class="footer-row">
-      <p><em>canica</em> · Mazatlán 83, Condesa · Ciudad de México</p>
-      <p><a href="https://www.instagram.com/canicafun?igsh=cmVuZWxmbHBqbHRv" target="_blank" rel="noopener noreferrer">Instagram ↗</a> · <a href="mailto:hola@canica.fun">hola@canica.fun</a></p>
-    </div>
-    <p class="footer-meta">© 2026 Canica · Identity by Mestiza Estudio</p>
-  </footer>
-
 </div>
 
 </body>
 </html>
-<!-- Fri Jun 12 19:58:45 CST 2026 -->

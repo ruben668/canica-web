@@ -319,6 +319,7 @@
   <div class="tab active" onclick="switchTab('reservaciones')">Reservaciones</div>
   <div class="tab" onclick="switchTab('miembros')">Miembros</div>
   <div class="tab" onclick="switchTab('herramientas')">Menú QR</div>
+  <div class="tab" onclick="switchTab('checkin')">Check-in</div>
 </div>
 
 <!-- RESERVACIONES -->
@@ -412,7 +413,7 @@ setInterval(updateClock, 15000);
 
 // ── Tabs ──
 function switchTab(name) {
-  const panels = ['reservaciones','miembros','herramientas'];
+  const panels = ['reservaciones','miembros','herramientas','checkin'];
   document.querySelectorAll('.tab').forEach((t,i) => {
     t.classList.toggle('active', panels[i] === name);
   });
@@ -608,5 +609,188 @@ loadMembers();
 setInterval(loadReservations, 300000);   // every 5 min
 setInterval(loadMembers, 600000);         // every 10 min
 </script>
+
+<!-- CHECK-IN -->
+<div class="panel" id="panel-checkin">
+
+  <!-- QR Scanner -->
+  <div class="section-label">Escanear QR de miembro</div>
+  <div id="qr-reader-wrap" style="margin-bottom:20px">
+    <div id="qr-placeholder" style="border:1px solid var(--rule);padding:32px;text-align:center;cursor:pointer;background:rgba(26,20,17,.02)" onclick="startScanner()">
+      <div style="font-family:var(--display);font-size:22px;font-style:italic;margin-bottom:8px">Iniciar cámara</div>
+      <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Toca para escanear QR de miembro</div>
+    </div>
+    <div id="qr-reader" style="display:none;width:100%"></div>
+    <div id="qr-result" style="margin-top:12px;display:none"></div>
+  </div>
+
+  <!-- Manual check-in -->
+  <div class="section-label" style="margin-top:8px">Check-in manual</div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <input id="ci-name" type="text" placeholder="Nombre del visitante"
+      style="border:1px solid var(--rule);background:var(--ivory);font-family:var(--body);font-size:13px;padding:11px 12px;outline:none;color:var(--ink)">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <select id="ci-type" style="border:1px solid var(--rule);background:var(--ivory);font-family:var(--body);font-size:12px;padding:11px 10px;outline:none;color:var(--ink)">
+        <option value="walkin">Walk-in</option>
+        <option value="member">Miembro</option>
+      </select>
+      <input id="ci-people" type="number" min="1" value="1" placeholder="# personas"
+        style="border:1px solid var(--rule);background:var(--ivory);font-family:var(--body);font-size:13px;padding:11px 12px;outline:none;color:var(--ink)">
+    </div>
+    <input id="ci-notes" type="text" placeholder="Notas (opcional)"
+      style="border:1px solid var(--rule);background:var(--ivory);font-family:var(--body);font-size:13px;padding:11px 12px;outline:none;color:var(--ink)">
+    <button onclick="manualCheckin()" style="background:var(--ink);color:var(--ivory);border:none;font-family:var(--body);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:14px;cursor:pointer">
+      Registrar entrada
+    </button>
+    <div id="ci-feedback" style="font-size:11px;text-align:center;min-height:18px;color:var(--green)"></div>
+  </div>
+
+  <!-- Today's visits -->
+  <div class="section-label">Entradas de hoy</div>
+  <div id="today-visits">
+    <div class="loading-msg">Cargando...</div>
+  </div>
+
+  <div class="footer-note">Datos guardados en Google Sheets · <span id="last-ci-update">—</span></div>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+// ── QR Scanner ──
+let qrScanner = null;
+
+async function startScanner() {
+  document.getElementById('qr-placeholder').style.display = 'none';
+  const readerEl = document.getElementById('qr-reader');
+  readerEl.style.display = 'block';
+
+  qrScanner = new Html5Qrcode('qr-reader');
+  try {
+    await qrScanner.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      async (decodedText) => {
+        await qrScanner.stop();
+        readerEl.style.display = 'none';
+        document.getElementById('qr-placeholder').style.display = 'block';
+        handleQRResult(decodedText);
+      },
+      () => {}
+    );
+  } catch(e) {
+    readerEl.style.display = 'none';
+    document.getElementById('qr-placeholder').style.display = 'block';
+    alert('No se pudo acceder a la cámara: ' + e);
+  }
+}
+
+async function handleQRResult(text) {
+  const resultEl = document.getElementById('qr-result');
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = '<div class="loading-msg">Verificando membresía...</div>';
+
+  // QR contains customerId like cus_xxx
+  const customerId = text.trim();
+  try {
+    const r = await fetch('/api/member-verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ customerId })
+    });
+    const data = await r.json();
+
+    if (data.valid) {
+      resultEl.innerHTML = `
+        <div style="border:1px solid var(--green);background:rgba(16,112,57,.06);padding:16px">
+          <div style="font-family:var(--display);font-size:22px;font-style:italic;color:var(--green);margin-bottom:4px">✓ Miembro activo</div>
+          <div style="font-size:13px;font-weight:500">${data.name || customerId}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">${data.plan || ''} · ${data.amount ? '$'+data.amount+'/mes' : ''}</div>
+        </div>`;
+      // Auto log the check-in
+      await logCheckin({ type: 'member', name: data.name || customerId, customerId, email: data.email || '' });
+      loadTodayVisits();
+    } else {
+      resultEl.innerHTML = `
+        <div style="border:1px solid var(--rufous);background:rgba(190,53,43,.06);padding:16px">
+          <div style="font-family:var(--display);font-size:22px;font-style:italic;color:var(--rufous)">✗ Membresía no activa</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">${data.message || 'No se encontró membresía vigente.'}</div>
+        </div>`;
+    }
+  } catch(e) {
+    resultEl.innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
+  }
+}
+
+// ── Manual check-in ──
+async function manualCheckin() {
+  const name = document.getElementById('ci-name').value.trim();
+  const type = document.getElementById('ci-type').value;
+  const people = parseInt(document.getElementById('ci-people').value) || 1;
+  const notes = document.getElementById('ci-notes').value.trim();
+  const fb = document.getElementById('ci-feedback');
+
+  if (!name) { fb.textContent = 'Ingresa un nombre.'; fb.style.color = 'var(--rufous)'; return; }
+
+  fb.textContent = 'Registrando...'; fb.style.color = 'var(--muted)';
+  await logCheckin({ type, name, people, notes });
+  document.getElementById('ci-name').value = '';
+  document.getElementById('ci-notes').value = '';
+  document.getElementById('ci-people').value = '1';
+  fb.textContent = '✓ Entrada registrada'; fb.style.color = 'var(--green)';
+  setTimeout(() => { fb.textContent = ''; }, 3000);
+  loadTodayVisits();
+}
+
+async function logCheckin(data) {
+  try {
+    await fetch('/api/checkin-log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  } catch(e) { console.error('Log error:', e); }
+}
+
+// ── Today's visits ──
+async function loadTodayVisits() {
+  try {
+    const r = await fetch('/api/checkin-stats?days=1');
+    const data = await r.json();
+    const el = document.getElementById('today-visits');
+    document.getElementById('last-ci-update').textContent =
+      new Date().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit',timeZone:'America/Mexico_City'});
+
+    if (!data.recentVisits?.length) {
+      el.innerHTML = '<div class="loading-msg">Sin entradas registradas hoy.</div>';
+      return;
+    }
+
+    const summary = `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+      <div class="summary-box"><div class="summary-num">${data.total}</div><div class="summary-label">Entradas</div></div>
+      <div class="summary-box"><div class="summary-num">${data.totalPeople}</div><div class="summary-label">Personas</div></div>
+      <div class="summary-box"><div class="summary-num">${data.members}</div><div class="summary-label">Miembros</div></div>
+    </div>`;
+
+    const rows = data.recentVisits.map(v => `
+      <div class="member-card">
+        <div>
+          <div class="member-name">${v.name}</div>
+          <div class="member-meta">${v.time} · ${v.people} persona${v.people > 1 ? 's' : ''} · ${v.notes || ''}</div>
+        </div>
+        <div class="member-tier ${v.type === 'member' ? 'individual' : ''}">${v.type === 'member' ? 'Miembro' : 'Walk-in'}</div>
+      </div>`).join('');
+
+    el.innerHTML = summary + rows;
+  } catch(e) {
+    document.getElementById('today-visits').innerHTML = '<div class="loading-msg">Sheets no configurado aún — los datos se guardarán una vez conectado.</div>';
+  }
+}
+
+// Load when tab is opened
+document.querySelector('[onclick="switchTab('checkin')"]').addEventListener('click', () => {
+  loadTodayVisits();
+});
+</script>
+
 </body>
 </html>

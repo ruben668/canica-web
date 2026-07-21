@@ -1,15 +1,15 @@
 // api/checkin-stats.js — returns visit stats from Google Sheets
 // GET ?days=30 → summary of visits
 
-const { google } = require('googleapis');
 const SHEET_ID = process.env.CHECKIN_SHEET_ID;
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-store');
 
+  // Return empty state until Sheets is configured
   if (!SHEET_ID) {
-    return res.status(200).json({ visits: [], total: 0, message: 'Sheet not configured yet' });
+    return res.status(200).json({ visits: [], total: 0, totalPeople: 0, members: 0, walkIns: 0, uniqueGuests: 0, byDay: {}, recentVisits: [], message: 'Sheet not configured yet — check-ins will be stored once Google Sheets is connected.' });
   }
 
   try {

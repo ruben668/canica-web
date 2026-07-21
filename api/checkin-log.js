@@ -2,7 +2,6 @@
 // POST { type: 'member'|'walkin', name, customerId?, email?, notes? }
 // Appends to a rolling log; also writes to Google Sheets when available.
 
-const { google } = require('googleapis');
 const SHEET_ID = process.env.CHECKIN_SHEET_ID; // set once sheet is created
 
 module.exports = async (req, res) => {
@@ -39,6 +38,7 @@ module.exports = async (req, res) => {
   let sheetOk = false;
   if (SHEET_ID) {
     try {
+      const { google } = require('googleapis');
       const auth = new google.auth.GoogleAuth({
         credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON || '{}'),
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],

@@ -420,6 +420,8 @@ function switchTab(name) {
   document.querySelectorAll('.panel').forEach(p => {
     p.classList.toggle('active', p.id === `panel-${name}`);
   });
+  // Side effects per tab
+  if (name === 'checkin') loadTodayVisits();
 }
 
 // ── Reservations ──
@@ -787,12 +789,7 @@ async function loadTodayVisits() {
 }
 
 // Load when tab is opened
-// Load today visits when check-in tab becomes active
-const _origSwitchTab = switchTab;
-function switchTab(name) {
-  _origSwitchTab(name);
-  if (name === 'checkin') loadTodayVisits();
-}
+// (tab side-effects handled inside switchTab above)
 </script>
 
 </body>

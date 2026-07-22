@@ -219,7 +219,7 @@ body.landing {
   color: var(--ink);
 }
 .info__line em {
-  font-family: var(--display);
+  font-family: var(--body);
   font-style: italic;
   font-size: 18px;
   color: var(--rufous);
@@ -255,7 +255,7 @@ body.landing {
   font-style: italic;
   color: var(--yellow);
   font-size: 18px;
-  font-family: var(--display);
+  font-family: var(--body);
 }
 .site-footer-min .footer-row a {
   color: var(--ivory);
@@ -339,7 +339,7 @@ body.subpage {
   margin-bottom: var(--sp-4);
 }
 .page-hero h1 {
-  font-family: var(--display);
+  font-family: var(--body);
   font-weight: 400;
   font-size: clamp(40px, 8vw, 64px);
   line-height: 1.05;
@@ -363,7 +363,7 @@ section + section { padding-top: var(--sp-6); }
 /* Menu items */
 .menu-section { margin-bottom: var(--sp-7); }
 .menu-section h2 {
-  font-family: var(--display);
+  font-family: var(--body);
   font-weight: 400;
   font-size: 28px;
   margin: 0 0 var(--sp-4);
@@ -464,7 +464,7 @@ form { display: grid; gap: var(--sp-4); }
   color: var(--rufous);
 }
 .section-head h2 {
-  font-family: var(--display);
+  font-family: var(--body);
   font-weight: 400;
   font-size: clamp(28px, 5vw, 40px);
   margin: 0;
@@ -480,7 +480,7 @@ form { display: grid; gap: var(--sp-4); }
   background: var(--ivory);
 }
 .tier h3 {
-  font-family: var(--display);
+  font-family: var(--body);
   font-style: italic;
   font-weight: 400;
   font-size: 24px;
@@ -520,7 +520,7 @@ form { display: grid; gap: var(--sp-4); }
 }
 .faq summary {
   cursor: pointer;
-  font-family: var(--display);
+  font-family: var(--body);
   font-size: 18px;
   font-style: italic;
   list-style: none;

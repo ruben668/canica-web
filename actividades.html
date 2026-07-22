@@ -134,6 +134,42 @@
 <section>
   <div class="container">
 
+    <!-- VIEW TOGGLE -->
+    <div id="view-toggle" style="display:flex;gap:0;border:1px solid rgba(26,20,17,.15);margin-bottom:24px;width:fit-content">
+      <button id="btn-week" onclick="setView('week')"
+        style="font-family:var(--body);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:10px 18px;border:none;background:var(--ink);color:#FFF9F1;cursor:pointer">
+        Semana
+      </button>
+      <button id="btn-month" onclick="setView('month')"
+        style="font-family:var(--body);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:10px 18px;border:none;background:transparent;color:rgba(26,20,17,.5);cursor:pointer;border-left:1px solid rgba(26,20,17,.15)">
+        Mes
+      </button>
+    </div>
+
+    <!-- WEEK VIEW -->
+    <div id="week-view">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px">
+        <span id="week-label" style="font-family:var(--body);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4)">Semana del — al —</span>
+        <div style="display:flex;align-items:center;border:1px solid rgba(26,20,17,.15)">
+          <button id="prev-week" onclick="shiftWeek(-1)"
+            style="font-family:var(--body);font-size:13px;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:rgba(26,20,17,.5);border-right:1px solid rgba(26,20,17,.15)">←</button>
+          <button onclick="goToToday()"
+            style="font-family:var(--body);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:var(--ink)">Esta semana</button>
+          <button id="next-week" onclick="shiftWeek(1)"
+            style="font-family:var(--body);font-size:13px;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:rgba(26,20,17,.5);border-left:1px solid rgba(26,20,17,.15)">→</button>
+        </div>
+      </div>
+      <div id="week-list"></div>
+      <div style="text-align:center;margin-top:40px;padding-bottom:24px">
+        <button onclick="shiftWeek(1)"
+          style="font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);background:transparent;padding:14px 28px;cursor:pointer;color:var(--ink)">
+          Semana siguiente →
+        </button>
+      </div>
+    </div>
+
+    <!-- MONTH CALENDAR (hidden by default) -->
+    <div id="month-view" style="display:none">
     <!-- MONTH CALENDAR -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
       <button onclick="shiftMonth(-1)" style="font-family:var(--body);font-size:13px;padding:6px 12px;border:1px solid rgba(26,20,17,.15);background:transparent;cursor:pointer;color:rgba(26,20,17,.6)">←</button>
@@ -168,7 +204,10 @@
       </div>
     </div>
 
-    <div id="day-detail" style="display:none;background:rgba(191,83,65,.05);border:1px solid rgba(191,83,65,.15);border-radius:2px;padding:20px 24px;margin-bottom:40px">
+    
+    </div><!-- /month-view -->
+
+<div id="day-detail" style="display:none;background:rgba(191,83,65,.05);border:1px solid rgba(191,83,65,.15);border-radius:2px;padding:20px 24px;margin-bottom:40px">
       <div id="day-detail-title" style="font-family:var(--display,'DM Serif Display',serif);font-size:18px;font-style:italic;margin-bottom:16px;color:var(--ink)"></div>
       <div id="day-detail-body"></div>
     </div>
@@ -1013,6 +1052,98 @@ function shiftMonth(delta) {
 }
 
 renderMonth(0);
+
+// ── Week View ──────────────────────────────────────────────
+const MONTHS_LOWER = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DAYS_ES = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+let weekOffset = 0;
+
+function getMondayOfWeek(offset) {
+  const now = new Date(new Date().toLocaleString('en-US', {timeZone:'America/Mexico_City'}));
+  const dow = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (dow===0?6:dow-1) + offset*7);
+  monday.setHours(0,0,0,0);
+  return monday;
+}
+
+function renderWeek(offset) {
+  weekOffset = offset;
+  const monday = getMondayOfWeek(offset);
+  const sunday = new Date(monday); sunday.setDate(monday.getDate()+6);
+  const today = new Date(new Date().toLocaleString('en-US', {timeZone:'America/Mexico_City'}));
+  today.setHours(0,0,0,0);
+
+  const fromStr = monday.getMonth()===sunday.getMonth()
+    ? monday.getDate()+' al '+sunday.getDate()+' de '+MONTHS_LOWER[sunday.getMonth()]
+    : monday.getDate()+' de '+MONTHS_LOWER[monday.getMonth()]+' al '+sunday.getDate()+' de '+MONTHS_LOWER[sunday.getMonth()];
+  const lbl = document.getElementById('week-label');
+  if (lbl) lbl.textContent = 'Semana del '+fromStr;
+
+  const prevBtn = document.getElementById('prev-week');
+  if (prevBtn) { prevBtn.style.opacity = offset<=0?'0.3':'1'; prevBtn.disabled = offset<=0; }
+
+  let html = '';
+  for (let i=0; i<7; i++) {
+    const d = new Date(monday); d.setDate(monday.getDate()+i);
+    const key = dateKeyYMD(d.getFullYear(), d.getMonth(), d.getDate());
+    const isPast = d < today;
+    const acts = ACTIVITY_DATA[key] || [];
+
+    html += '<div class="day-block" style="opacity:'+(isPast?'0.35':'1')+'">';
+    html += '<div class="day-header"><span class="day-name">'+DAYS_ES[i]+'</span>';
+    html += '<span class="day-date">'+d.getDate()+' de '+MONTHS_LOWER[d.getMonth()]+'</span></div>';
+    html += '<ul class="activity-list">';
+
+    if (acts.length===0) {
+      html += '<li style="padding:12px 0 16px;border-bottom:1px solid rgba(26,20,17,.08);font-size:12px;color:rgba(26,20,17,.3);font-style:italic;list-style:none">Juego libre todo el día</li>';
+    } else {
+      acts.forEach(function(a) {
+        html += '<li class="activity-item">';
+        html += '<span class="activity-time">'+a.time+'</span>';
+        html += '<div class="activity-content">';
+        html += '<div class="activity-title">'+a.name+'</div>';
+        if (a.age) html += '<div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(26,20,17,.4);margin-top:3px">'+a.age+'</div>';
+        if (a.desc) html += '<p class="activity-desc">'+a.desc+'</p>';
+        if (a.price) html += '<div style="font-size:12px;font-weight:500;color:#BF5341;margin-top:6px">'+a.price+'</div>';
+        if (a.warning) html += '<div style="font-size:11px;font-weight:600;color:#BF5341;background:rgba(191,83,65,.08);border:1px solid rgba(191,83,65,.2);padding:8px 10px;margin-top:8px;line-height:1.5">'+a.warning+'</div>';
+        if (a.note) html += '<div style="font-size:11px;color:rgba(26,20,17,.5);margin-top:6px;font-style:italic;border-left:2px solid rgba(191,83,65,.3);padding-left:8px">'+a.note+'</div>';
+        if (a.photo) html += '<img src="'+a.photo+'" alt="'+a.name+'" class="activity-photo">';
+        html += '</div></li>';
+      });
+    }
+    html += '</ul></div>';
+  }
+  const wl = document.getElementById('week-list');
+  if (wl) wl.innerHTML = html;
+}
+
+function shiftWeek(delta) { renderWeek(weekOffset+delta); }
+function goToToday() { renderWeek(0); }
+
+// ── View switcher ───────────────────────────────────────────
+function setView(view) {
+  const wv = document.getElementById('week-view');
+  const mv = document.getElementById('month-view');
+  const bw = document.getElementById('btn-week');
+  const bm = document.getElementById('btn-month');
+  if (view === 'week') {
+    if (wv) wv.style.display = 'block';
+    if (mv) mv.style.display = 'none';
+    if (bw) { bw.style.background = 'var(--ink)'; bw.style.color = '#FFF9F1'; }
+    if (bm) { bm.style.background = 'transparent'; bm.style.color = 'rgba(26,20,17,.5)'; }
+    renderWeek(weekOffset);
+  } else {
+    if (wv) wv.style.display = 'none';
+    if (mv) mv.style.display = 'block';
+    if (bw) { bw.style.background = 'transparent'; bw.style.color = 'rgba(26,20,17,.5)'; }
+    if (bm) { bm.style.background = 'var(--ink)'; bm.style.color = '#FFF9F1'; }
+  }
+}
+
+// Start in week view
+setView('week');
+
 </script>
 </body>
 </html>

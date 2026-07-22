@@ -947,18 +947,20 @@ function renderMonth(offset) {
     const clr = isSel ? '#fff' : isToday ? '#BF5341' : hasAct ? '#1A1411' : 'rgba(26,20,17,.3)';
     const fw = (isToday || isSel || hasAct) ? '600' : '400';
     const cur = hasAct ? 'pointer' : 'default';
-    // Dot color based on activity type
-    let dotClr = '#BF5341'; // red = free activity
-    if (hasAct && !isSel) {
+    // Multiple dots — one per activity type present
+    let dot = '';
+    if (hasAct) {
       const acts = ACTIVITY_DATA[key] || [];
       const hasPromo = acts.some(function(a){ return a.promo; });
       const hasPaid = acts.some(function(a){ return a.paid; });
-      if (hasPromo) dotClr = '#4A6FA5';        // blue = 50% OFF
-      else if (hasPaid) dotClr = '#5E8264';    // green = paid class
-    } else if (isSel) {
-      dotClr = 'rgba(255,255,255,.7)';
+      const hasFree = acts.some(function(a){ return !a.promo && !a.paid; });
+      const dotBase = isSel ? 'rgba(255,255,255,.7)' : null;
+      let dots = '';
+      if (hasPromo) dots += '<span style="width:4px;height:4px;border-radius:50%;background:'+(dotBase||'#4A6FA5')+';display:inline-block;margin:0 1px"></span>';
+      if (hasPaid)  dots += '<span style="width:4px;height:4px;border-radius:50%;background:'+(dotBase||'#5E8264')+';display:inline-block;margin:0 1px"></span>';
+      if (hasFree)  dots += '<span style="width:4px;height:4px;border-radius:50%;background:'+(dotBase||'#BF5341')+';display:inline-block;margin:0 1px"></span>';
+      dot = '<div style="display:flex;justify-content:center;margin-top:2px">'+dots+'</div>';
     }
-    const dot = hasAct ? '<span style="width:4px;height:4px;border-radius:50%;background:'+dotClr+';margin-top:1px;display:block"></span>' : '';
 
     html += '<td style="text-align:center;padding:3px 1px"><div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:'+cur+'" onclick="selectDay('+year+','+month+','+d+')"><span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:'+bg+';color:'+clr+';font-weight:'+fw+';font-family:var(--body);font-size:13px;line-height:1">'+d+'</span>'+dot+'</div></td>';
 

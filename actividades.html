@@ -499,6 +499,7 @@ const ESTIMULACION = {
   desc: 'Juntos le daremos seguimiento al desarrollo de tu bebé en cada una de las etapas, te daremos ideas, actividades e información para acompañarlo y fomentar un desarrollo saludable durante sus primeros años.',
   age: '5 a 10 meses',
   price: 'Clase individual $430 · Paquete 5 clases $2,000',
+  warning: '⚠️ La ludoteca cierra durante la clase. Solo pueden permanecer en el espacio los niños inscritos en la clase de Estimulación Oportuna.',
   photo: 'assets/estimulacion-luiza.jpg',
   paid: true
 };
@@ -592,6 +593,16 @@ const PINTURA_PLASTICO = {
   photo: 'assets/pintura-plastico.jpg'
 };
 
+const PINTURA_BURBUJAS = {
+  time: '9:00 am – 1:00 pm',
+  name: 'Pintura sobre Plástico de Burbujas',
+  desc: 'Los niños pintan directamente sobre plástico de burbujas con pinceles y pintura de colores, creando texturas únicas y patrones llenos de vida.',
+  age: 'Todos los niños',
+  price: 'Sin costo adicional · Incluida con la entrada a la ludoteca',
+  note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar.',
+  photo: 'assets/pintura-burbujas.jpg'
+};
+
 const ACTIVITY_DATA = {
   '2026-07-27': [LUNES_DESCUENTO],
   '2026-07-28': [ESTIMULACION],
@@ -618,6 +629,7 @@ const ACTIVITY_DATA = {
   '2026-08-02': [PLATOS_COLLAGE, CORONA_FLORES],
   '2026-08-03': [LUNES_DESCUENTO, PASTEL_CUMPLEANOS, ARTE_BOLITAS],
   '2026-08-04': [HELADO_ESPONJA, ESTIMULACION, PINTURA_PLASTICO],
+  '2026-08-05': [PINTURA_BURBUJAS],
   '2026-08-11': [ESTIMULACION],
   '2026-08-18': [ESTIMULACION],
   '2026-08-25': [ESTIMULACION],
@@ -728,6 +740,7 @@ function selectDay(year, month, day) {
           ${a.age ? `<div style="font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.4);margin-top:3px;text-transform:uppercase">${a.age}</div>` : ''}
           <div class="detail-desc" style="margin-top:6px">${a.desc}</div>
           ${a.price ? `<div style="font-family:var(--body);font-size:12px;font-weight:500;color:#BF5341;margin-top:8px">${a.price}</div>` : ''}
+          ${a.warning ? `<div style="font-family:var(--body);font-size:12px;font-weight:600;color:#BF5341;background:rgba(191,83,65,.08);border:1px solid rgba(191,83,65,.25);border-radius:2px;padding:8px 10px;margin-top:10px;line-height:1.5">${a.warning}</div>` : ''}
           ${a.note ? `<div style="font-family:var(--body);font-size:11px;color:rgba(26,20,17,.5);margin-top:8px;font-style:italic;border-left:2px solid rgba(191,83,65,.3);padding-left:8px">${a.note}</div>` : ''}
           ${a.photo ? `<img src="${a.photo}" alt="${a.name}" style="margin-top:12px;width:100%;max-width:320px;height:auto;border-radius:2px;display:block;">` : ''}
         </div>

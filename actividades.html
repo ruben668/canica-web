@@ -484,11 +484,40 @@
 
 <script>
 // ── Activities data ──
-// Format: { 'YYYY-MM-DD': [ { time, name, desc }, ... ] }
-// Add specific dates here as activities are confirmed.
+// Format: { 'YYYY-MM-DD': [ { time, name, desc, price, photo }, ... ] }
+const ESTIMULACION = {
+  time: '11:30 am – 12:20 pm',
+  name: 'Estimulación Oportuna con Luiza Manzano',
+  desc: 'Juntos le daremos seguimiento al desarrollo de tu bebé en cada una de las etapas, te daremos ideas, actividades e información para acompañarlo y fomentar un desarrollo saludable durante sus primeros años.',
+  age: '5 a 10 meses',
+  price: 'Clase individual $430 · Paquete 5 clases $2,000',
+  photo: 'assets/estimulacion-luiza.jpg'
+};
+
 const ACTIVITY_DATA = {
-  // Example (remove when adding real activities):
-  // '2026-08-05': [ { time: '11:00 am', name: 'Taller de pintura', desc: 'Descripción.' } ]
+  '2026-07-28': [ESTIMULACION],
+  '2026-08-04': [ESTIMULACION],
+  '2026-08-11': [ESTIMULACION],
+  '2026-08-18': [ESTIMULACION],
+  '2026-08-25': [ESTIMULACION],
+  '2026-09-01': [ESTIMULACION],
+  '2026-09-08': [ESTIMULACION],
+  '2026-09-15': [ESTIMULACION],
+  '2026-09-22': [ESTIMULACION],
+  '2026-09-29': [ESTIMULACION],
+  '2026-10-06': [ESTIMULACION],
+  '2026-10-13': [ESTIMULACION],
+  '2026-10-20': [ESTIMULACION],
+  '2026-10-27': [ESTIMULACION],
+  '2026-11-03': [ESTIMULACION],
+  '2026-11-10': [ESTIMULACION],
+  '2026-11-17': [ESTIMULACION],
+  '2026-11-24': [ESTIMULACION],
+  '2026-12-01': [ESTIMULACION],
+  '2026-12-08': [ESTIMULACION],
+  '2026-12-15': [ESTIMULACION],
+  '2026-12-22': [ESTIMULACION],
+  '2026-12-29': [ESTIMULACION],
 };
 
 const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -573,9 +602,12 @@ function selectDay(year, month, day) {
     body.innerHTML = activities.map(a => `
       <div class="detail-activity">
         <span class="detail-time">${a.time}</span>
-        <div>
+        <div style="flex:1">
           <div class="detail-name">${a.name}</div>
-          <div class="detail-desc">${a.desc}</div>
+          ${a.age ? `<div style="font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.4);margin-top:3px;text-transform:uppercase">${a.age}</div>` : ''}
+          <div class="detail-desc" style="margin-top:6px">${a.desc}</div>
+          ${a.price ? `<div style="font-family:var(--body);font-size:12px;font-weight:500;color:#BF5341;margin-top:8px">${a.price}</div>` : ''}
+          ${a.photo ? `<img src="${a.photo}" alt="${a.name}" style="margin-top:12px;width:100%;max-width:280px;aspect-ratio:4/3;object-fit:cover;border-radius:2px;display:block;">` : ''}
         </div>
       </div>`).join('');
   }

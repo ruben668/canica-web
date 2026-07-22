@@ -13,6 +13,137 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
 <style>
+  /* ── Month Grid ── */
+  .month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .month-title {
+    font-family: var(--display, 'DM Serif Display', serif);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .month-nav-btn {
+    font-family: var(--body);
+    font-size: 13px;
+    padding: 6px 12px;
+    border: 1px solid rgba(26,20,17,.15);
+    background: transparent;
+    cursor: pointer;
+    color: rgba(26,20,17,.6);
+  }
+  .month-nav-btn:hover { color: var(--ink); border-color: var(--ink); }
+  .month-grid {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+  }
+  .month-grid th {
+    font-family: var(--body);
+    font-size: 9px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(26,20,17,.4);
+    padding: 0 0 10px;
+    text-align: center;
+    font-weight: 400;
+  }
+  .month-grid td {
+    text-align: center;
+    padding: 4px 2px;
+    vertical-align: top;
+  }
+  .day-cell {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: default;
+    font-family: var(--body);
+    font-size: 13px;
+    color: rgba(26,20,17,.35);
+    position: relative;
+    transition: background .15s;
+  }
+  .day-cell.has-activity {
+    color: var(--ink);
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .day-cell.has-activity:hover {
+    background: rgba(191,83,65,.1);
+  }
+  .day-cell.is-today {
+    background: rgba(191,83,65,.15);
+    color: #BF5341;
+    font-weight: 600;
+  }
+  .day-cell.is-selected {
+    background: #BF5341;
+    color: #fff !important;
+    font-weight: 600;
+  }
+  .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #BF5341;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .day-cell.is-selected .dot { background: rgba(255,255,255,.7); }
+  .day-detail {
+    background: rgba(191,83,65,.05);
+    border: 1px solid rgba(191,83,65,.15);
+    border-radius: 2px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    display: none;
+  }
+  .day-detail.visible { display: block; }
+  .day-detail-title {
+    font-family: var(--display, 'DM Serif Display', serif);
+    font-size: 18px;
+    font-style: italic;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+  .detail-activity {
+    display: flex;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(26,20,17,.08);
+    align-items: flex-start;
+  }
+  .detail-activity:last-child { border-bottom: none; }
+  .detail-time {
+    font-family: var(--body);
+    font-size: 11px;
+    letter-spacing: .06em;
+    color: rgba(26,20,17,.4);
+    min-width: 60px;
+    padding-top: 2px;
+  }
+  .detail-name {
+    font-family: var(--body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .detail-desc {
+    font-family: var(--body);
+    font-size: 12px;
+    color: rgba(26,20,17,.55);
+    margin-top: 3px;
+    line-height: 1.6;
+  }
+
   /* ── Calendar ── */
   .cal-week {
     font-family: var(--body);
@@ -132,6 +263,27 @@
 
 <section>
   <div class="container">
+    <!-- MONTH CALENDAR -->
+    <div class="month-nav">
+      <button class="month-nav-btn" onclick="shiftMonth(-1)">←</button>
+      <span class="month-title" id="month-title"></span>
+      <button class="month-nav-btn" onclick="shiftMonth(1)">→</button>
+    </div>
+    <table class="month-grid" id="month-grid" aria-label="Calendario de actividades">
+      <thead>
+        <tr>
+          <th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th>
+        </tr>
+      </thead>
+      <tbody id="month-body"></tbody>
+    </table>
+
+    <!-- DAY DETAIL PANEL -->
+    <div class="day-detail" id="day-detail">
+      <div class="day-detail-title" id="day-detail-title"></div>
+      <div id="day-detail-body"></div>
+    </div>
+
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:12px">
       <p class="cal-week" id="week-label" style="margin-bottom:0">Semana del — al —</p>
       <div style="display:flex;align-items:center;gap:0;border:1px solid rgba(26,20,17,.15)">
@@ -343,7 +495,142 @@
 </main>
 
 <script>
-// Week navigation
+// ── Activities data (day-of-week based, 0=Mon … 6=Sun) ──
+const ACTIVITY_DATA = {
+  0: [ // Monday
+    { time: '10:00 am', name: 'Taller de pintura', desc: 'Acuarelas y temperas para explorar el color libremente. Para niños de 2 a 7 años.' },
+    { time: '12:00 pm', name: 'Cuento en voz alta', desc: 'Una historia para escuchar juntos, padres e hijos. Duración: 20 minutos.' }
+  ],
+  1: [ // Tuesday
+    { time: '11:00 am', name: 'Música y movimiento', desc: 'Ritmo, canciones y baile para los más pequeños. Ideal de 1 a 4 años.' },
+    { time: '5:00 pm',  name: 'Construcción libre', desc: 'Bloques, rampas y estructuras para construir sin límites.' }
+  ],
+  2: [ // Wednesday
+    { time: '10:30 am', name: 'Taller de barro', desc: 'Modelado libre con arcilla. Manos en la masa, imaginación a tope.' },
+    { time: '4:30 pm',  name: 'Juego de roles', desc: 'Disfraces, personajes e historias inventadas por ellos mismos.' }
+  ],
+  3: [ // Thursday
+    { time: '11:00 am', name: 'Taller de collage', desc: 'Tijeras, revistas, papel y pegamento. Cada quien crea su propia obra.' },
+    { time: '5:00 pm',  name: 'Yoga para niños', desc: 'Poses, respiración y calma. Para niños de 3 a 8 años con sus papás.' }
+  ],
+  4: [ // Friday
+    { time: '10:00 am', name: 'Taller de cocina', desc: 'Recetas simples, ingredientes reales, mucha diversión.' },
+    { time: '4:00 pm',  name: 'Cinemita Canica', desc: 'Película corta en la ludoteca. Almohadas, manta y palomitas incluidas.' }
+  ],
+  5: [ // Saturday
+    { time: '10:00 am', name: 'Taller de naturaleza', desc: 'Plantas, semillas y tierra. Los niños aprenden a cuidar algo vivo.' },
+    { time: '12:00 pm', name: 'Feria de disfraces', desc: 'Trae tu disfraz favorito o usa los nuestros. Desfile, fotos y mucha risa.' }
+  ],
+  6: [ // Sunday
+    { time: '11:00 am', name: 'Círculo de lecturas', desc: 'Cuentos en voz alta para toda la familia.' },
+    { time: '1:00 pm',  name: 'Tarde de manualidades', desc: 'Materiales abiertos y tiempo sin prisas para crear algo juntos.' }
+  ]
+};
+
+const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DAY_NAMES_ES = ['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
+
+// ── Month calendar ──
+let monthOffset = 0;
+let selectedDate = null;
+
+function getMonthDate(offset) {
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+  return new Date(now.getFullYear(), now.getMonth() + offset, 1);
+}
+
+function renderMonth(offset) {
+  monthOffset = offset;
+  const base = getMonthDate(offset);
+  const year = base.getFullYear();
+  const month = base.getMonth();
+
+  document.getElementById('month-title').textContent = MONTHS_ES[month] + ' ' + year;
+
+  const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+  today.setHours(0,0,0,0);
+
+  // First day of month — adjust so Monday=0
+  let firstDow = new Date(year, month, 1).getDay(); // 0=Sun
+  firstDow = (firstDow === 0) ? 6 : firstDow - 1; // Mon=0
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  let html = '<tr>';
+  let col = 0;
+
+  // Leading empty cells
+  for (let i = 0; i < firstDow; i++) {
+    html += '<td></td>';
+    col++;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d);
+    const dow = (date.getDay() === 0) ? 6 : date.getDay() - 1; // Mon=0
+    const hasAct = ACTIVITY_DATA[dow] && ACTIVITY_DATA[dow].length > 0;
+    const isToday = date.getTime() === today.getTime();
+    const isSel = selectedDate && date.getTime() === selectedDate.getTime();
+
+    let cls = 'day-cell';
+    if (hasAct) cls += ' has-activity';
+    if (isToday) cls += ' is-today';
+    if (isSel) cls += ' is-selected';
+
+    const onclick = hasAct ? `onclick="selectDay(${year},${month},${d})"` : '';
+    html += `<td><span class="${cls}" ${onclick}>${d}${hasAct ? '<span class="dot"></span>' : ''}</span></td>`;
+
+    col++;
+    if (col % 7 === 0 && d < daysInMonth) { html += '</tr><tr>'; }
+  }
+
+  // Trailing empty cells
+  const remaining = (7 - (col % 7)) % 7;
+  for (let i = 0; i < remaining; i++) html += '<td></td>';
+  html += '</tr>';
+
+  document.getElementById('month-body').innerHTML = html;
+}
+
+function selectDay(year, month, day) {
+  selectedDate = new Date(year, month, day);
+  const dow = (selectedDate.getDay() === 0) ? 6 : selectedDate.getDay() - 1;
+  const activities = ACTIVITY_DATA[dow] || [];
+
+  const detail = document.getElementById('day-detail');
+  const title = document.getElementById('day-detail-title');
+  const body = document.getElementById('day-detail-body');
+
+  const MONTHS_LOWER = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  title.textContent = DAY_NAMES_ES[dow].charAt(0).toUpperCase() + DAY_NAMES_ES[dow].slice(1) + ' ' + day + ' de ' + MONTHS_LOWER[month];
+
+  if (activities.length === 0) {
+    body.innerHTML = '<p style="font-size:13px;color:rgba(26,20,17,.4);font-style:italic">Sin actividades programadas para este día.</p>';
+  } else {
+    body.innerHTML = activities.map(a => `
+      <div class="detail-activity">
+        <span class="detail-time">${a.time}</span>
+        <div>
+          <div class="detail-name">${a.name}</div>
+          <div class="detail-desc">${a.desc}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  detail.classList.add('visible');
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Re-render to show selection
+  renderMonth(monthOffset);
+}
+
+function shiftMonth(delta) {
+  selectedDate = null;
+  document.getElementById('day-detail').classList.remove('visible');
+  renderMonth(monthOffset + delta);
+}
+
+// ── Week navigation ──
 const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 
 function getMondayOfWeek(offset) {
@@ -396,6 +683,7 @@ function shiftWeek(delta) { renderWeek(currentOffset + delta); }
 function goToToday() { renderWeek(0); }
 
 renderWeek(0);
+renderMonth(0);
 </script>
 
 </body>

@@ -956,9 +956,9 @@ function renderMonth(offset) {
       const hasFree = acts.some(function(a){ return !a.promo && !a.paid; });
       const dotBase = isSel ? 'rgba(255,255,255,.7)' : null;
       let dots = '';
-      if (hasPromo) dots += '<span style="width:4px;height:4px;border-radius:50%;background:'+(dotBase||'#4A6FA5')+';display:inline-block;margin:0 1px"></span>';
-      if (hasPaid)  dots += '<span style="width:4px;height:4px;border-radius:50%;background:'+(dotBase||'#5E8264')+';display:inline-block;margin:0 1px"></span>';
-      if (hasFree)  dots += '<span style="width:4px;height:4px;border-radius:50%;background:'+(dotBase||'#BF5341')+';display:inline-block;margin:0 1px"></span>';
+      if (hasPromo) dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#4A6FA5')+';display:inline-block;margin:0 1.5px"></span>';
+      if (hasPaid)  dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#5E8264')+';display:inline-block;margin:0 1.5px"></span>';
+      if (hasFree)  dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#BF5341')+';display:inline-block;margin:0 1.5px"></span>';
       dot = '<div style="display:flex;justify-content:center;margin-top:2px">'+dots+'</div>';
     }
 

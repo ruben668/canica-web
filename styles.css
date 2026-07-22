@@ -621,3 +621,9 @@ form { display: grid; gap: var(--sp-4); }
     justify-content: center;
   }
 }
+
+
+/* Force ABC Repro regular weight everywhere — no bold synthesis */
+*:not(h1):not(h2):not(h3):not(h4):not(.hero__copy h1):not(.hero__copy h2) {
+  font-weight: 400 !important;
+}

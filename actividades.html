@@ -581,7 +581,6 @@ const ACTIVITY_DATA = {
   '2026-08-09': [DONUTS_PLATO, BORREGUITOS_PLATO],
   '2026-08-10': [LUNES_DESCUENTO, NENUFARES_PAPEL, EXPLORACION_TIERRA],
   '2026-08-11': [COLLARES_CEREAL, ESTIMULACION, ESTAMPADO_VASOS],
-  '2026-08-11': [ESTIMULACION],
   '2026-08-18': [ESTIMULACION],
   '2026-08-25': [ESTIMULACION],
   '2026-09-01': [ESTIMULACION],
@@ -709,7 +708,7 @@ function shiftMonth(delta) {
   renderMonth(monthOffset + delta);
 }
 
-// ── Week navigation ──
+// ── Week navigation (kept for reference, not displayed) ──
 const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 
 function getMondayOfWeek(offset) {
@@ -761,7 +760,6 @@ function renderWeek(offset) {
 function shiftWeek(delta) { renderWeek(currentOffset + delta); }
 function goToToday() { renderWeek(0); }
 
-renderWeek(0);
 renderMonth(0);
 </script>
 

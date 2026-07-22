@@ -146,30 +146,11 @@
       </button>
     </div>
 
-    <!-- WEEK VIEW -->
-    <div id="week-view">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px">
-        <span id="week-label" style="font-family:var(--body);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4)">Semana del — al —</span>
-        <div style="display:flex;align-items:center;border:1px solid rgba(26,20,17,.15)">
-          <button id="prev-week" onclick="shiftWeek(-1)"
-            style="font-family:var(--body);font-size:13px;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:rgba(26,20,17,.5);border-right:1px solid rgba(26,20,17,.15)">←</button>
-          <button onclick="goToToday()"
-            style="font-family:var(--body);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:var(--ink)">Esta semana</button>
-          <button id="next-week" onclick="shiftWeek(1)"
-            style="font-family:var(--body);font-size:13px;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:rgba(26,20,17,.5);border-left:1px solid rgba(26,20,17,.15)">→</button>
-        </div>
-      </div>
-      <div id="week-list"></div>
-      <div style="text-align:center;margin-top:40px;padding-bottom:24px">
-        <button onclick="shiftWeek(1)"
-          style="font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);background:transparent;padding:14px 28px;cursor:pointer;color:var(--ink)">
-          Semana siguiente →
-        </button>
-      </div>
     </div>
+</div>
 
-    <!-- MONTH CALENDAR (hidden by default) -->
-    <div id="month-view" style="display:none">
+    <!-- MONTH CALENDAR -->
+    <div id="month-view">
     <!-- MONTH CALENDAR -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
       <button onclick="shiftMonth(-1)" style="font-family:var(--body);font-size:13px;padding:6px 12px;border:1px solid rgba(26,20,17,.15);background:transparent;cursor:pointer;color:rgba(26,20,17,.6)">←</button>

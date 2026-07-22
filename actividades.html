@@ -284,19 +284,7 @@
       <div id="day-detail-body"></div>
     </div>
 
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:12px">
-      <p class="cal-week" id="week-label" style="margin-bottom:0">Semana del — al —</p>
-      <div style="display:flex;align-items:center;gap:0;border:1px solid rgba(26,20,17,.15)">
-        <button id="prev-week" onclick="shiftWeek(-1)" aria-label="Semana anterior"
-          style="font-family:var(--body);font-size:11px;letter-spacing:.1em;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:rgba(26,20,17,.5);border-right:1px solid rgba(26,20,17,.15)">←</button>
-        <button id="today-btn" onclick="goToToday()"
-          style="font-family:var(--body);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:var(--ink)">Esta semana</button>
-        <button id="next-week" onclick="shiftWeek(1)" aria-label="Semana siguiente"
-          style="font-family:var(--body);font-size:11px;letter-spacing:.1em;padding:8px 14px;border:none;background:transparent;cursor:pointer;color:rgba(26,20,17,.5);border-left:1px solid rgba(26,20,17,.15)">→</button>
-      </div>
-    </div>
-
-    <div id="calendar">
+    <div id="calendar" style="display:none;"><!-- weekly view hidden until activities are added -->
 
       <!-- LUNES -->
       <div class="day-block">
@@ -485,8 +473,8 @@
 
     <div style="margin-top:48px;padding-top:24px;border-top:1px solid rgba(26,20,17,.1)">
       <p style="font-size:12px;color:rgba(26,20,17,.4);line-height:1.8">
-        El calendario se actualiza cada lunes. Las actividades son parte de la experiencia Canica — incluidas para miembros, disponibles para visitantes del día.<br>
-        <a href="/membership" style="color:var(--ink);text-underline-offset:3px">Conoce Canica Commons →</a>
+        Selecciona un día en el calendario para ver qué actividades hay. Próximamente anunciaremos nuestra programación.<br>
+        <a href="membership.html" style="color:var(--ink);text-underline-offset:3px">Conoce Canica Commons →</a>
       </p>
     </div>
 
@@ -495,36 +483,12 @@
 </main>
 
 <script>
-// ── Activities data (day-of-week based, 0=Mon … 6=Sun) ──
+// ── Activities data ──
+// Format: { 'YYYY-MM-DD': [ { time, name, desc }, ... ] }
+// Add specific dates here as activities are confirmed.
 const ACTIVITY_DATA = {
-  0: [ // Monday
-    { time: '10:00 am', name: 'Taller de pintura', desc: 'Acuarelas y temperas para explorar el color libremente. Para niños de 2 a 7 años.' },
-    { time: '12:00 pm', name: 'Cuento en voz alta', desc: 'Una historia para escuchar juntos, padres e hijos. Duración: 20 minutos.' }
-  ],
-  1: [ // Tuesday
-    { time: '11:00 am', name: 'Música y movimiento', desc: 'Ritmo, canciones y baile para los más pequeños. Ideal de 1 a 4 años.' },
-    { time: '5:00 pm',  name: 'Construcción libre', desc: 'Bloques, rampas y estructuras para construir sin límites.' }
-  ],
-  2: [ // Wednesday
-    { time: '10:30 am', name: 'Taller de barro', desc: 'Modelado libre con arcilla. Manos en la masa, imaginación a tope.' },
-    { time: '4:30 pm',  name: 'Juego de roles', desc: 'Disfraces, personajes e historias inventadas por ellos mismos.' }
-  ],
-  3: [ // Thursday
-    { time: '11:00 am', name: 'Taller de collage', desc: 'Tijeras, revistas, papel y pegamento. Cada quien crea su propia obra.' },
-    { time: '5:00 pm',  name: 'Yoga para niños', desc: 'Poses, respiración y calma. Para niños de 3 a 8 años con sus papás.' }
-  ],
-  4: [ // Friday
-    { time: '10:00 am', name: 'Taller de cocina', desc: 'Recetas simples, ingredientes reales, mucha diversión.' },
-    { time: '4:00 pm',  name: 'Cinemita Canica', desc: 'Película corta en la ludoteca. Almohadas, manta y palomitas incluidas.' }
-  ],
-  5: [ // Saturday
-    { time: '10:00 am', name: 'Taller de naturaleza', desc: 'Plantas, semillas y tierra. Los niños aprenden a cuidar algo vivo.' },
-    { time: '12:00 pm', name: 'Feria de disfraces', desc: 'Trae tu disfraz favorito o usa los nuestros. Desfile, fotos y mucha risa.' }
-  ],
-  6: [ // Sunday
-    { time: '11:00 am', name: 'Círculo de lecturas', desc: 'Cuentos en voz alta para toda la familia.' },
-    { time: '1:00 pm',  name: 'Tarde de manualidades', desc: 'Materiales abiertos y tiempo sin prisas para crear algo juntos.' }
-  ]
+  // Example (remove when adding real activities):
+  // '2026-08-05': [ { time: '11:00 am', name: 'Taller de pintura', desc: 'Descripción.' } ]
 };
 
 const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -539,6 +503,10 @@ function getMonthDate(offset) {
   return new Date(now.getFullYear(), now.getMonth() + offset, 1);
 }
 
+function dateKey(year, month, day) {
+  return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+}
+
 function renderMonth(offset) {
   monthOffset = offset;
   const base = getMonthDate(offset);
@@ -550,25 +518,20 @@ function renderMonth(offset) {
   const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
   today.setHours(0,0,0,0);
 
-  // First day of month — adjust so Monday=0
-  let firstDow = new Date(year, month, 1).getDay(); // 0=Sun
-  firstDow = (firstDow === 0) ? 6 : firstDow - 1; // Mon=0
+  let firstDow = new Date(year, month, 1).getDay();
+  firstDow = (firstDow === 0) ? 6 : firstDow - 1;
 
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
   let html = '<tr>';
   let col = 0;
 
-  // Leading empty cells
-  for (let i = 0; i < firstDow; i++) {
-    html += '<td></td>';
-    col++;
-  }
+  for (let i = 0; i < firstDow; i++) { html += '<td></td>'; col++; }
 
   for (let d = 1; d <= daysInMonth; d++) {
     const date = new Date(year, month, d);
-    const dow = (date.getDay() === 0) ? 6 : date.getDay() - 1; // Mon=0
-    const hasAct = ACTIVITY_DATA[dow] && ACTIVITY_DATA[dow].length > 0;
+    const key = dateKey(year, month, d);
+    const hasAct = ACTIVITY_DATA[key] && ACTIVITY_DATA[key].length > 0;
     const isToday = date.getTime() === today.getTime();
     const isSel = selectedDate && date.getTime() === selectedDate.getTime();
 
@@ -577,14 +540,13 @@ function renderMonth(offset) {
     if (isToday) cls += ' is-today';
     if (isSel) cls += ' is-selected';
 
-    const onclick = hasAct ? `onclick="selectDay(${year},${month},${d})"` : '';
+    const onclick = `onclick="selectDay(${year},${month},${d})"`;
     html += `<td><span class="${cls}" ${onclick}>${d}${hasAct ? '<span class="dot"></span>' : ''}</span></td>`;
 
     col++;
     if (col % 7 === 0 && d < daysInMonth) { html += '</tr><tr>'; }
   }
 
-  // Trailing empty cells
   const remaining = (7 - (col % 7)) % 7;
   for (let i = 0; i < remaining; i++) html += '<td></td>';
   html += '</tr>';
@@ -594,8 +556,9 @@ function renderMonth(offset) {
 
 function selectDay(year, month, day) {
   selectedDate = new Date(year, month, day);
+  const key = dateKey(year, month, day);
   const dow = (selectedDate.getDay() === 0) ? 6 : selectedDate.getDay() - 1;
-  const activities = ACTIVITY_DATA[dow] || [];
+  const activities = ACTIVITY_DATA[key] || [];
 
   const detail = document.getElementById('day-detail');
   const title = document.getElementById('day-detail-title');
@@ -605,7 +568,7 @@ function selectDay(year, month, day) {
   title.textContent = DAY_NAMES_ES[dow].charAt(0).toUpperCase() + DAY_NAMES_ES[dow].slice(1) + ' ' + day + ' de ' + MONTHS_LOWER[month];
 
   if (activities.length === 0) {
-    body.innerHTML = '<p style="font-size:13px;color:rgba(26,20,17,.4);font-style:italic">Sin actividades programadas para este día.</p>';
+    body.innerHTML = '<p style="font-size:13px;color:rgba(26,20,17,.4);font-style:italic">Próximamente — estamos preparando la programación.</p>';
   } else {
     body.innerHTML = activities.map(a => `
       <div class="detail-activity">
@@ -619,8 +582,6 @@ function selectDay(year, month, day) {
 
   detail.classList.add('visible');
   detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-  // Re-render to show selection
   renderMonth(monthOffset);
 }
 

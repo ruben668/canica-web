@@ -122,6 +122,14 @@
     align-items: flex-start;
   }
   .detail-activity:last-child { border-bottom: none; }
+  .detail-activity.is-paid {
+    background: rgba(94,130,100,0.08);
+    border-left: 3px solid #5E8264;
+    border-bottom: 1px solid rgba(94,130,100,.15);
+    padding: 12px 12px 12px 14px;
+    margin: 4px 0;
+    border-radius: 2px;
+  }
   .detail-time {
     font-family: var(--body);
     font-size: 11px;
@@ -491,7 +499,8 @@ const ESTIMULACION = {
   desc: 'Juntos le daremos seguimiento al desarrollo de tu bebé en cada una de las etapas, te daremos ideas, actividades e información para acompañarlo y fomentar un desarrollo saludable durante sus primeros años.',
   age: '5 a 10 meses',
   price: 'Clase individual $430 · Paquete 5 clases $2,000',
-  photo: 'assets/estimulacion-luiza.jpg'
+  photo: 'assets/estimulacion-luiza.jpg',
+  paid: true
 };
 
 const PINTURA_HUELLAS = {
@@ -712,7 +721,7 @@ function selectDay(year, month, day) {
     body.innerHTML = '<p style="font-size:13px;color:rgba(26,20,17,.4);font-style:italic">Próximamente — estamos preparando la programación.</p>';
   } else {
     body.innerHTML = activities.map(a => `
-      <div class="detail-activity">
+      <div class="detail-activity${a.paid ? ' is-paid' : ''}">
         <span class="detail-time">${a.time}</span>
         <div style="flex:1">
           <div class="detail-name">${a.name}</div>

@@ -110,6 +110,171 @@
   "outputDirectory": ".",
   "redirects": [
     {
+      "source": "/menu-naira",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/menu-naira",
+      "permanent": true
+    },
+    {
+      "source": "/eventos",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/eventos",
+      "permanent": true
+    },
+    {
+      "source": "/success",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/success",
+      "permanent": true
+    },
+    {
+      "source": "/gerente",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/gerente",
+      "permanent": true
+    },
+    {
+      "source": "/member",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/member",
+      "permanent": true
+    },
+    {
+      "source": "/checkin",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/checkin",
+      "permanent": true
+    },
+    {
+      "source": "/dashboard",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/dashboard",
+      "permanent": true
+    },
+    {
+      "source": "/hiring",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/hiring",
+      "permanent": true
+    },
+    {
+      "source": "/reservations",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/reservations",
+      "permanent": true
+    },
+    {
+      "source": "/menu",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/menu",
+      "permanent": true
+    },
+    {
+      "source": "/membership",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/membership",
+      "permanent": true
+    },
+    {
+      "source": "/host",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/host",
+      "permanent": true
+    },
+    {
+      "source": "/bienvenida",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/bienvenida",
+      "permanent": true
+    },
+    {
+      "source": "/cancelar",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/cancelar",
+      "permanent": true
+    },
+    {
+      "source": "/actividades",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/actividades",
+      "permanent": true
+    },
+    {
       "source": "/reservations",
       "destination": "https://canica-fun.resos.com/booking",
       "permanent": false

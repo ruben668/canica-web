@@ -650,7 +650,7 @@ function selectDay(year, month, day) {
           <div class="detail-desc" style="margin-top:6px">${a.desc}</div>
           ${a.price ? `<div style="font-family:var(--body);font-size:12px;font-weight:500;color:#BF5341;margin-top:8px">${a.price}</div>` : ''}
           ${a.note ? `<div style="font-family:var(--body);font-size:11px;color:rgba(26,20,17,.5);margin-top:8px;font-style:italic;border-left:2px solid rgba(191,83,65,.3);padding-left:8px">${a.note}</div>` : ''}
-          ${a.photo ? `<img src="${a.photo}" alt="${a.name}" style="margin-top:12px;width:100%;max-width:280px;aspect-ratio:4/3;object-fit:cover;border-radius:2px;display:block;">` : ''}
+          ${a.photo ? `<img src="${a.photo}" alt="${a.name}" style="margin-top:12px;width:100%;max-width:320px;height:auto;border-radius:2px;display:block;">` : ''}
         </div>
       </div>`).join('');
   }

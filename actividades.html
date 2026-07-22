@@ -499,7 +499,8 @@ const PINTURA_HUELLAS = {
   name: 'Pintura de Huellas Arcoíris',
   desc: 'Los niños cubren sus pies con plástico de burbujas y caminan sobre un rollo de papel, dejando huellas coloridas y burbujeantes.',
   age: 'Todos los niños',
-  price: 'Sin costo adicional · Solo entrada a la ludoteca',
+  price: 'Sin costo adicional · Incluida con la entrada a la ludoteca',
+  note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar.',
   photo: 'assets/pintura-huellas.jpg'
 };
 
@@ -617,6 +618,7 @@ function selectDay(year, month, day) {
           ${a.age ? `<div style="font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.4);margin-top:3px;text-transform:uppercase">${a.age}</div>` : ''}
           <div class="detail-desc" style="margin-top:6px">${a.desc}</div>
           ${a.price ? `<div style="font-family:var(--body);font-size:12px;font-weight:500;color:#BF5341;margin-top:8px">${a.price}</div>` : ''}
+          ${a.note ? `<div style="font-family:var(--body);font-size:11px;color:rgba(26,20,17,.5);margin-top:8px;font-style:italic;border-left:2px solid rgba(191,83,65,.3);padding-left:8px">${a.note}</div>` : ''}
           ${a.photo ? `<img src="${a.photo}" alt="${a.name}" style="margin-top:12px;width:100%;max-width:280px;aspect-ratio:4/3;object-fit:cover;border-radius:2px;display:block;">` : ''}
         </div>
       </div>`).join('');

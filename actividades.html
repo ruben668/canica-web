@@ -13,145 +13,6 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
 <style>
-  /* ── Month Grid ── */
-  .month-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  .month-title {
-    font-family: var(--display, 'DM Serif Display', serif);
-    font-size: 22px;
-    font-style: italic;
-    font-weight: 400;
-  }
-  .month-nav-btn {
-    font-family: var(--body);
-    font-size: 13px;
-    padding: 6px 12px;
-    border: 1px solid rgba(26,20,17,.15);
-    background: transparent;
-    cursor: pointer;
-    color: rgba(26,20,17,.6);
-  }
-  .month-nav-btn:hover { color: var(--ink); border-color: var(--ink); }
-  .month-grid {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 40px;
-  }
-  .month-grid th {
-    font-family: var(--body);
-    font-size: 9px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: rgba(26,20,17,.4);
-    padding: 0 0 10px;
-    text-align: center;
-    font-weight: 400;
-  }
-  .month-grid td {
-    text-align: center;
-    padding: 4px 2px;
-    vertical-align: top;
-  }
-  .day-cell {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    cursor: default;
-    font-family: var(--body);
-    font-size: 13px;
-    color: rgba(26,20,17,.35);
-    position: relative;
-    transition: background .15s;
-  }
-  .day-cell.has-activity {
-    color: var(--ink);
-    cursor: pointer;
-    font-weight: 500;
-  }
-  .day-cell.has-activity:hover {
-    background: rgba(191,83,65,.1);
-  }
-  .day-cell.is-today {
-    background: rgba(191,83,65,.15);
-    color: #BF5341;
-    font-weight: 600;
-  }
-  .day-cell.is-selected {
-    background: #BF5341;
-    color: #fff !important;
-    font-weight: 600;
-  }
-  .dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #BF5341;
-    margin-top: 2px;
-    flex-shrink: 0;
-  }
-  .day-cell.is-selected .dot { background: rgba(255,255,255,.7); }
-  .day-detail {
-    background: rgba(191,83,65,.05);
-    border: 1px solid rgba(191,83,65,.15);
-    border-radius: 2px;
-    padding: 20px 24px;
-    margin-bottom: 40px;
-    display: none;
-  }
-  .day-detail.visible { display: block; }
-  .day-detail-title {
-    font-family: var(--display, 'DM Serif Display', serif);
-    font-size: 18px;
-    font-style: italic;
-    margin-bottom: 16px;
-    color: var(--ink);
-  }
-  .detail-activity {
-    display: flex;
-    gap: 16px;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(26,20,17,.08);
-    align-items: flex-start;
-  }
-  .detail-activity:last-child { border-bottom: none; }
-  .detail-activity.is-paid {
-    background: rgba(94,130,100,0.08);
-    border-left: 3px solid #5E8264;
-    border-bottom: 1px solid rgba(94,130,100,.15);
-    padding: 12px 12px 12px 14px;
-    margin: 4px 0;
-    border-radius: 2px;
-  }
-  .detail-time {
-    font-family: var(--body);
-    font-size: 11px;
-    letter-spacing: .06em;
-    color: rgba(26,20,17,.4);
-    min-width: 60px;
-    padding-top: 2px;
-  }
-  .detail-name {
-    font-family: var(--body);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--ink);
-  }
-  .detail-desc {
-    font-family: var(--body);
-    font-size: 12px;
-    color: rgba(26,20,17,.55);
-    margin-top: 3px;
-    line-height: 1.6;
-  }
-
   /* ── Calendar ── */
   .cal-week {
     font-family: var(--body);
@@ -271,25 +132,26 @@
 
 <section>
   <div class="container">
-    <!-- MONTH CALENDAR -->
-    <div class="month-nav">
-      <button class="month-nav-btn" onclick="shiftMonth(-1)">←</button>
-      <span class="month-title" id="month-title"></span>
-      <button class="month-nav-btn" onclick="shiftMonth(1)">→</button>
+    <!-- WEEK VIEW -->
+    <div id="week-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px">
+      <p class="cal-week" id="week-label" style="margin-bottom:0">Semana del — al —</p>
+      <div style="display:flex;align-items:center;gap:0;border:1px solid rgba(26,20,17,.15)">
+        <button id="prev-week" onclick="shiftWeek(-1)" aria-label="Semana anterior"
+          style="font-family:var(--body);font-size:11px;padding:9px 14px;border:none;background:transparent;cursor:pointer;color:rgba(26,20,17,.5);border-right:1px solid rgba(26,20,17,.15)">←</button>
+        <button onclick="goToToday()"
+          style="font-family:var(--body);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;border:none;background:transparent;cursor:pointer;color:var(--ink)">Esta semana</button>
+        <button id="next-week" onclick="shiftWeek(1)" aria-label="Semana siguiente"
+          style="font-family:var(--body);font-size:11px;padding:9px 14px;border:none;background:transparent;cursor:pointer;color:rgba(26,20,17,.5);border-left:1px solid rgba(26,20,17,.15)">→</button>
+      </div>
     </div>
-    <table class="month-grid" id="month-grid" aria-label="Calendario de actividades">
-      <thead>
-        <tr>
-          <th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th>
-        </tr>
-      </thead>
-      <tbody id="month-body"></tbody>
-    </table>
 
-    <!-- DAY DETAIL PANEL -->
-    <div class="day-detail" id="day-detail">
-      <div class="day-detail-title" id="day-detail-title"></div>
-      <div id="day-detail-body"></div>
+    <div id="week-list"></div>
+
+    <div style="text-align:center;margin-top:40px;margin-bottom:24px">
+      <button onclick="shiftWeek(1)"
+        style="font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);background:transparent;padding:14px 28px;cursor:pointer;color:var(--ink)">
+        Semana siguiente →
+      </button>
     </div>
 
     <div id="calendar" style="display:none;"></div><!-- /calendar -->
@@ -624,165 +486,84 @@ const ACTIVITY_DATA = {
   '2026-12-29': [ESTIMULACION],
 };
 
-const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const DAY_NAMES_ES = ['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
 
-// ── Month calendar ──
-let monthOffset = 0;
-let selectedDate = null;
-
-function getMonthDate(offset) {
-  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
-  return new Date(now.getFullYear(), now.getMonth() + offset, 1);
-}
-
-function dateKey(year, month, day) {
-  return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-}
-
-function renderMonth(offset) {
-  monthOffset = offset;
-  const base = getMonthDate(offset);
-  const year = base.getFullYear();
-  const month = base.getMonth();
-
-  document.getElementById('month-title').textContent = MONTHS_ES[month] + ' ' + year;
-
-  const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
-  today.setHours(0,0,0,0);
-
-  let firstDow = new Date(year, month, 1).getDay();
-  firstDow = (firstDow === 0) ? 6 : firstDow - 1;
-
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  let html = '<tr>';
-  let col = 0;
-
-  for (let i = 0; i < firstDow; i++) { html += '<td></td>'; col++; }
-
-  for (let d = 1; d <= daysInMonth; d++) {
-    const date = new Date(year, month, d);
-    const key = dateKey(year, month, d);
-    const hasAct = ACTIVITY_DATA[key] && ACTIVITY_DATA[key].length > 0;
-    const isToday = date.getTime() === today.getTime();
-    const isSel = selectedDate && date.getTime() === selectedDate.getTime();
-
-    let cls = 'day-cell';
-    if (hasAct) cls += ' has-activity';
-    if (isToday) cls += ' is-today';
-    if (isSel) cls += ' is-selected';
-
-    const onclick = `onclick="selectDay(${year},${month},${d})"`;
-    html += `<td><span class="${cls}" ${onclick}>${d}${hasAct ? '<span class="dot"></span>' : ''}</span></td>`;
-
-    col++;
-    if (col % 7 === 0 && d < daysInMonth) { html += '</tr><tr>'; }
-  }
-
-  const remaining = (7 - (col % 7)) % 7;
-  for (let i = 0; i < remaining; i++) html += '<td></td>';
-  html += '</tr>';
-
-  document.getElementById('month-body').innerHTML = html;
-}
-
-function selectDay(year, month, day) {
-  selectedDate = new Date(year, month, day);
-  const key = dateKey(year, month, day);
-  const dow = (selectedDate.getDay() === 0) ? 6 : selectedDate.getDay() - 1;
-  const activities = ACTIVITY_DATA[key] || [];
-
-  const detail = document.getElementById('day-detail');
-  const title = document.getElementById('day-detail-title');
-  const body = document.getElementById('day-detail-body');
-
-  const MONTHS_LOWER = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  title.textContent = DAY_NAMES_ES[dow].charAt(0).toUpperCase() + DAY_NAMES_ES[dow].slice(1) + ' ' + day + ' de ' + MONTHS_LOWER[month];
-
-  if (activities.length === 0) {
-    body.innerHTML = '<p style="font-size:13px;color:rgba(26,20,17,.4);font-style:italic">Próximamente — estamos preparando la programación.</p>';
-  } else {
-    body.innerHTML = activities.map(a => `
-      <div class="detail-activity${a.paid ? ' is-paid' : ''}">
-        <span class="detail-time">${a.time}</span>
-        <div style="flex:1">
-          <div class="detail-name">${a.name}</div>
-          ${a.age ? `<div style="font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.4);margin-top:3px;text-transform:uppercase">${a.age}</div>` : ''}
-          <div class="detail-desc" style="margin-top:6px">${a.desc}</div>
-          ${a.price ? `<div style="font-family:var(--body);font-size:12px;font-weight:500;color:#BF5341;margin-top:8px">${a.price}</div>` : ''}
-          ${a.warning ? `<div style="font-family:var(--body);font-size:12px;font-weight:600;color:#BF5341;background:rgba(191,83,65,.08);border:1px solid rgba(191,83,65,.25);border-radius:2px;padding:8px 10px;margin-top:10px;line-height:1.5">${a.warning}</div>` : ''}
-          ${a.note ? `<div style="font-family:var(--body);font-size:11px;color:rgba(26,20,17,.5);margin-top:8px;font-style:italic;border-left:2px solid rgba(191,83,65,.3);padding-left:8px">${a.note}</div>` : ''}
-          ${a.photo ? `<img src="${a.photo}" alt="${a.name}" style="margin-top:12px;width:100%;max-width:320px;height:auto;border-radius:2px;display:block;">` : ''}
-        </div>
-      </div>`).join('');
-  }
-
-  detail.classList.add('visible');
-  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  renderMonth(monthOffset);
-}
-
-function shiftMonth(delta) {
-  selectedDate = null;
-  document.getElementById('day-detail').classList.remove('visible');
-  renderMonth(monthOffset + delta);
-}
-
-// ── Week navigation (kept for reference, not displayed) ──
 const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DAYS_ES = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+
+let currentOffset = 0;
+
+function dateKey(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
 
 function getMondayOfWeek(offset) {
-  const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
-  const dow = today.getDay();
-  const monday = new Date(today);
-  monday.setDate(today.getDate() - (dow === 0 ? 6 : dow - 1) + offset * 7);
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+  const dow = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1) + offset * 7);
   monday.setHours(0,0,0,0);
   return monday;
 }
-
-let currentOffset = 0;
 
 function renderWeek(offset) {
   currentOffset = offset;
   const monday = getMondayOfWeek(offset);
   const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
+  const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+  today.setHours(0,0,0,0);
 
   // Week label
   const fromStr = monday.getMonth() === sunday.getMonth()
-    ? `${monday.getDate()} al ${sunday.getDate()} de ${MONTHS[sunday.getMonth()]}`
-    : `${monday.getDate()} de ${MONTHS[monday.getMonth()]} al ${sunday.getDate()} de ${MONTHS[sunday.getMonth()]}`;
-  document.getElementById('week-label').textContent = `Semana del ${fromStr}`;
+    ? monday.getDate() + ' al ' + sunday.getDate() + ' de ' + MONTHS[sunday.getMonth()]
+    : monday.getDate() + ' de ' + MONTHS[monday.getMonth()] + ' al ' + sunday.getDate() + ' de ' + MONTHS[sunday.getMonth()];
+  document.getElementById('week-label').textContent = 'Semana del ' + fromStr;
 
-  // Day dates
-  document.querySelectorAll('.day-date[data-day]').forEach(el => {
-    const dayOffset = parseInt(el.dataset.day);
-    const d = new Date(monday); d.setDate(monday.getDate() + dayOffset);
-    el.textContent = `${d.getDate()} de ${MONTHS[d.getMonth()]}`;
-  });
+  // Prev button
+  const prevBtn = document.getElementById('prev-week');
+  if (prevBtn) { prevBtn.style.opacity = offset <= 0 ? '0.3' : '1'; prevBtn.disabled = offset <= 0; }
 
-  // Dim past days only on current week
-  const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
-  today.setHours(0,0,0,0);
-  document.querySelectorAll('.day-block').forEach((block, i) => {
+  // Build week list
+  let html = '';
+  for (let i = 0; i < 7; i++) {
     const d = new Date(monday); d.setDate(monday.getDate() + i);
-    block.style.opacity = (offset === 0 && d < today) ? '0.35' : '1';
-  });
+    const key = dateKey(d);
+    const isPast = d < today;
+    const activities = ACTIVITY_DATA[key] || [];
 
-  // Prev button — disable if going back more than 1 week
-  document.getElementById('prev-week').style.opacity = offset <= -1 ? '0.3' : '1';
-  document.getElementById('prev-week').disabled = offset <= -1;
-  
-  // Today button style
-  document.getElementById('today-btn').style.fontWeight = offset === 0 ? '500' : '400';
-  document.getElementById('today-btn').style.color = offset === 0 ? 'rgba(26,20,17,.35)' : 'var(--ink)';
+    html += '<div class="day-block" style="opacity:' + (isPast ? '0.35' : '1') + '">';
+    html += '<div class="day-header"><span class="day-name">' + DAYS_ES[i] + '</span>';
+    html += '<span class="day-date">' + d.getDate() + ' de ' + MONTHS[d.getMonth()] + '</span></div>';
+
+    if (activities.length === 0) {
+      html += '<ul class="activity-list"><li style="padding:12px 0 16px;border-bottom:1px solid rgba(26,20,17,.08);font-size:12px;color:rgba(26,20,17,.3);font-style:italic;list-style:none">Juego libre todo el día</li></ul>';
+    } else {
+      html += '<ul class="activity-list">';
+      activities.forEach(function(a) {
+        html += '<li class="activity-item">';
+        html += '<span class="activity-time">' + a.time + '</span>';
+        html += '<div class="activity-content">';
+        html += '<div class="activity-title">' + a.name + '</div>';
+        if (a.age) html += '<div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(26,20,17,.4);margin-top:3px">' + a.age + '</div>';
+        if (a.desc) html += '<p class="activity-desc">' + a.desc + '</p>';
+        if (a.price) html += '<div style="font-size:12px;font-weight:500;color:#BF5341;margin-top:6px">' + a.price + '</div>';
+        if (a.warning) html += '<div style="font-size:11px;font-weight:600;color:#BF5341;background:rgba(191,83,65,.08);border:1px solid rgba(191,83,65,.2);padding:8px 10px;margin-top:8px;line-height:1.5">' + a.warning + '</div>';
+        if (a.note) html += '<div style="font-size:11px;color:rgba(26,20,17,.5);margin-top:6px;font-style:italic;border-left:2px solid rgba(191,83,65,.3);padding-left:8px">' + a.note + '</div>';
+        if (a.photo) html += '<img src="' + a.photo + '" alt="' + a.name + '" class="activity-photo">';
+        html += '</div></li>';
+      });
+      html += '</ul>';
+    }
+    html += '</div>';
+  }
+
+  document.getElementById('week-list').innerHTML = html;
 }
 
 function shiftWeek(delta) { renderWeek(currentOffset + delta); }
 function goToToday() { renderWeek(0); }
 
-renderMonth(0);
-</script>
+renderWeek(0);
 
+</script>
 </body>
 </html>

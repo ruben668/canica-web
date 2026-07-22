@@ -176,7 +176,7 @@ body.landing {
 }
 
 .hero__copy .lead {
-  font-family: var(--display);
+  font-family: var(--body);
   font-style: italic;
   font-weight: 300;
   font-size: clamp(17px, 2.4vw, 22px);
@@ -348,7 +348,7 @@ body.subpage {
 }
 .page-hero h1 em { font-style: italic; color: var(--rufous); }
 .page-hero .lead {
-  font-family: var(--display);
+  font-family: var(--body);
   font-style: italic;
   font-size: clamp(18px, 3vw, 22px);
   line-height: 1.4;
@@ -380,7 +380,7 @@ section + section { padding-top: var(--sp-6); }
   border-bottom: 1px solid var(--rule);
 }
 .items li .name {
-  font-family: var(--display);
+  font-family: var(--body);
   font-size: 18px;
   margin: 0 0 4px;
   font-weight: 400;
@@ -393,7 +393,7 @@ section + section { padding-top: var(--sp-6); }
   max-width: 460px;
 }
 .items li .price {
-  font-family: var(--display);
+  font-family: var(--body);
   font-style: italic;
   font-size: 18px;
   color: var(--rufous);
@@ -429,7 +429,7 @@ form { display: grid; gap: var(--sp-4); }
   color: rgba(26, 20, 17, 0.7);
 }
 .field input, .field textarea, .field select {
-  font-family: var(--display);
+  font-family: var(--body);
   font-size: 16px;
   padding: 14px 0;
   border: none;

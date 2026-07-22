@@ -656,14 +656,14 @@ function selectDay(year, month, day) {
     document.getElementById('day-detail-body').innerHTML = '<p style="font-size:13px;color:rgba(26,20,17,.4);font-style:italic">Próximamente — estamos preparando la programación.</p>';
   } else {
     document.getElementById('day-detail-body').innerHTML = activities.map(function(a) {
-      const paidStyle = a.paid ? 'background:rgba(94,130,100,.08);border-left:3px solid #5E8264;padding:12px 12px 12px 14px;margin:4px 0;border-radius:2px;' : a.promo ? 'background:rgba(184,134,11,.08);border-left:3px solid #B8860B;padding:12px 12px 12px 14px;margin:4px 0;border-radius:2px;' : '';
+      const paidStyle = a.paid ? 'background:rgba(94,130,100,.08);border-left:3px solid #5E8264;padding:12px 12px 12px 14px;margin:4px 0;border-radius:2px;' : a.promo ? 'background:rgba(74,111,165,.08);border-left:3px solid #4A6FA5;padding:12px 12px 12px 14px;margin:4px 0;border-radius:2px;' : '';
       return '<div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(26,20,17,.08);align-items:flex-start;'+paidStyle+'">' +
         '<span style="font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.4);min-width:60px;padding-top:2px">'+a.time+'</span>' +
         '<div style="flex:1">' +
         '<div style="font-family:var(--body);font-size:14px;font-weight:500;color:var(--ink)">'+a.name+'</div>' +
         (a.age ? '<div style="font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.4);margin-top:3px;text-transform:uppercase">'+a.age+'</div>' : '') +
         '<div style="font-family:var(--body);font-size:12px;color:rgba(26,20,17,.55);margin-top:6px;line-height:1.6">'+a.desc+'</div>' +
-        (a.price ? '<div style="font-family:var(--body);font-size:12px;font-weight:500;color:' + (a.promo ? '#B8860B' : '#BF5341') + ';margin-top:8px">'+a.price+'</div>' : '') +
+        (a.price ? '<div style="font-family:var(--body);font-size:12px;font-weight:500;color:' + (a.promo ? '#4A6FA5' : '#BF5341') + ';margin-top:8px">'+a.price+'</div>' : '') +
         (a.warning ? '<div style="font-family:var(--body);font-size:12px;font-weight:600;color:#BF5341;background:rgba(191,83,65,.08);border:1px solid rgba(191,83,65,.25);border-radius:2px;padding:8px 10px;margin-top:10px;line-height:1.5">'+a.warning+'</div>' : '') +
         (a.note ? '<div style="font-family:var(--body);font-size:11px;color:rgba(26,20,17,.5);margin-top:8px;font-style:italic;border-left:2px solid rgba(191,83,65,.3);padding-left:8px">'+a.note+'</div>' : '') +
         (a.photo ? '<img src="'+a.photo+'" alt="'+a.name+'" style="margin-top:12px;width:100%;max-width:320px;height:auto;border-radius:2px;display:block">' : '') +

@@ -140,15 +140,15 @@
       <span id="month-title" style="font-family:var(--display,'DM Serif Display',serif);font-size:22px;font-style:italic;font-weight:400"></span>
       <button onclick="shiftMonth(1)" style="font-family:var(--body);font-size:13px;padding:6px 12px;border:1px solid rgba(26,20,17,.15);background:transparent;cursor:pointer;color:rgba(26,20,17,.6)">→</button>
     </div>
-    <table style="width:100%;border-collapse:collapse;margin-bottom:40px">
+    <table style="width:100%;border-collapse:collapse;margin-bottom:40px;border:1px solid rgba(26,20,17,.12);">
       <thead><tr>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:0 0 10px;text-align:center;font-weight:400">Lun</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:0 0 10px;text-align:center;font-weight:400">Mar</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:0 0 10px;text-align:center;font-weight:400">Mié</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:0 0 10px;text-align:center;font-weight:400">Jue</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:0 0 10px;text-align:center;font-weight:400">Vie</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:0 0 10px;text-align:center;font-weight:400">Sáb</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:0 0 10px;text-align:center;font-weight:400">Dom</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Lun</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Mar</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Mié</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Jue</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Vie</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Sáb</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Dom</th>
       </tr></thead>
       <tbody id="month-body"></tbody>
     </table>
@@ -934,7 +934,7 @@ function renderMonth(offset) {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
   let html = '<tr>'; let col = 0;
-  for (let i = 0; i < firstDow; i++) { html += '<td></td>'; col++; }
+  for (let i = 0; i < firstDow; i++) { html += '<td style="border:1px solid rgba(26,20,17,.08)"></td>'; col++; }
 
   for (let d = 1; d <= daysInMonth; d++) {
     const date = new Date(year, month, d);
@@ -956,19 +956,19 @@ function renderMonth(offset) {
       const hasFree = acts.some(function(a){ return !a.promo && !a.paid; });
       const dotBase = isSel ? 'rgba(255,255,255,.7)' : null;
       let dots = '';
-      if (hasPromo) dots += '<span style="width:10px;height:10px;border-radius:50%;background:'+(dotBase||'#4A6FA5')+';display:inline-block;margin:0 2px"></span>';
-      if (hasPaid)  dots += '<span style="width:10px;height:10px;border-radius:50%;background:'+(dotBase||'#5E8264')+';display:inline-block;margin:0 2px"></span>';
-      if (hasFree)  dots += '<span style="width:10px;height:10px;border-radius:50%;background:'+(dotBase||'#BF5341')+';display:inline-block;margin:0 2px"></span>';
+      if (hasPromo) dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#4A6FA5')+';display:inline-block;margin:0 1.5px"></span>';
+      if (hasPaid)  dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#5E8264')+';display:inline-block;margin:0 1.5px"></span>';
+      if (hasFree)  dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#BF5341')+';display:inline-block;margin:0 1.5px"></span>';
       dot = '<div style="display:flex;justify-content:center;margin-top:2px">'+dots+'</div>';
     }
 
-    html += '<td style="text-align:center;padding:3px 1px"><div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:'+cur+'" onclick="selectDay('+year+','+month+','+d+')"><span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:'+bg+';color:'+clr+';font-weight:'+fw+';font-family:var(--body);font-size:13px;line-height:1">'+d+'</span>'+dot+'</div></td>';
+    html += '<td style="text-align:center;padding:6px 2px;border:1px solid rgba(26,20,17,.08);min-height:44px"><div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:'+cur+'" onclick="selectDay('+year+','+month+','+d+')"><span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:'+bg+';color:'+clr+';font-weight:'+fw+';font-family:var(--body);font-size:13px;line-height:1">'+d+'</span>'+dot+'</div></td>';
 
     col++;
     if (col % 7 === 0 && d < daysInMonth) html += '</tr><tr>';
   }
   const rem = (7 - col % 7) % 7;
-  for (let i = 0; i < rem; i++) html += '<td></td>';
+  for (let i = 0; i < rem; i++) html += '<td style="border:1px solid rgba(26,20,17,.08)"></td>';
   html += '</tr>';
   document.getElementById('month-body').innerHTML = html;
 }

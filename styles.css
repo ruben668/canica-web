@@ -52,6 +52,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ABC Repro only has one weight — disable bold synthesis everywhere */
+b, strong,
+.kicker, .num, .activity-title, .detail-name,
+.sub-reserve, .sub-back,
+.bn__label, .btn {
+  font-weight: 400;
+}
+
 body.landing {
   /* photos take full viewport on desktop; phones stack */
   min-height: 100vh;

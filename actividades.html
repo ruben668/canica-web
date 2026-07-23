@@ -155,7 +155,7 @@
     <!-- LEGEND -->
     <div style="display:flex;align-items:center;gap:20px;margin-bottom:28px;flex-wrap:wrap;">
       <div style="display:flex;align-items:center;gap:6px;font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.6);">
-        <span style="width:8px;height:8px;border-radius:50%;background:#BF5341;flex-shrink:0;display:inline-block"></span>
+        <span style="width:8px;height:8px;border-radius:50%;background:#C49A2A;flex-shrink:0;display:inline-block"></span>
         Actividad incluida
       </div>
       <div style="display:flex;align-items:center;gap:6px;font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.6);">
@@ -171,7 +171,7 @@
     
 
 
-<div id="day-detail" style="display:none;background:rgba(191,83,65,.05);border:1px solid rgba(191,83,65,.15);border-radius:2px;padding:20px 24px;margin-bottom:40px">
+<div id="day-detail" style="display:none;background:rgba(196,154,42,.07);border:1px solid rgba(196,154,42,.2);border-radius:2px;padding:20px 24px;margin-bottom:40px">
       <div id="day-detail-title" style="font-family:var(--display,'DM Serif Display',serif);font-size:18px;font-style:italic;margin-bottom:16px;color:var(--ink)"></div>
       <div id="day-detail-body"></div>
     </div>
@@ -944,8 +944,8 @@ function renderMonth(offset) {
     const isToday = date.getTime() === now.getTime();
     const isSel = selectedDate && date.getTime() === selectedDate.getTime();
 
-    const bg = isSel ? '#BF5341' : isToday ? 'rgba(191,83,65,.15)' : 'transparent';
-    const clr = isSel ? '#fff' : isToday ? '#BF5341' : hasAct ? '#1A1411' : 'rgba(26,20,17,.3)';
+    const bg = isSel ? '#BF5341' : isToday ? 'rgba(196,154,42,.2)' : 'transparent';
+    const clr = isSel ? '#fff' : isToday ? '#C49A2A' : hasAct ? '#1A1411' : 'rgba(26,20,17,.3)';
     const fw = (isToday || isSel || hasAct) ? '600' : '400';
     const cur = hasAct ? 'pointer' : 'default';
     // Multiple dots — one per activity type present
@@ -959,7 +959,7 @@ function renderMonth(offset) {
       let dots = '';
       if (hasPromo) dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#4A6FA5')+';display:inline-block;margin:0 1.5px"></span>';
       if (hasPaid)  dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#5E8264')+';display:inline-block;margin:0 1.5px"></span>';
-      if (hasFree)  dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#BF5341')+';display:inline-block;margin:0 1.5px"></span>';
+      if (hasFree)  dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#C49A2A')+';display:inline-block;margin:0 1.5px"></span>';
       dot = '<div style="display:flex;justify-content:center;margin-top:2px">'+dots+'</div>';
     }
 
@@ -994,7 +994,7 @@ function selectDay(year, month, day) {
         '<div style="font-family:var(--body);font-size:14px;font-weight:500;color:var(--ink)">'+a.name+'</div>' +
         (a.age ? '<div style="font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.4);margin-top:3px;text-transform:uppercase">'+a.age+'</div>' : '') +
         '<div style="font-family:var(--body);font-size:12px;color:rgba(26,20,17,.55);margin-top:6px;line-height:1.6">'+a.desc+'</div>' +
-        (a.price ? '<div style="font-family:var(--body);font-size:12px;font-weight:500;color:' + (a.promo ? '#4A6FA5' : '#BF5341') + ';margin-top:8px">'+a.price+'</div>' : '') +
+        (a.price ? '<div style="font-family:var(--body);font-size:12px;font-weight:500;color:' + (a.promo ? '#4A6FA5' : '#C49A2A') + ';margin-top:8px">'+a.price+'</div>' : '') +
         (a.warning ? '<div style="font-family:var(--body);font-size:12px;font-weight:600;color:#BF5341;background:rgba(191,83,65,.08);border:1px solid rgba(191,83,65,.25);border-radius:2px;padding:8px 10px;margin-top:10px;line-height:1.5">'+a.warning+'</div>' : '') +
         (a.note ? '<div style="font-family:var(--body);font-size:11px;color:rgba(26,20,17,.5);margin-top:8px;font-style:italic;border-left:2px solid rgba(191,83,65,.3);padding-left:8px">'+a.note+'</div>' : '') +
         (a.photo ? '<img src="'+a.photo+'" alt="'+a.name+'" style="margin-top:12px;width:100%;max-width:320px;height:auto;border-radius:2px;display:block">' : '') +

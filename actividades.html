@@ -134,23 +134,7 @@
 <section>
   <div class="container">
 
-    <!-- VIEW TOGGLE -->
-    <div id="view-toggle" style="display:flex;gap:0;border:1px solid rgba(26,20,17,.15);margin-bottom:24px;width:fit-content">
-      <button id="btn-week" onclick="setView('week')"
-        style="font-family:var(--body);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:10px 18px;border:none;background:var(--ink);color:#FFF9F1;cursor:pointer">
-        Semana
-      </button>
-      <button id="btn-month" onclick="setView('month')"
-        style="font-family:var(--body);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:10px 18px;border:none;background:transparent;color:rgba(26,20,17,.5);cursor:pointer;border-left:1px solid rgba(26,20,17,.15)">
-        Mes
-      </button>
-    </div>
-
-    </div>
-</div>
-
     <!-- MONTH CALENDAR -->
-    <div id="month-view">
     <!-- MONTH CALENDAR -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
       <button onclick="shiftMonth(-1)" style="font-family:var(--body);font-size:13px;padding:6px 12px;border:1px solid rgba(26,20,17,.15);background:transparent;cursor:pointer;color:rgba(26,20,17,.6)">←</button>
@@ -186,7 +170,7 @@
     </div>
 
     
-    </div><!-- /month-view -->
+
 
 <div id="day-detail" style="display:none;background:rgba(191,83,65,.05);border:1px solid rgba(191,83,65,.15);border-radius:2px;padding:20px 24px;margin-bottom:40px">
       <div id="day-detail-title" style="font-family:var(--display,'DM Serif Display',serif);font-size:18px;font-style:italic;margin-bottom:16px;color:var(--ink)"></div>
@@ -1100,27 +1084,7 @@ function shiftWeek(delta) { renderWeek(weekOffset+delta); }
 function goToToday() { renderWeek(0); }
 
 // ── View switcher ───────────────────────────────────────────
-function setView(view) {
-  const wv = document.getElementById('week-view');
-  const mv = document.getElementById('month-view');
-  const bw = document.getElementById('btn-week');
-  const bm = document.getElementById('btn-month');
-  if (view === 'week') {
-    if (wv) wv.style.display = 'block';
-    if (mv) mv.style.display = 'none';
-    if (bw) { bw.style.background = 'var(--ink)'; bw.style.color = '#FFF9F1'; }
-    if (bm) { bm.style.background = 'transparent'; bm.style.color = 'rgba(26,20,17,.5)'; }
-    renderWeek(weekOffset);
-  } else {
-    if (wv) wv.style.display = 'none';
-    if (mv) mv.style.display = 'block';
-    if (bw) { bw.style.background = 'transparent'; bw.style.color = 'rgba(26,20,17,.5)'; }
-    if (bm) { bm.style.background = 'var(--ink)'; bm.style.color = '#FFF9F1'; }
-  }
-}
-
 // Start in week view
-setView('week');
 
 </script>
 </body>

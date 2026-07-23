@@ -159,7 +159,7 @@
         Actividad incluida
       </div>
       <div style="display:flex;align-items:center;gap:6px;font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.6);">
-        <span style="width:8px;height:8px;border-radius:50%;background:#5E8264;flex-shrink:0;display:inline-block"></span>
+        <span style="width:8px;height:8px;border-radius:50%;background:#DE8E92;flex-shrink:0;display:inline-block"></span>
         Clase de pago
       </div>
       <div style="display:flex;align-items:center;gap:6px;font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.6);">
@@ -958,7 +958,7 @@ function renderMonth(offset) {
       const dotBase = isSel ? 'rgba(255,255,255,.7)' : null;
       let dots = '';
       if (hasPromo) dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#4A6FA5')+';display:inline-block;margin:0 1.5px"></span>';
-      if (hasPaid)  dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#5E8264')+';display:inline-block;margin:0 1.5px"></span>';
+      if (hasPaid)  dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#DE8E92')+';display:inline-block;margin:0 1.5px"></span>';
       if (hasFree)  dots += '<span style="width:7px;height:7px;border-radius:50%;background:'+(dotBase||'#C49A2A')+';display:inline-block;margin:0 1.5px"></span>';
       dot = '<div style="display:flex;justify-content:center;margin-top:2px">'+dots+'</div>';
     }
@@ -987,7 +987,7 @@ function selectDay(year, month, day) {
     document.getElementById('day-detail-body').innerHTML = '<p style="font-size:13px;color:rgba(26,20,17,.4);font-style:italic">Próximamente — estamos preparando la programación.</p>';
   } else {
     document.getElementById('day-detail-body').innerHTML = activities.map(function(a) {
-      const paidStyle = a.paid ? 'background:rgba(94,130,100,.08);border-left:3px solid #5E8264;padding:12px 12px 12px 14px;margin:4px 0;border-radius:2px;' : a.promo ? 'background:rgba(74,111,165,.08);border-left:3px solid #4A6FA5;padding:12px 12px 12px 14px;margin:4px 0;border-radius:2px;' : '';
+      const paidStyle = a.paid ? 'background:rgba(222,142,146,.1);border-left:3px solid #DE8E92;padding:12px 12px 12px 14px;margin:4px 0;border-radius:2px;' : a.promo ? 'background:rgba(74,111,165,.08);border-left:3px solid #4A6FA5;padding:12px 12px 12px 14px;margin:4px 0;border-radius:2px;' : '';
       return '<div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(26,20,17,.08);align-items:flex-start;'+paidStyle+'">' +
         '<span style="font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(26,20,17,.4);min-width:60px;padding-top:2px">'+a.time+'</span>' +
         '<div style="flex:1">' +

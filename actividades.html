@@ -135,7 +135,6 @@
   <div class="container">
 
     <!-- MONTH CALENDAR -->
-    <!-- MONTH CALENDAR -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
       <button onclick="shiftMonth(-1)" style="font-family:var(--body);font-size:13px;padding:6px 12px;border:1px solid rgba(26,20,17,.15);background:transparent;cursor:pointer;color:rgba(26,20,17,.6)">←</button>
       <span id="month-title" style="font-family:var(--display,'DM Serif Display',serif);font-size:22px;font-style:italic;font-weight:400"></span>
@@ -964,7 +963,7 @@ function renderMonth(offset) {
       dot = '<div style="display:flex;justify-content:center;margin-top:2px">'+dots+'</div>';
     }
 
-    html += '<td style="text-align:center;padding:6px 2px;border:1px solid rgba(26,20,17,.08);min-height:44px"><div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:'+cur+'" onclick="selectDay('+year+','+month+','+d+')"><span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:'+bg+';color:'+clr+';font-weight:'+fw+';font-family:var(--body);font-size:13px;line-height:1">'+d+'</span>'+dot+'</div></td>';
+    html += '<td style="text-align:center;padding:4px 2px;border:1px solid rgba(26,20,17,.08);vertical-align:top"><div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:'+cur+'" onclick="selectDay('+year+','+month+','+d+')"><span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:'+bg+';color:'+clr+';font-weight:'+fw+';font-family:var(--body);font-size:13px;line-height:1">'+d+'</span>'+dot+'</div></td>';
 
     col++;
     if (col % 7 === 0 && d < daysInMonth) html += '</tr><tr>';

@@ -963,7 +963,7 @@ function renderMonth(offset) {
       dot = '<div style="display:flex;justify-content:center;margin-top:2px">'+dots+'</div>';
     }
 
-    html += '<td style="text-align:center;padding:8px 3px;border:1px solid rgba(26,20,17,.08);vertical-align:top"><div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:'+cur+'" onclick="selectDay('+year+','+month+','+d+')"><span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:'+bg+';color:'+clr+';font-weight:'+fw+';font-family:var(--body);font-size:15px;line-height:1">'+d+'</span>'+dot+'</div></td>';
+    html += '<td style="text-align:center;padding:10px 4px;border:1px solid rgba(26,20,17,.08);vertical-align:top"><div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:'+cur+'" onclick="selectDay('+year+','+month+','+d+')"><span style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:'+bg+';color:'+clr+';font-weight:'+fw+';font-family:var(--body);font-size:15px;line-height:1">'+d+'</span>'+dot+'</div></td>';
 
     col++;
     if (col % 7 === 0 && d < daysInMonth) html += '</tr><tr>';

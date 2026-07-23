@@ -142,13 +142,13 @@
     </div>
     <table style="width:100%;border-collapse:collapse;margin-bottom:40px;border:1px solid rgba(26,20,17,.12);">
       <thead><tr>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Lun</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Mar</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Mié</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Jue</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Vie</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Sáb</th>
-        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:8px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Dom</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:10px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Lun</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:10px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Mar</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:10px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Mié</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:10px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Jue</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:10px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Vie</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:10px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Sáb</th>
+        <th style="font-family:var(--body);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.4);padding:10px 4px;text-align:center;font-weight:400;border:1px solid rgba(26,20,17,.12);background:rgba(26,20,17,.03)">Dom</th>
       </tr></thead>
       <tbody id="month-body"></tbody>
     </table>
@@ -963,7 +963,7 @@ function renderMonth(offset) {
       dot = '<div style="display:flex;justify-content:center;margin-top:2px">'+dots+'</div>';
     }
 
-    html += '<td style="text-align:center;padding:4px 2px;border:1px solid rgba(26,20,17,.08);vertical-align:top"><div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:'+cur+'" onclick="selectDay('+year+','+month+','+d+')"><span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:'+bg+';color:'+clr+';font-weight:'+fw+';font-family:var(--body);font-size:13px;line-height:1">'+d+'</span>'+dot+'</div></td>';
+    html += '<td style="text-align:center;padding:8px 3px;border:1px solid rgba(26,20,17,.08);vertical-align:top"><div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:'+cur+'" onclick="selectDay('+year+','+month+','+d+')"><span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:'+bg+';color:'+clr+';font-weight:'+fw+';font-family:var(--body);font-size:15px;line-height:1">'+d+'</span>'+dot+'</div></td>';
 
     col++;
     if (col % 7 === 0 && d < daysInMonth) html += '</tr><tr>';

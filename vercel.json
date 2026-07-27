@@ -39,6 +39,10 @@
     "api/checkin-stats.js": {
       "memory": 256,
       "maxDuration": 10
+    },
+    "api/member-lookup.js": {
+      "memory": 256,
+      "maxDuration": 10
     }
   },
   "rewrites": [
@@ -105,10 +109,25 @@
     {
       "source": "/actividades",
       "destination": "/actividades.html"
+    },
+    {
+      "source": "/ludoteca-checkin",
+      "destination": "/ludoteca-checkin.html"
     }
   ],
   "outputDirectory": ".",
   "redirects": [
+    {
+      "source": "/ludoteca-checkin",
+      "has": [
+        {
+          "type": "host",
+          "value": "canica.fun"
+        }
+      ],
+      "destination": "https://www.canica.fun/ludoteca-checkin",
+      "permanent": true
+    },
     {
       "source": "/menu-naira",
       "has": [

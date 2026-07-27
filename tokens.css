@@ -1,0 +1,144 @@
+/* ============================================================
+   CANICA — Design Tokens
+   Single source of truth. Import or copy values directly.
+   v1.0 — 2026-04
+   ============================================================ */
+
+:root {
+  /* ---------- COLOR — Core ---------- */
+  --canica-ivory:        #FFF9F1;  /* default surface       */
+  --canica-black:        #000000;  /* default ink           */
+
+  /* ---------- COLOR — Accent palette ---------- */
+  --canica-rufous:       #BF5341;  /* Orange Rufous   PMS 7619U */
+  --canica-pink:         #DC9698;  /* Baby Old Pink   PMS 3519U */
+  --canica-apricot:      #E37440;  /* Apricot Orange  PMS 7577U */
+  --canica-violet:       #613A8E;  /* Violet          PMS 2097U */
+  --canica-yellow:       #F9C14F;  /* Corn Yellow     PMS 128U  */
+  --canica-blue:         #5273C6;  /* Cerulean Blue   PMS 279U  */
+  --canica-green:        #0B6C31;  /* Diamine Green   PMS 2258U */
+  --canica-pomegranate:  #C7243E;  /* Pomegranate     PMS 192U  */
+
+  /* ---------- COLOR — Programming codes ----------
+     Per Mestiza route 2: each programming type gets a colour. */
+  --canica-prog-duo:     var(--canica-apricot); /* parent + child workshops */
+  --canica-prog-kids:    var(--canica-pink);    /* kids-only sessions       */
+  --canica-prog-adult:   var(--canica-violet);  /* adult workshops          */
+  --canica-prog-food:    var(--canica-yellow);  /* food / café programming  */
+  --canica-prog-events:  var(--canica-blue);    /* talks, openings, after-work */
+
+  /* ---------- COLOR — Semantic surfaces ---------- */
+  --bg:                  var(--canica-ivory);
+  --fg:                  var(--canica-black);
+  --muted:               #6B645A;             /* warm grey on ivory */
+  --rule:                rgba(0, 0, 0, 0.14);
+  --rule-strong:         rgba(0, 0, 0, 0.28);
+
+  /* ---------- TYPOGRAPHY — Families ----------
+     Brand fonts (paid, license required):
+       --display: "TT Marxiana Antiqua"
+       --body:    "ABC Repro Variable"
+     Open substitutes used in this system: */
+  --canica-display:  "DM Serif Display", "TT Marxiana Antiqua", "Cormorant Garamond", Georgia, serif;
+  --canica-body:     "IBM Plex Mono", "ABC Repro", "ABC Repro Variable", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  /* ---------- TYPOGRAPHY — Scale (px @ 16px root) ---------- */
+  --fs-display-xl: 144px;  /* hero posters       */
+  --fs-display-l:  96px;   /* section headers    */
+  --fs-display-m:  64px;   /* page titles        */
+  --fs-display-s:  44px;   /* card titles        */
+  --fs-headline:   28px;   /* sub-section heads  */
+  --fs-body-l:     18px;   /* lead body          */
+  --fs-body:       15px;   /* default body       */
+  --fs-caption:    12px;   /* small / metadata   */
+  --fs-micro:      10px;   /* address / legal    */
+
+  /* Tracking — per the brand guideline */
+  --tracking-tight:  -0.01em;  /* large display    */
+  --tracking-normal:  0em;
+  --tracking-wide:    0.02em;  /* TT Marxiana +20  */
+  --tracking-mono:    0.05em;  /* ABC Repro +50    */
+
+  /* Line heights */
+  --lh-display:  0.92;
+  --lh-tight:    1.05;
+  --lh-body:     1.45;
+  --lh-mono:     1.55;
+
+  /* ---------- LAYOUT — Spacing scale (4px base) ---------- */
+  --sp-1:   4px;
+  --sp-2:   8px;
+  --sp-3:   12px;
+  --sp-4:   16px;
+  --sp-5:   24px;
+  --sp-6:   32px;
+  --sp-8:   48px;
+  --sp-10:  64px;
+  --sp-12:  96px;
+  --sp-16: 128px;
+
+  /* ---------- LAYOUT — Logo clearspace ----------
+     Per guideline: clearspace = 4× width of "C". */
+  --logo-clearspace: 4;
+  --logo-min-width:  35mm;  /* never reproduce smaller */
+
+  /* ---------- LAYOUT — Radii ----------
+     Canica is geometric / modular. Use sparingly. */
+  --radius-none:  0;
+  --radius-sm:    2px;
+  --radius-md:    6px;
+  --radius-pill:  999px;
+
+  /* ---------- MOTION ---------- */
+  --ease-canica: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-fast:    140ms;
+  --dur-base:    240ms;
+  --dur-slow:    480ms;
+
+  /* ---------- ELEVATION ----------
+     Canica is print-led — elevation is restrained.
+     Use frames + ruling lines instead of shadows where possible. */
+  --shadow-card:    0 1px 0 rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
+  --shadow-poster:  0 24px 60px rgba(0,0,0,0.12);
+}
+
+/* ---------- DARK / NEGATIVE — for use on coloured surfaces ----------
+   Apply via [data-canica-surface="<color>"] on a wrapper. */
+[data-canica-surface="black"]        { --bg: var(--canica-black);       --fg: var(--canica-ivory); --muted: rgba(255,249,241,0.62); --rule: rgba(255,249,241,0.18); }
+[data-canica-surface="rufous"]       { --bg: var(--canica-rufous);      --fg: var(--canica-ivory); --muted: rgba(255,249,241,0.74); --rule: rgba(255,249,241,0.22); }
+[data-canica-surface="pink"]         { --bg: var(--canica-pink);        --fg: var(--canica-black); --muted: rgba(0,0,0,0.62);      --rule: rgba(0,0,0,0.18); }
+[data-canica-surface="apricot"]      { --bg: var(--canica-apricot);     --fg: var(--canica-ivory); --muted: rgba(255,249,241,0.74); --rule: rgba(255,249,241,0.22); }
+[data-canica-surface="violet"]       { --bg: var(--canica-violet);      --fg: var(--canica-ivory); --muted: rgba(255,249,241,0.7);  --rule: rgba(255,249,241,0.22); }
+[data-canica-surface="yellow"]       { --bg: var(--canica-yellow);      --fg: var(--canica-black); --muted: rgba(0,0,0,0.62);      --rule: rgba(0,0,0,0.18); }
+[data-canica-surface="blue"]         { --bg: var(--canica-blue);        --fg: var(--canica-ivory); --muted: rgba(255,249,241,0.74); --rule: rgba(255,249,241,0.22); }
+[data-canica-surface="green"]        { --bg: var(--canica-green);       --fg: var(--canica-ivory); --muted: rgba(255,249,241,0.74); --rule: rgba(255,249,241,0.22); }
+[data-canica-surface="pomegranate"]  { --bg: var(--canica-pomegranate); --fg: var(--canica-ivory); --muted: rgba(255,249,241,0.74); --rule: rgba(255,249,241,0.22); }
+
+/* ============================================================
+   Type utilities — opt-in classes that map to the system.
+   ============================================================ */
+.cn-display-xl { font-family: var(--canica-display); font-size: var(--fs-display-xl); line-height: var(--lh-display); letter-spacing: var(--tracking-tight); font-weight: 400; }
+.cn-display-l  { font-family: var(--canica-display); font-size: var(--fs-display-l);  line-height: var(--lh-display); letter-spacing: var(--tracking-tight); font-weight: 400; }
+.cn-display-m  { font-family: var(--canica-display); font-size: var(--fs-display-m);  line-height: var(--lh-tight);   letter-spacing: var(--tracking-normal); font-weight: 400; }
+.cn-display-s  { font-family: var(--canica-display); font-size: var(--fs-display-s);  line-height: var(--lh-tight);   letter-spacing: var(--tracking-normal); font-weight: 400; }
+.cn-headline   { font-family: var(--canica-display); font-size: var(--fs-headline);   line-height: var(--lh-tight);   letter-spacing: var(--tracking-wide);   font-weight: 400; }
+
+.cn-mono-key   { font-family: var(--canica-body); font-size: var(--fs-body);     line-height: var(--lh-mono); letter-spacing: var(--tracking-mono);   text-transform: uppercase; font-weight: 500; }
+.cn-body-l     { font-family: var(--canica-body); font-size: var(--fs-body-l);   line-height: var(--lh-body); letter-spacing: var(--tracking-normal); font-weight: 400; }
+.cn-body       { font-family: var(--canica-body); font-size: var(--fs-body);     line-height: var(--lh-body); letter-spacing: var(--tracking-normal); font-weight: 400; }
+.cn-caption    { font-family: var(--canica-body); font-size: var(--fs-caption);  line-height: var(--lh-mono); letter-spacing: var(--tracking-mono);   text-transform: uppercase; font-weight: 500; }
+.cn-micro      { font-family: var(--canica-body); font-size: var(--fs-micro);    line-height: var(--lh-mono); letter-spacing: var(--tracking-mono);   text-transform: uppercase; font-weight: 500; }
+.cn-italic     { font-style: italic; }
+
+/* ============================================================
+   Reset / page basics — opt-in.
+   ============================================================ */
+.cn-page {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--canica-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}

@@ -236,8 +236,9 @@
     display: block;
     width: 100%;
     padding: 13px;
-    background: #107039;
-    color: #FFF9F1;
+    background: transparent;
+    color: #107039;
+    border: 1px solid rgba(16,112,57,.35);
     font-family: var(--body, 'IBM Plex Mono', monospace);
     font-size: 10px;
     letter-spacing: .14em;
@@ -335,7 +336,7 @@
         <div class="pitch-body">
           Con membresía, la entrada puede bajar a <strong>$95 por visita</strong> — o menos si vienen más de 2 veces por semana. Sin calcular, sin filas.
         </div>
-        <a class="pitch-cta" href="/membership" target="_blank">Ver membresías →</a>
+        <a class="pitch-cta" href="/membership" target="_blank" style="background:transparent;color:#107039;border:1px solid rgba(16,112,57,.35);border-radius:999px;padding:13px;display:block;text-align:center;font-family:var(--body,'IBM Plex Mono',monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;box-sizing:border-box">Ver membresías →</a>
       </div>
       <button class="restart-btn" onclick="restart()">Nueva entrada</button>
     </div>
@@ -420,6 +421,12 @@ function restart() {
 
 document.getElementById('kid-dob').addEventListener('keydown', e => {
   if (e.key === 'Enter') handleSubmit();
+});
+
+// Always start on form screen (prevents cached result state)
+window.addEventListener('pageshow', function(e) {
+  showScreen('form');
+  restart();
 });
 </script>
 </body>

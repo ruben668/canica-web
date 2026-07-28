@@ -19,6 +19,9 @@
     display: flex;
     flex-direction: column;
   }
+  body {
+    overflow-x: hidden;
+  }
 
   .ci-header {
     padding: 28px 28px 0;
@@ -94,11 +97,16 @@
 
   /* ── Result screens shared ── */
   .result-screen {
-    min-height: 100dvh;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    position: fixed;
+    inset: 0;
+    z-index: 10;
   }
-  .result-top { padding: 48px 28px 36px; flex: 1; }
+  .result-top { padding: 48px 28px 36px; flex: 1; overflow-y: auto; }
   .result-icon { font-size: 48px; margin-bottom: 20px; line-height: 1; }
   .result-eyebrow {
     font-size: 10px;

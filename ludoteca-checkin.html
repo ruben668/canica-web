@@ -105,14 +105,20 @@
         <label class="field-label" for="parent-name">Tu nombre</label>
         <input class="field-input" id="parent-name" type="text" autocomplete="given-name" placeholder="Nombre completo">
       </div>
-      <div class="field-group">
-        <label class="field-label" for="kid-name">Nombre del niño/a</label>
-        <input class="field-input" id="kid-name" type="text" autocomplete="off" placeholder="Nombre">
+      <!-- Kids section — up to 3 -->
+      <div id="kids-section">
+        <div class="kid-row" id="kid-0">
+          <div class="field-group" style="margin-bottom:10px">
+            <label class="field-label">Niño/a 1</label>
+            <input class="field-input kid-name" type="text" autocomplete="off" placeholder="Nombre" style="margin-bottom:8px">
+            <input class="field-input kid-dob" type="date" style="margin-top:0">
+          </div>
+        </div>
       </div>
-      <div class="field-group">
-        <label class="field-label" for="kid-dob">Fecha de nacimiento del niño/a</label>
-        <input class="field-input" id="kid-dob" type="date">
-      </div>
+      <button type="button" id="add-kid-btn" onclick="addKid()"
+        style="background:transparent;border:none;font-family:var(--body,'IBM Plex Mono',monospace);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#107039;cursor:pointer;padding:0 0 16px;text-align:left;-webkit-tap-highlight-color:transparent">
+        + Agregar otro niño/a
+      </button>
       <div class="field-group">
         <label class="field-label" for="parent-email">Correo electrónico <span style="opacity:.4">(opcional)</span></label>
         <input class="field-input" id="parent-email" type="email" autocomplete="email" placeholder="tu@correo.com">
@@ -225,11 +231,53 @@ function resetAll() {
     var el = document.getElementById(id); if (el) el.value = '';
   });
   document.getElementById('parent-source').value = '';
+  // Reset kids to just one
+  kidCount = 1;
+  var section = document.getElementById('kids-section');
+  if (section) {
+    section.innerHTML = '<div class="kid-row" id="kid-0"><div class="field-group" style="margin-bottom:10px"><label class="field-label">Niño/a 1</label><input class="field-input kid-name" type="text" autocomplete="off" placeholder="Nombre" style="margin-bottom:8px"><input class="field-input kid-dob" type="date" style="margin-top:0"></div></div>';
+  }
+  var addBtn = document.getElementById('add-kid-btn');
+  if (addBtn) addBtn.style.display = '';
   document.getElementById('form-error').textContent = '';
   var fb = document.getElementById('form-btn');
   if (fb) { fb.disabled = false; fb.textContent = 'Registrar entrada'; }
   showScreen('phone');
   document.getElementById('wa-input').focus();
+}
+
+// ── Add kid ──
+var kidCount = 1;
+function addKid() {
+  if (kidCount >= 3) return; // max 3 kids
+  kidCount++;
+  var section = document.getElementById('kids-section');
+  var div = document.createElement('div');
+  div.className = 'kid-row';
+  div.id = 'kid-' + (kidCount-1);
+  div.innerHTML = '<div class="field-group" style="margin-bottom:10px">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
+    '<label class="field-label" style="margin-bottom:0">Niño/a ' + kidCount + '</label>' +
+    '<button type="button" onclick="removeKid(this)" style="background:none;border:none;font-size:11px;color:rgba(26,20,17,.35);cursor:pointer;letter-spacing:.08em;text-transform:uppercase;font-family:var(--body)">Eliminar</button>' +
+    '</div>' +
+    '<input class="field-input kid-name" type="text" autocomplete="off" placeholder="Nombre" style="margin-bottom:8px">' +
+    '<input class="field-input kid-dob" type="date" style="margin-top:0">' +
+    '</div>';
+  section.appendChild(div);
+  if (kidCount >= 3) document.getElementById('add-kid-btn').style.display = 'none';
+  div.querySelector('.kid-name').focus();
+}
+
+function removeKid(btn) {
+  var row = btn.closest('.kid-row');
+  if (row) row.remove();
+  kidCount--;
+  document.getElementById('add-kid-btn').style.display = '';
+  // Renumber labels
+  document.querySelectorAll('.kid-row').forEach(function(r, i) {
+    var lbl = r.querySelector('.field-label');
+    if (lbl) lbl.textContent = 'Niño/a ' + (i+1);
+  });
 }
 
 // ── Step 1: Phone lookup ──
@@ -281,8 +329,15 @@ async function lookupPhone() {
 // ── Step 2: Full form (new parents) ──
 async function submitFullForm() {
   var name = document.getElementById('parent-name').value.trim();
-  var kidName = document.getElementById('kid-name').value.trim();
-  var kidDOB = document.getElementById('kid-dob').value;
+  // Collect all kids
+  var kids = [];
+  document.querySelectorAll('.kid-row').forEach(function(row) {
+    var kName = row.querySelector('.kid-name')?.value.trim();
+    var kDOB = row.querySelector('.kid-dob')?.value;
+    if (kName) kids.push({name: kName, dob: kDOB || ''});
+  });
+  var kidName = kids.length > 0 ? kids[0].name : '';
+  var kidDOB = kids.length > 0 ? kids[0].dob : '';
   var email = document.getElementById('parent-email').value.trim();
   var neighborhood = document.getElementById('parent-neighborhood').value;
   var source = document.getElementById('parent-source').value;
@@ -291,7 +346,7 @@ async function submitFullForm() {
   errEl.textContent = '';
 
   if (!name) { errEl.textContent = 'Ingresa tu nombre.'; return; }
-  if (!kidName) { errEl.textContent = 'Ingresa el nombre del niño/a.'; return; }
+  if (kids.length === 0 || !kidName) { errEl.textContent = 'Ingresa el nombre del niño/a.'; return; }
 
   btn.disabled = true;
   btn.textContent = 'Registrando...';
@@ -304,7 +359,7 @@ async function submitFullForm() {
       body: JSON.stringify({
         whatsapp: currentWA,
         action: 'save',
-        data: {name, kidName, kidDOB, email, neighborhood, source}
+        data: {name, kidName, kidDOB, kids, email, neighborhood, source}
       })
     });
 
@@ -342,7 +397,7 @@ async function logCheckin(name, wa, kidName, kidDOB, memberData, email, source) 
         kidName: kidName,
         kidDOB: kidDOB,
         source: source || '',
-        notes: 'Kid: ' + kidName + (kidDOB ? ' (' + kidDOB + ')' : '') + (neighborhood ? ' · ' + neighborhood : '') + (source ? ' · via ' + source : ''),
+        notes: 'Kids: ' + kids.map(function(k){return k.name+(k.dob?' ('+k.dob+')':'');}).join(', ') + (neighborhood ? ' · ' + neighborhood : '') + (source ? ' · via ' + source : ''),
       })
     });
   } catch(e) { console.error('Log error:', e); }

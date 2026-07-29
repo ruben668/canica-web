@@ -1,49 +1,35 @@
 // api/parent-lookup.js
 // POST { whatsapp } → { known, name, kidName, email, isMember, ... }
-// Checks Stripe for membership + a simple KV store for returning parents
+// Queries Notion Check-ins DB for returning parents + Stripe for membership
 
-// Simple in-memory parent store (persists within Vercel function warm instances)
-// When Sheets is connected, this falls back to Sheets lookup
-const parentCache = new Map();
+const NOTION_KEY = process.env.NOTION_API_KEY;
+const NOTION_DB  = process.env.NOTION_CHECKINS_DB;
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { whatsapp, action, data } = req.body || {};
-
   if (!whatsapp) return res.status(400).json({ error: 'whatsapp required' });
 
-  // Normalize phone
   const digits = whatsapp.replace(/\D/g, '');
-  const normalized = digits.length === 10 ? '52' + digits : digits;
-  const key = normalized.slice(-10); // last 10 digits as key
+  const normalized = digits.length === 10 ? '521' + digits : digits;
+  const last10 = digits.slice(-10);
 
-  // SAVE: when a new parent registers, save their profile
-  if (action === 'save' && data) {
-    parentCache.set(key, {
-      name: data.name,
-      kidName: data.kidName,
-      kidDOB: data.kidDOB,
-      email: data.email,
-      source: data.source,
-      whatsapp: normalized,
-      firstSeen: new Date().toISOString(),
-    });
+  // SAVE action — handled by checkin-log now, just acknowledge
+  if (action === 'save') {
     return res.status(200).json({ ok: true });
   }
 
-  // LOOKUP: check if parent is known
-  const cached = parentCache.get(key);
-
-  // Also check Stripe for membership
+  // Check Stripe for membership first (most authoritative)
   let memberData = { isMember: false };
   try {
     const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
     const customers = await stripe.customers.list({ limit: 100 });
     const customer = customers.data.find(c => {
       const cDigits = (c.phone || c.metadata?.whatsapp || '').replace(/\D/g, '');
-      return cDigits && cDigits.slice(-10) === key;
+      return cDigits && cDigits.slice(-10) === last10;
     });
     if (customer) {
       const subs = await stripe.subscriptions.list({ customer: customer.id, status: 'active', limit: 1 });
@@ -61,12 +47,78 @@ module.exports = async (req, res) => {
     console.error('Stripe lookup error:', e.message);
   }
 
-  if (cached || memberData.isMember) {
+  // Check Notion for returning parent profile
+  let notionProfile = null;
+  if (NOTION_KEY && NOTION_DB) {
+    try {
+      const notionRes = await fetch(`https://api.notion.com/v1/databases/${NOTION_DB}/query`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${NOTION_KEY}`,
+          'Notion-Version': '2022-06-28',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filter: {
+            property: 'WhatsApp',
+            phone_number: { equals: last10 },
+          },
+          sorts: [{ property: 'Fecha', direction: 'descending' }],
+          page_size: 1,
+        }),
+      });
+      const notionData = await notionRes.json();
+      const rows = notionData.results || [];
+      if (rows.length > 0) {
+        const row = rows[0].properties;
+        notionProfile = {
+          name: row['Nombre']?.title?.[0]?.plain_text || '',
+          kids: row['Niños']?.rich_text?.[0]?.plain_text || '',
+          email: row['Email']?.email || '',
+        };
+      }
+    } catch (e) {
+      console.error('Notion lookup error:', e.message);
+    }
+  }
+
+  // Also try phone number variants (with/without country code)
+  if (!notionProfile && NOTION_KEY && NOTION_DB) {
+    try {
+      const variants = [normalized, '+' + normalized, last10, '52' + last10, '+52' + last10];
+      for (const v of variants) {
+        const notionRes = await fetch(`https://api.notion.com/v1/databases/${NOTION_DB}/query`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${NOTION_KEY}`,
+            'Notion-Version': '2022-06-28',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            filter: { property: 'WhatsApp', phone_number: { equals: v } },
+            page_size: 1,
+          }),
+        });
+        const nd = await notionRes.json();
+        if (nd.results?.length > 0) {
+          const row = nd.results[0].properties;
+          notionProfile = {
+            name: row['Nombre']?.title?.[0]?.plain_text || '',
+            kids: row['Niños']?.rich_text?.[0]?.plain_text || '',
+            email: row['Email']?.email || '',
+          };
+          break;
+        }
+      }
+    } catch (e) {}
+  }
+
+  if (memberData.isMember || notionProfile) {
     return res.status(200).json({
       known: true,
-      name: memberData.name || cached?.name || '',
-      kidName: cached?.kidName || '',
-      email: cached?.email || memberData.email || '',
+      name: memberData.name || notionProfile?.name || '',
+      email: memberData.email || notionProfile?.email || '',
+      kids: notionProfile?.kids || '',
       whatsapp: normalized,
       ...memberData,
     });

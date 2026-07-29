@@ -64,7 +64,7 @@ module.exports = async (req, res) => {
             phone_number: { equals: last10 },
           },
           sorts: [{ property: 'Fecha', direction: 'descending' }],
-          page_size: 1,
+          page_size: 100, // get all visits for count
         }),
       });
       const notionData = await notionRes.json();
@@ -75,6 +75,7 @@ module.exports = async (req, res) => {
           name: row['Nombre']?.title?.[0]?.plain_text || '',
           kids: row['Niños']?.rich_text?.[0]?.plain_text || '',
           email: row['Email']?.email || '',
+          visitCount: rows.length, // total past visits
         };
       }
     } catch (e) {
@@ -119,6 +120,7 @@ module.exports = async (req, res) => {
       name: memberData.name || notionProfile?.name || '',
       email: memberData.email || notionProfile?.email || '',
       kids: notionProfile?.kids || '',
+      visitCount: (notionProfile?.visitCount || 0) + 1, // +1 for current visit
       whatsapp: normalized,
       ...memberData,
     });

@@ -171,9 +171,10 @@
         </div>
         <div class="member-stat">
           <div class="member-stat-val" id="member-visits">—</div>
-          <div class="member-stat-label">Visitas</div>
+          <div class="member-stat-label">Visitas totales</div>
         </div>
       </div>
+      <div id="member-milestone" style="display:none;font-family:var(--display,'DM Serif Display',serif);font-size:20px;font-style:italic;opacity:.85;margin-top:16px;text-align:center"></div>
     </div>
     <div class="result-bottom">
       <div class="member-tier" id="member-tier">Individual</div><br>
@@ -408,7 +409,21 @@ function showResult(name, memberData) {
   if (memberData.isMember) {
     document.getElementById('member-name').textContent = memberData.name || name;
     document.getElementById('member-since').textContent = memberData.since || '—';
-    document.getElementById('member-visits').textContent = '—';
+    var visits = memberData.visitCount || 1;
+    document.getElementById('member-visits').textContent = visits;
+    // Milestone message
+    var milestoneEl = document.getElementById('member-milestone');
+    if (milestoneEl) {
+      var msg = '';
+      if (visits === 1) msg = '¡Primera visita!';
+      else if (visits === 5) msg = '¡5 visitas! 🙌';
+      else if (visits === 10) msg = '¡10 visitas! ⭐';
+      else if (visits === 25) msg = '¡25 visitas! 🏆';
+      else if (visits === 50) msg = '¡50 visitas! 🎉';
+      else if (visits % 10 === 0) msg = '¡' + visits + ' visitas!';
+      milestoneEl.textContent = msg;
+      milestoneEl.style.display = msg ? 'block' : 'none';
+    }
     document.getElementById('member-tier').textContent = memberData.tier || 'Individual';
     showScreen('member');
   } else {

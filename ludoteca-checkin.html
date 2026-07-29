@@ -398,7 +398,7 @@ async function logCheckin(name, wa, kidName, kidDOB, memberData, email, source) 
         kidName: kidName,
         kidDOB: kidDOB,
         source: source || '',
-        notes: 'Kids: ' + kids.map(function(k){return k.name+(k.dob?' ('+k.dob+')':'');}).join(', ') + (neighborhood ? ' · ' + neighborhood : '') + (source ? ' · via ' + source : ''),
+        notes: (kidName ? 'Kid: ' + kidName + (kidDOB ? ' (' + kidDOB + ')' : '') : '') + (source ? ' · via ' + source : ''),
       })
     });
   } catch(e) { console.error('Log error:', e); }

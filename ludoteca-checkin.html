@@ -118,6 +118,25 @@
         <input class="field-input" id="parent-email" type="email" autocomplete="email" placeholder="tu@correo.com">
       </div>
       <div class="field-group">
+        <label class="field-label" for="parent-neighborhood">¿En qué colonia vives?</label>
+        <select class="field-input" id="parent-neighborhood">
+          <option value="">Elige una opción</option>
+          <option value="condesa">Condesa</option>
+          <option value="roma-norte">Roma Norte</option>
+          <option value="roma-sur">Roma Sur</option>
+          <option value="polanco">Polanco</option>
+          <option value="lomas">Lomas de Chapultepec</option>
+          <option value="santa-fe">Santa Fe</option>
+          <option value="napoles">Nápoles / Del Valle</option>
+          <option value="coyoacan">Coyoacán</option>
+          <option value="interlomas">Interlomas / Huixquilucan</option>
+          <option value="satelite">Satélite / Naucalpan</option>
+          <option value="otra-cdmx">Otra colonia CDMX</option>
+          <option value="otra-estado">Estado de México / Otra ciudad</option>
+        </select>
+      </div>
+
+      <div class="field-group">
         <label class="field-label" for="parent-source">¿Cómo nos conociste?</label>
         <select class="field-input" id="parent-source">
           <option value="">Elige una opción</option>
@@ -265,6 +284,7 @@ async function submitFullForm() {
   var kidName = document.getElementById('kid-name').value.trim();
   var kidDOB = document.getElementById('kid-dob').value;
   var email = document.getElementById('parent-email').value.trim();
+  var neighborhood = document.getElementById('parent-neighborhood').value;
   var source = document.getElementById('parent-source').value;
   var errEl = document.getElementById('form-error');
   var btn = document.getElementById('form-btn');
@@ -284,7 +304,7 @@ async function submitFullForm() {
       body: JSON.stringify({
         whatsapp: currentWA,
         action: 'save',
-        data: {name, kidName, kidDOB, email, source}
+        data: {name, kidName, kidDOB, email, neighborhood, source}
       })
     });
 
@@ -322,7 +342,7 @@ async function logCheckin(name, wa, kidName, kidDOB, memberData, email, source) 
         kidName: kidName,
         kidDOB: kidDOB,
         source: source || '',
-        notes: 'Kid: ' + kidName + (kidDOB ? ' (' + kidDOB + ')' : '') + (source ? ' · via ' + source : ''),
+        notes: 'Kid: ' + kidName + (kidDOB ? ' (' + kidDOB + ')' : '') + (neighborhood ? ' · ' + neighborhood : '') + (source ? ' · via ' + source : ''),
       })
     });
   } catch(e) { console.error('Log error:', e); }

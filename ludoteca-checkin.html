@@ -6,6 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Check-in Ludoteca · Canica</title>
 <meta name="robots" content="noindex" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <meta name="theme-color" content="#FFF9F1" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFF9F1'/><text x='50' y='66' font-family='Georgia,serif' font-style='italic' font-size='52' text-anchor='middle' fill='%23BF5341'>c</text></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -423,11 +426,48 @@ document.getElementById('kid-dob').addEventListener('keydown', e => {
   if (e.key === 'Enter') handleSubmit();
 });
 
-// Always start on form screen (prevents cached result state)
-window.addEventListener('pageshow', function(e) {
-  showScreen('form');
-  restart();
-});
+// Always start on form screen — handles bfcache and normal navigation
+(function() {
+  function resetToForm() {
+    // Force show form screen, hide all result screens
+    document.querySelectorAll('.screen').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    var form = document.getElementById('screen-form');
+    if (form) form.classList.add('active');
+    // Clear inputs
+    ['parent-name','parent-wa','kid-name','kid-dob'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    var err = document.getElementById('form-error');
+    if (err) err.textContent = '';
+    var btn = document.getElementById('submit-btn');
+    if (btn) { btn.disabled = false; btn.textContent = 'Registrar entrada'; }
+    // Remove bfcache result screens from view
+    var ws = document.getElementById('screen-walkin');
+    var ms = document.getElementById('screen-member');
+    if (ws) ws.style.display = 'none';
+    if (ms) ms.style.display = 'none';
+  }
+
+  // Run immediately on script load
+  resetToForm();
+
+  // Also handle bfcache restores
+  window.addEventListener('pageshow', function(e) { resetToForm(); });
+  window.addEventListener('focus', function() { resetToForm(); });
+
+  // Override showScreen to restore display
+  var _showScreen = showScreen;
+  window.showScreen = function(name) {
+    var ws = document.getElementById('screen-walkin');
+    var ms = document.getElementById('screen-member');
+    if (ws) ws.style.display = '';
+    if (ms) ms.style.display = '';
+    _showScreen(name);
+  };
+})();
 </script>
 </body>
 </html>

@@ -4,11 +4,10 @@
 <meta charset="UTF-8" />
 <script>if(location.hostname==="canica.fun"){location.replace("https://www.canica.fun"+location.pathname+location.search);}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Check-in Ludoteca · Canica</title>
-<meta name="robots" content="noindex" />
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+<title>Check-in Ludoteca · Canica</title>
+<meta name="robots" content="noindex" />
 <meta name="theme-color" content="#FFF9F1" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFF9F1'/><text x='50' y='66' font-family='Georgia,serif' font-style='italic' font-size='52' text-anchor='middle' fill='%23BF5341'>c</text></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,288 +15,130 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
 <style>
-  /* ── Layout ── */
-  .ci-page {
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-  }
+  .ci-page { min-height: 100dvh; display: flex; flex-direction: column; }
 
-  .ci-header {
-    padding: 28px 28px 0;
-  }
-  .ci-wordmark {
-    font-family: var(--display, 'DM Serif Display', serif);
-    font-size: 26px;
-    font-style: italic;
-    font-weight: 400;
-  }
-  .ci-subtitle {
-    font-size: 10px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: rgba(26,20,17,.4);
-    margin-top: 2px;
-  }
-
-  /* ── Screens ── */
+  /* Screens */
   .screen { display: none; }
-  .screen.active { display: block; }
+  .screen.active { display: flex; flex-direction: column; min-height: 100dvh; }
 
-  /* ── Form screen ── */
-  .form-body {
-    padding: 32px 28px 48px;
-  }
+  /* Header */
+  .ci-header { padding: 28px 28px 0; }
+  .ci-wordmark { font-family: var(--display,'DM Serif Display',serif); font-size: 26px; font-style: italic; font-weight: 400; }
+  .ci-subtitle { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(26,20,17,.4); margin-top: 2px; }
+
+  /* Form */
+  .form-body { padding: 28px 28px 48px; flex: 1; }
   .field-group { margin-bottom: 18px; }
-  .field-label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: rgba(26,20,17,.5);
-    margin-bottom: 7px;
-  }
-  .field-input {
-    width: 100%;
-    border: 1px solid rgba(26,20,17,.2);
-    background: #FFF9F1;
-    font-family: var(--body, 'IBM Plex Mono', monospace);
-    font-size: 16px;
-    padding: 13px 14px;
-    outline: none;
-    color: #1A1411;
-    -webkit-appearance: none;
-    border-radius: 0;
-    box-sizing: border-box;
-  }
+  .field-label { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(26,20,17,.5); margin-bottom: 7px; }
+  .field-input { width: 100%; border: 1px solid rgba(26,20,17,.2); background: #FFF9F1; font-family: var(--body,'IBM Plex Mono',monospace); font-size: 16px; padding: 13px 14px; outline: none; color: #1A1411; -webkit-appearance: none; border-radius: 0; box-sizing: border-box; }
   .field-input:focus { border-color: #1A1411; }
-
-  .submit-btn {
-    width: 100%;
-    padding: 16px;
-    background: #1A1411;
-    color: #FFF9F1;
-    border: none;
-    font-family: var(--body, 'IBM Plex Mono', monospace);
-    font-size: 11px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-top: 8px;
-    -webkit-tap-highlight-color: transparent;
-    border-radius: 999px;
-  }
+  select.field-input { cursor: pointer; }
+  .submit-btn { width: 100%; padding: 16px; background: #1A1411; color: #FFF9F1; border: none; font-family: var(--body,'IBM Plex Mono',monospace); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; margin-top: 8px; border-radius: 999px; -webkit-tap-highlight-color: transparent; }
   .submit-btn:disabled { opacity: .5; }
-  .field-error {
-    font-size: 12px;
-    color: #be352b;
-    margin-top: 10px;
-    min-height: 18px;
-  }
+  .field-error { font-size: 12px; color: #be352b; margin-top: 10px; min-height: 18px; }
 
-  /* ── Result screens shared ── */
-  .result-screen {
-    height: 100dvh;
-    max-height: 100dvh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-  }
-  .result-top { padding: 48px 28px 36px; flex: 1; overflow-y: auto; }
+  /* Phone screen — quick lookup */
+  .phone-hint { font-size: 12px; color: rgba(26,20,17,.45); margin-top: 8px; line-height: 1.5; }
+  .checking-msg { font-size: 12px; color: rgba(26,20,17,.4); margin-top: 10px; font-style: italic; }
+
+  /* Result screens */
+  .result-top { padding: 48px 28px 36px; flex: 1; }
   .result-icon { font-size: 48px; margin-bottom: 20px; line-height: 1; }
-  .result-eyebrow {
-    font-size: 10px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .result-name {
-    font-family: var(--display, 'DM Serif Display', serif);
-    font-size: 34px;
-    font-style: italic;
-    font-weight: 400;
-    line-height: 1.15;
-    margin-bottom: 32px;
-  }
-  .result-bottom {
-    padding: 24px 28px 40px;
-    border-top: 1px solid rgba(26,20,17,.08);
-  }
-  .restart-btn {
-    width: 100%;
-    padding: 14px;
-    background: transparent;
-    border: 1px solid rgba(26,20,17,.2);
-    font-family: var(--body, 'IBM Plex Mono', monospace);
-    font-size: 10px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    cursor: pointer;
-    color: rgba(26,20,17,.5);
-    border-radius: 999px;
-  }
+  .result-eyebrow { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 6px; }
+  .result-name { font-family: var(--display,'DM Serif Display',serif); font-size: 34px; font-style: italic; font-weight: 400; line-height: 1.15; margin-bottom: 32px; }
+  .result-bottom { padding: 24px 28px 40px; border-top: 1px solid rgba(26,20,17,.08); }
+  .restart-btn { width: 100%; padding: 14px; background: transparent; border: 1px solid rgba(26,20,17,.2); font-family: var(--body,'IBM Plex Mono',monospace); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; color: rgba(26,20,17,.5); border-radius: 999px; }
 
-  /* ── Member screen ── */
+  /* Member */
   .member-screen { background: #107039; color: #FFF9F1; }
   .member-screen .result-eyebrow { opacity: .65; }
   .member-screen .result-bottom { border-top-color: rgba(255,249,241,.15); }
+  .member-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid rgba(255,249,241,.15); background: rgba(255,249,241,.15); margin-bottom: 16px; }
+  .member-stat { background: rgba(255,249,241,.08); padding: 14px 16px; }
+  .member-stat-val { font-family: var(--display,'DM Serif Display',serif); font-size: 26px; font-style: italic; line-height: 1; margin-bottom: 3px; }
+  .member-stat-label { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; opacity: .5; }
+  .member-tier { display: inline-block; border: 1px solid rgba(255,249,241,.3); padding: 5px 12px; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 20px; }
+  .member-screen .restart-btn { border-color: rgba(255,249,241,.25); color: rgba(255,249,241,.5); }
 
-  .member-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    border: 1px solid rgba(255,249,241,.15);
-    background: rgba(255,249,241,.15);
-    margin-bottom: 16px;
-  }
-  .member-stat {
-    background: rgba(255,249,241,.08);
-    padding: 14px 16px;
-  }
-  .member-stat-val {
-    font-family: var(--display, 'DM Serif Display', serif);
-    font-size: 26px;
-    font-style: italic;
-    line-height: 1;
-    margin-bottom: 3px;
-  }
-  .member-stat-label {
-    font-size: 9px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    opacity: .5;
-  }
-  .member-tier {
-    display: inline-block;
-    border: 1px solid rgba(255,249,241,.3);
-    padding: 5px 12px;
-    font-size: 10px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .member-screen .restart-btn {
-    border-color: rgba(255,249,241,.25);
-    color: rgba(255,249,241,.5);
-  }
-
-  /* ── Walk-in screen ── */
+  /* Walk-in */
   .walkin-screen { background: #FFF9F1; }
-
-  .price-block {
-    background: #1A1411;
-    color: #FFF9F1;
-    padding: 22px 20px;
-    margin-bottom: 16px;
-  }
-  .price-label {
-    font-size: 10px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    opacity: .5;
-    margin-bottom: 5px;
-  }
-  .price-amount {
-    font-family: var(--display, 'DM Serif Display', serif);
-    font-size: 44px;
-    font-style: italic;
-    line-height: 1;
-  }
+  .price-block { background: #1A1411; color: #FFF9F1; padding: 22px 20px; margin-bottom: 16px; }
+  .price-label { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; opacity: .5; margin-bottom: 5px; }
+  .price-amount { font-family: var(--display,'DM Serif Display',serif); font-size: 44px; font-style: italic; line-height: 1; }
   .price-sub { font-size: 11px; opacity: .45; margin-top: 3px; }
-
-  .includes {
-    font-size: 12px;
-    color: rgba(26,20,17,.55);
-    line-height: 1.8;
-    margin-bottom: 0;
-  }
-
-  /* membership pitch */
-  .membership-pitch {
-    background: rgba(16,112,57,.06);
-    border: 1px solid rgba(16,112,57,.2);
-    padding: 16px;
-    margin-bottom: 14px;
-  }
-  .pitch-headline {
-    font-family: var(--display, 'DM Serif Display', serif);
-    font-size: 18px;
-    font-style: italic;
-    color: #107039;
-    margin-bottom: 6px;
-  }
-  .pitch-body {
-    font-size: 12px;
-    color: rgba(26,20,17,.65);
-    line-height: 1.7;
-    margin-bottom: 12px;
-  }
-  .pitch-cta {
-    display: block;
-    width: 100%;
-    padding: 13px;
-    background: transparent;
-    color: #107039;
-    border: 1px solid rgba(16,112,57,.35);
-    font-family: var(--body, 'IBM Plex Mono', monospace);
-    font-size: 10px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 999px;
-    box-sizing: border-box;
-  }
+  .includes { font-size: 12px; color: rgba(26,20,17,.55); line-height: 1.8; margin-bottom: 0; }
+  .membership-pitch { border: 1px solid rgba(26,20,17,.12); padding: 16px; margin-bottom: 14px; }
+  .pitch-headline { font-family: var(--display,'DM Serif Display',serif); font-size: 18px; font-style: italic; color: #107039; margin-bottom: 6px; }
+  .pitch-body { font-size: 12px; color: rgba(26,20,17,.65); line-height: 1.7; margin-bottom: 12px; }
+  .pitch-cta { display: block; width: 100%; padding: 13px; background: transparent; color: #107039; border: 1px solid rgba(16,112,57,.35); font-family: var(--body,'IBM Plex Mono',monospace); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; text-align: center; text-decoration: none; border-radius: 999px; box-sizing: border-box; }
 </style>
 </head>
 <body>
-
 <div class="ci-page">
 
-  <!-- ── SCREEN 1: FORM ── -->
-  <div class="screen active" id="screen-form">
+  <!-- ── SCREEN 1: PHONE ── -->
+  <div class="screen active" id="screen-phone">
     <div class="ci-header">
       <div class="ci-wordmark">canica</div>
       <div class="ci-subtitle">Check-in · Ludoteca</div>
     </div>
     <div class="form-body">
+      <div class="field-group">
+        <label class="field-label" for="wa-input">Tu WhatsApp</label>
+        <input class="field-input" id="wa-input" type="tel" autocomplete="tel" placeholder="+52 55 1234 5678" inputmode="tel">
+      </div>
+      <p class="phone-hint">Si ya vienes seguido, te reconoceremos al instante.</p>
+      <button class="submit-btn" id="phone-btn" onclick="lookupPhone()">Continuar →</button>
+      <div class="field-error" id="phone-error"></div>
+      <div class="checking-msg" id="checking-msg" style="display:none">Verificando...</div>
+    </div>
+  </div>
 
+  <!-- ── SCREEN 2: FULL FORM (new parents only) ── -->
+  <div class="screen" id="screen-form">
+    <div class="ci-header">
+      <div class="ci-wordmark">canica</div>
+      <div class="ci-subtitle">Primera visita · Cuéntanos más</div>
+    </div>
+    <div class="form-body">
       <div class="field-group">
         <label class="field-label" for="parent-name">Tu nombre</label>
         <input class="field-input" id="parent-name" type="text" autocomplete="given-name" placeholder="Nombre completo">
       </div>
-
-      <div class="field-group">
-        <label class="field-label" for="parent-wa">WhatsApp</label>
-        <input class="field-input" id="parent-wa" type="tel" autocomplete="tel" placeholder="+52 55 1234 5678">
-      </div>
-
       <div class="field-group">
         <label class="field-label" for="kid-name">Nombre del niño/a</label>
         <input class="field-input" id="kid-name" type="text" autocomplete="off" placeholder="Nombre">
       </div>
-
       <div class="field-group">
         <label class="field-label" for="kid-dob">Fecha de nacimiento del niño/a</label>
         <input class="field-input" id="kid-dob" type="date">
       </div>
-
-      <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Registrar entrada</button>
+      <div class="field-group">
+        <label class="field-label" for="parent-email">Correo electrónico <span style="opacity:.4">(opcional)</span></label>
+        <input class="field-input" id="parent-email" type="email" autocomplete="email" placeholder="tu@correo.com">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="parent-source">¿Cómo nos conociste?</label>
+        <select class="field-input" id="parent-source">
+          <option value="">Elige una opción</option>
+          <option value="instagram">Instagram</option>
+          <option value="google">Google / Maps</option>
+          <option value="recomendacion">Me lo recomendaron</option>
+          <option value="pase">Pasé y entré</option>
+          <option value="ya-conocia">Ya conocía Canica</option>
+        </select>
+      </div>
+      <button class="submit-btn" id="form-btn" onclick="submitFullForm()">Registrar entrada</button>
       <div class="field-error" id="form-error"></div>
-
     </div>
   </div>
 
-  <!-- ── SCREEN 2A: MEMBER ── -->
-  <div class="screen result-screen member-screen" id="screen-member">
+  <!-- ── SCREEN 3A: MEMBER ── -->
+  <div class="screen member-screen" id="screen-member">
     <div class="result-top">
       <div class="result-icon">✓</div>
       <div class="result-eyebrow">Miembro activo</div>
       <div class="result-name" id="member-name">—</div>
-
       <div class="member-stats">
         <div class="member-stat">
           <div class="member-stat-val" id="member-since">—</div>
@@ -311,23 +152,21 @@
     </div>
     <div class="result-bottom">
       <div class="member-tier" id="member-tier">Individual</div><br>
-      <button class="restart-btn" onclick="restart()">Nueva entrada</button>
+      <button class="restart-btn" onclick="resetAll()">Nueva entrada</button>
     </div>
   </div>
 
-  <!-- ── SCREEN 2B: WALK-IN ── -->
-  <div class="screen result-screen walkin-screen" id="screen-walkin">
+  <!-- ── SCREEN 3B: WALK-IN ── -->
+  <div class="screen walkin-screen" id="screen-walkin">
     <div class="result-top">
       <div class="result-icon">👋</div>
       <div class="result-eyebrow">Bienvenido a Canica</div>
       <div class="result-name" id="walkin-name">—</div>
-
       <div class="price-block">
         <div class="price-label">Entrada ludoteca · hoy</div>
         <div class="price-amount">$200</div>
         <div class="price-sub">MXN por niño</div>
       </div>
-
       <div class="includes">
         ✓ &nbsp;Juego libre supervisado<br>
         ✓ &nbsp;Actividad del día incluida
@@ -336,67 +175,131 @@
     <div class="result-bottom">
       <div class="membership-pitch">
         <div class="pitch-headline">¿Vienes seguido?</div>
-        <div class="pitch-body">
-          Con membresía, la entrada puede bajar a <strong>$95 por visita</strong> — o menos si vienen más de 2 veces por semana. Sin calcular, sin filas.
-        </div>
-        <a class="pitch-cta" href="/membership" target="_blank" style="background:transparent;color:#107039;border:1px solid rgba(16,112,57,.35);border-radius:999px;padding:13px;display:block;text-align:center;font-family:var(--body,'IBM Plex Mono',monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;box-sizing:border-box">Ver membresías →</a>
+        <div class="pitch-body">Con membresía, la entrada puede bajar a <strong>$95 por visita</strong> — o menos si vienen más de 2 veces por semana.</div>
+        <a class="pitch-cta" href="/membership" target="_blank">Ver membresías →</a>
       </div>
-      <button class="restart-btn" onclick="restart()">Nueva entrada</button>
+      <button class="restart-btn" onclick="resetAll()">Nueva entrada</button>
     </div>
   </div>
 
-</div><!-- /ci-page -->
+</div>
 
 <script>
-async function handleSubmit() {
-  const parentName = document.getElementById('parent-name').value.trim();
-  const parentWA   = document.getElementById('parent-wa').value.trim();
-  const kidName    = document.getElementById('kid-name').value.trim();
-  const kidDOB     = document.getElementById('kid-dob').value;
-  const errEl      = document.getElementById('form-error');
-  const btn        = document.getElementById('submit-btn');
+// ── State ──
+let currentWA = '';
 
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var el = document.getElementById('screen-' + name);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+}
+
+function resetAll() {
+  currentWA = '';
+  document.getElementById('wa-input').value = '';
+  document.getElementById('phone-error').textContent = '';
+  document.getElementById('checking-msg').style.display = 'none';
+  var pb = document.getElementById('phone-btn');
+  pb.disabled = false; pb.textContent = 'Continuar →';
+  // Clear full form too
+  ['parent-name','kid-name','kid-dob','parent-email'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('parent-source').value = '';
+  document.getElementById('form-error').textContent = '';
+  var fb = document.getElementById('form-btn');
+  if (fb) { fb.disabled = false; fb.textContent = 'Registrar entrada'; }
+  showScreen('phone');
+  document.getElementById('wa-input').focus();
+}
+
+// ── Step 1: Phone lookup ──
+async function lookupPhone() {
+  var wa = document.getElementById('wa-input').value.trim();
+  var errEl = document.getElementById('phone-error');
+  var btn = document.getElementById('phone-btn');
+  var checking = document.getElementById('checking-msg');
   errEl.textContent = '';
-  if (!parentName) { errEl.textContent = 'Ingresa tu nombre.'; return; }
-  if (!parentWA)   { errEl.textContent = 'Ingresa tu WhatsApp.'; return; }
-  if (!kidName)    { errEl.textContent = 'Ingresa el nombre del niño/a.'; return; }
 
+  if (!wa || wa.replace(/\D/g,'').length < 8) {
+    errEl.textContent = 'Ingresa tu número de WhatsApp.';
+    return;
+  }
+
+  currentWA = wa;
   btn.disabled = true;
   btn.textContent = 'Verificando...';
+  checking.style.display = 'block';
 
   try {
-    const lookupRes = await fetch('/api/member-lookup', {
+    var res = await fetch('/api/parent-lookup', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ whatsapp: parentWA }),
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({whatsapp: wa})
     });
-    const member = await lookupRes.json();
+    var data = await res.json();
+    checking.style.display = 'none';
 
-    await fetch('/api/checkin-log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type: member.isMember ? 'member' : 'walkin',
-        name: parentName,
-        phone: parentWA,
-        customerId: member.customerId || '',
-        email: member.email || '',
-        kidName,
-        kidDOB,
-        notes: 'Kid: ' + kidName + (kidDOB ? ' (' + kidDOB + ')' : ''),
-      }),
-    });
-
-    if (member.isMember) {
-      document.getElementById('member-name').textContent = member.name || parentName;
-      document.getElementById('member-since').textContent = member.since || '—';
-      document.getElementById('member-visits').textContent = '—';
-      document.getElementById('member-tier').textContent = member.tier || 'Individual';
-      showScreen('member');
+    if (data.known) {
+      // Returning parent — log and show result directly
+      await logCheckin(data.name || wa, wa, data.kidName || '', '', data);
+      showResult(data.name || wa, data);
     } else {
-      document.getElementById('walkin-name').textContent = parentName + '.';
-      showScreen('walkin');
+      // New parent — show full form
+      btn.disabled = false;
+      btn.textContent = 'Continuar →';
+      showScreen('form');
+      document.getElementById('parent-name').focus();
     }
+  } catch(e) {
+    checking.style.display = 'none';
+    errEl.textContent = 'Error de conexión. Intenta de nuevo.';
+    btn.disabled = false;
+    btn.textContent = 'Continuar →';
+  }
+}
+
+// ── Step 2: Full form (new parents) ──
+async function submitFullForm() {
+  var name = document.getElementById('parent-name').value.trim();
+  var kidName = document.getElementById('kid-name').value.trim();
+  var kidDOB = document.getElementById('kid-dob').value;
+  var email = document.getElementById('parent-email').value.trim();
+  var source = document.getElementById('parent-source').value;
+  var errEl = document.getElementById('form-error');
+  var btn = document.getElementById('form-btn');
+  errEl.textContent = '';
+
+  if (!name) { errEl.textContent = 'Ingresa tu nombre.'; return; }
+  if (!kidName) { errEl.textContent = 'Ingresa el nombre del niño/a.'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Registrando...';
+
+  try {
+    // Save new parent profile
+    await fetch('/api/parent-lookup', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        whatsapp: currentWA,
+        action: 'save',
+        data: {name, kidName, kidDOB, email, source}
+      })
+    });
+
+    // Check membership
+    var memberRes = await fetch('/api/member-lookup', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({whatsapp: currentWA, email})
+    });
+    var memberData = await memberRes.json();
+
+    // Log check-in
+    await logCheckin(name, currentWA, kidName, kidDOB, memberData, email, source);
+
+    showResult(name, memberData);
   } catch(e) {
     errEl.textContent = 'Error de conexión. Intenta de nuevo.';
     btn.disabled = false;
@@ -404,70 +307,49 @@ async function handleSubmit() {
   }
 }
 
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-  window.scrollTo(0, 0);
+// ── Log check-in ──
+async function logCheckin(name, wa, kidName, kidDOB, memberData, email, source) {
+  try {
+    await fetch('/api/checkin-log', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        type: memberData.isMember ? 'member' : 'walkin',
+        name: name,
+        phone: wa,
+        customerId: memberData.customerId || '',
+        email: email || memberData.email || '',
+        kidName: kidName,
+        kidDOB: kidDOB,
+        source: source || '',
+        notes: 'Kid: ' + kidName + (kidDOB ? ' (' + kidDOB + ')' : '') + (source ? ' · via ' + source : ''),
+      })
+    });
+  } catch(e) { console.error('Log error:', e); }
 }
 
-function restart() {
-  ['parent-name','parent-wa','kid-name','kid-dob'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('form-error').textContent = '';
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = false;
-  btn.textContent = 'Registrar entrada';
-  showScreen('form');
-  document.getElementById('parent-name').focus();
+// ── Show result screen ──
+function showResult(name, memberData) {
+  if (memberData.isMember) {
+    document.getElementById('member-name').textContent = memberData.name || name;
+    document.getElementById('member-since').textContent = memberData.since || '—';
+    document.getElementById('member-visits').textContent = '—';
+    document.getElementById('member-tier').textContent = memberData.tier || 'Individual';
+    showScreen('member');
+  } else {
+    document.getElementById('walkin-name').textContent = name + '.';
+    showScreen('walkin');
+  }
 }
 
-document.getElementById('kid-dob').addEventListener('keydown', e => {
-  if (e.key === 'Enter') handleSubmit();
+// ── Allow Enter on phone field ──
+document.getElementById('wa-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') lookupPhone();
 });
 
-// Always start on form screen — handles bfcache and normal navigation
-(function() {
-  function resetToForm() {
-    // Force show form screen, hide all result screens
-    document.querySelectorAll('.screen').forEach(function(s) {
-      s.classList.remove('active');
-    });
-    var form = document.getElementById('screen-form');
-    if (form) form.classList.add('active');
-    // Clear inputs
-    ['parent-name','parent-wa','kid-name','kid-dob'].forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el) el.value = '';
-    });
-    var err = document.getElementById('form-error');
-    if (err) err.textContent = '';
-    var btn = document.getElementById('submit-btn');
-    if (btn) { btn.disabled = false; btn.textContent = 'Registrar entrada'; }
-    // Remove bfcache result screens from view
-    var ws = document.getElementById('screen-walkin');
-    var ms = document.getElementById('screen-member');
-    if (ws) ws.style.display = 'none';
-    if (ms) ms.style.display = 'none';
-  }
-
-  // Run immediately on script load
-  resetToForm();
-
-  // Also handle bfcache restores
-  window.addEventListener('pageshow', function(e) { resetToForm(); });
-  window.addEventListener('focus', function() { resetToForm(); });
-
-  // Override showScreen to restore display
-  var _showScreen = showScreen;
-  window.showScreen = function(name) {
-    var ws = document.getElementById('screen-walkin');
-    var ms = document.getElementById('screen-member');
-    if (ws) ws.style.display = '';
-    if (ms) ms.style.display = '';
-    _showScreen(name);
-  };
-})();
+// ── Always start fresh ──
+window.addEventListener('pageshow', resetAll);
+resetAll();
 </script>
 </body>
 </html>

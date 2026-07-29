@@ -31,6 +31,10 @@
     "api/member-lookup.js": {
       "memory": 256,
       "maxDuration": 10
+    },
+    "api/parent-lookup.js": {
+      "memory": 256,
+      "maxDuration": 10
     }
   },
   "rewrites": [

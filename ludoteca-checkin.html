@@ -266,7 +266,7 @@ function resetAll() {
   kidCount = 1;
   var section = document.getElementById('kids-section');
   if (section) {
-    section.innerHTML = '<div class="kid-row" id="kid-0"><div class="field-group" style="margin-bottom:10px"><label class="field-label">Niño/a 1</label><input class="field-input kid-name" type="text" autocomplete="off" placeholder="Nombre" style="margin-bottom:8px"><input class="field-input kid-dob" type="date" style="margin-top:0"></div></div>';
+    section.innerHTML = '<div class="kid-row" id="kid-0"><div class="field-group" style="margin-bottom:10px"><label class="field-label">Niño/a 1</label><input class="field-input kid-name" type="text" autocomplete="off" placeholder="Nombre" style="margin-bottom:8px"><label class="field-label" style="margin-top:4px;margin-bottom:6px;font-size:9px">Fecha de nacimiento</label><input class="field-input kid-dob" type="date" style="margin-top:0"></div></div>';
   }
   var addBtn = document.getElementById('add-kid-btn');
   if (addBtn) addBtn.style.display = '';
@@ -292,6 +292,7 @@ function addKid() {
     '<button type="button" onclick="removeKid(this)" style="background:none;border:none;font-size:11px;color:rgba(26,20,17,.35);cursor:pointer;letter-spacing:.08em;text-transform:uppercase;font-family:var(--body)">Eliminar</button>' +
     '</div>' +
     '<input class="field-input kid-name" type="text" autocomplete="off" placeholder="Nombre" style="margin-bottom:8px">' +
+    '<label class="field-label" style="margin-top:4px;margin-bottom:6px;font-size:9px">Fecha de nacimiento</label>' +
     '<input class="field-input kid-dob" type="date" style="margin-top:0">' +
     '</div>';
   section.appendChild(div);

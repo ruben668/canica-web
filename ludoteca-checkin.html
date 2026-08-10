@@ -153,38 +153,25 @@
           <option value="ya-conocia">Ya conocía Canica</option>
         </select>
       </div>
-      <!-- Safety + Privacy Agreement -->
-      <div class="field-group" style="margin-top:24px;padding:16px;background:rgba(26,20,17,.03);border:1px solid rgba(26,20,17,.1);">
-        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:12px;line-height:1.5;color:#1A1411">
-          <input type="checkbox" id="agreement-check" style="margin-top:3px;flex-shrink:0;width:16px;height:16px;cursor:pointer">
-          <span>
-            He leído y acepto los
-            <a href="#" onclick="showAgreement(event)" style="color:#BF5341;text-decoration:underline">términos de uso de la ludoteca</a>
-            y el
-            <a href="/privacidad" target="_blank" style="color:#BF5341;text-decoration:underline">Aviso de Privacidad</a>.
-            Como padre/madre/tutor, mantengo la responsabilidad sobre mi(s) hijo(s) durante la visita.
-          </span>
+      <!-- Safety + Privacy Agreement (inline) -->
+      <div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(26,20,17,.12)">
+        <label class="field-label" style="margin-bottom:10px">Términos de uso y aviso de privacidad</label>
+        <div style="font-size:12px;line-height:1.6;color:rgba(26,20,17,.75);padding:16px;background:rgba(26,20,17,.03);border:1px solid rgba(26,20,17,.1);max-height:220px;overflow-y:auto">
+          <p style="margin-bottom:10px"><strong>1. Supervisión.</strong> El personal de Canica supervisa a los niños de forma general, pero no reemplaza la responsabilidad del padre/madre/tutor. Los padres son responsables de sus hijos en todo momento durante su estancia.</p>
+          <p style="margin-bottom:10px"><strong>2. Uso del espacio.</strong> Los niños juegan bajo su propia iniciativa en un entorno diseñado para su edad. Los juegos y equipos son seguros pero no eliminan riesgos inherentes al juego libre.</p>
+          <p style="margin-bottom:10px"><strong>3. Salud.</strong> Confirmo que mi hijo/a está en condiciones de salud aptas para el juego. Comunico cualquier condición médica, alergia o restricción relevante al personal.</p>
+          <p style="margin-bottom:10px"><strong>4. Responsabilidad.</strong> Canica no se responsabiliza por lesiones menores propias del juego infantil (caídas, raspones, empujones). En caso de lesión grave, el personal notificará inmediatamente al padre/madre/tutor y prestará primeros auxilios básicos.</p>
+          <p style="margin-bottom:10px"><strong>5. Comportamiento.</strong> Mi hijo/a respetará las reglas del espacio, a los demás niños y al personal. Entiendo que el personal puede solicitar la salida si el comportamiento pone en riesgo a otros.</p>
+          <p style="margin-bottom:0"><strong>6. Datos personales.</strong> Los datos que proporcionas (nombre, correo, teléfono, fecha de nacimiento del niño) se usan para gestionar tu visita y enviarte comunicaciones relevantes. Consulta el <a href="/privacidad" target="_blank" style="color:#BF5341">Aviso de Privacidad completo</a>.</p>
+        </div>
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;line-height:1.5;color:#1A1411;margin-top:14px">
+          <input type="checkbox" id="agreement-check" style="margin-top:3px;flex-shrink:0;width:18px;height:18px;cursor:pointer">
+          <span>He leído y acepto los términos de uso de la ludoteca y el Aviso de Privacidad.</span>
         </label>
       </div>
 
-      <button class="submit-btn" id="form-btn" onclick="submitFullForm()">Registrar entrada</button>
+      <button class="submit-btn" id="form-btn" onclick="submitFullForm()" style="margin-top:16px">Registrar entrada</button>
       <div class="field-error" id="form-error"></div>
-    </div>
-
-    <!-- Agreement Modal -->
-    <div id="agreement-modal" style="display:none;position:fixed;inset:0;background:rgba(26,20,17,.6);z-index:1000;padding:20px;overflow-y:auto">
-      <div style="max-width:500px;margin:40px auto;background:#FFF9F1;padding:32px 24px;border-radius:4px">
-        <h2 style="font-family:var(--display,'DM Serif Display',serif);font-size:22px;font-style:italic;font-weight:400;margin-bottom:16px">Términos de uso de la ludoteca</h2>
-        <div style="font-size:13px;line-height:1.6;color:rgba(26,20,17,.75)">
-          <p style="margin-bottom:14px"><strong>1. Supervisión.</strong> El personal de Canica supervisa a los niños de forma general, pero no reemplaza la responsabilidad del padre/madre/tutor. Los padres son responsables de sus hijos en todo momento durante su estancia.</p>
-          <p style="margin-bottom:14px"><strong>2. Uso del espacio.</strong> Los niños juegan bajo su propia iniciativa en un entorno diseñado para su edad. Los juegos y equipos son seguros pero no eliminan riesgos inherentes al juego libre.</p>
-          <p style="margin-bottom:14px"><strong>3. Salud.</strong> Confirmo que mi hijo/a está en condiciones de salud aptas para el juego. Comunico cualquier condición médica, alergia o restricción relevante al personal.</p>
-          <p style="margin-bottom:14px"><strong>4. Responsabilidad.</strong> Canica no se responsabiliza por lesiones menores propias del juego infantil (caídas, raspones, empujones). En caso de lesión grave, el personal notificará inmediatamente al padre/madre/tutor y prestará primeros auxilios básicos.</p>
-          <p style="margin-bottom:14px"><strong>5. Comportamiento.</strong> Mi hijo/a respetará las reglas del espacio, a los demás niños y al personal. Entiendo que el personal puede solicitar la salida si el comportamiento pone en riesgo a otros.</p>
-          <p style="margin-top:20px;font-size:12px;color:rgba(26,20,17,.5)">Al marcar la casilla y registrar mi entrada, confirmo que he leído y acepto estos términos.</p>
-        </div>
-        <button onclick="closeAgreement()" style="width:100%;padding:14px;background:#1A1411;color:#FFF9F1;border:none;font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;margin-top:24px;border-radius:999px">Entendido</button>
-      </div>
     </div>
   </div>
 
@@ -313,17 +300,6 @@ function removeKid(btn) {
 }
 
 // ── Step 1: Phone lookup ──
-function showAgreement(e) {
-  if (e) e.preventDefault();
-  document.getElementById('agreement-modal').style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeAgreement() {
-  document.getElementById('agreement-modal').style.display = 'none';
-  document.body.style.overflow = '';
-}
-
 async function lookupPhone() {
   var wa = document.getElementById('wa-input').value.trim();
   var errEl = document.getElementById('phone-error');

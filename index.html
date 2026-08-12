@@ -111,16 +111,53 @@ function closePage(id) { document.getElementById(id).style.display='none'; docum
       </p>
     </div>
 
+    <!-- Qué incluye -->
+    <div style="margin-top: var(--sp-5); font-size: 14px; line-height: 1.7;">
+      <p class="kicker" style="display:block; margin-bottom: 10px; opacity: 0.5;">Qué incluye</p>
+      <ul style="list-style: none; padding: 0; margin: 0; display: grid; gap: 8px;">
+        <li>— Acceso ilimitado, lunes a domingo</li>
+        <li>— 2 actividades guiadas al día (arte, sensoriales, música) — <a href="actividades.html" style="color:#BF5341; text-decoration: underline; text-underline-offset: 2px;">ver calendario</a></li>
+        <li>— Niñeras profesionales acompañando la ludoteca</li>
+        <li>— Espacio pensado para niños de 0 a 8 años</li>
+        <li>— Sin límite de visitas ni horas</li>
+        <li>— Tópe familiar: los hermanos tienen precios reducidos</li>
+      </ul>
+    </div>
+
+    <!-- Precios detallados -->
+    <div style="margin-top: var(--sp-5); padding: var(--sp-4); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+      <p class="kicker" style="display:block; margin-bottom: 12px; opacity: 0.5;">Precios por niño</p>
+      <div style="display: grid; gap: 10px; font-size: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span>Primer niño</span>
+          <span style="font-family: var(--display); font-size: 18px; font-style: italic;">$950 <span style="font-size: 11px; opacity: 0.5; font-family: var(--body); font-style: normal;">/mes</span></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span>Segundo niño</span>
+          <span style="font-family: var(--display); font-size: 18px; font-style: italic;">$700 <span style="font-size: 11px; opacity: 0.5; font-family: var(--body); font-style: normal;">/mes</span></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span>Tercer niño</span>
+          <span style="font-family: var(--display); font-size: 18px; font-style: italic;">$600 <span style="font-size: 11px; opacity: 0.5; font-family: var(--body); font-style: normal;">/mes</span></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 8px; border-top: 1px solid var(--rule);">
+          <span style="font-family: var(--display); font-style: italic;">Tópe familiar</span>
+          <span style="font-family: var(--display); font-size: 18px; font-style: italic;">$2,500 <span style="font-size: 11px; opacity: 0.5; font-family: var(--body); font-style: normal;">/mes</span></span>
+        </div>
+      </div>
+    </div>
+
     <!-- Kid selector — each button goes directly to checkout -->
     <div style="margin:var(--sp-5) 0 var(--sp-3);">
-      <p style="font-family:var(--body);font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.45;margin-bottom:var(--sp-3);">Cuántos niños</p>
+      <p style="font-family:var(--body);font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.45;margin-bottom:var(--sp-3);">Registra tu familia</p>
       <div style="display:flex;gap:8px;">
         <button class="btn btn--primary" onclick="checkoutKids(1)" style="flex:1;padding:12px 8px;font-size:11px;line-height:1.4;">1 niño<br><span style="font-family:var(--display);font-size:17px;font-style:italic;">$950</span><br><span style="font-size:11px;opacity:.6;">/mes</span></button>
         <button class="btn" onclick="checkoutKids(2)" style="flex:1;padding:12px 8px;font-size:11px;line-height:1.4;">2 niños<br><span style="font-family:var(--display);font-size:17px;font-style:italic;">$1,650</span><br><span style="font-size:11px;opacity:.6;">/mes</span></button>
         <button class="btn" onclick="checkoutKids(3)" style="flex:1;padding:12px 8px;font-size:11px;line-height:1.4;">3+ niños<br><span style="font-family:var(--display);font-size:17px;font-style:italic;">$2,500</span><br><span style="font-size:11px;opacity:.6;">/mes</span></button>
       </div>
     </div>
-    <p style="font-family:var(--body);font-size:11px;opacity:.35;margin:0;">Tópe familiar: $2,500/mes · Cancela cuando quieras.</p>
+    <p style="font-family:var(--body);font-size:11px;opacity:.35;margin:0;">Cancela cuando quieras. Sin permanencia.</p>
+    <p style="margin-top: var(--sp-4);"><a href="membership.html" style="font-size: 12px; color: #BF5341; text-decoration: underline; text-underline-offset: 3px;">Ver todos los detalles de la membresía →</a></p>
   </div>
 </section>
 

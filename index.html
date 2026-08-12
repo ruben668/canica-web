@@ -100,7 +100,16 @@ function closePage(id) { document.getElementById(id).style.display='none'; docum
   <div class="hero__copy">
     <span class="kicker">03 · Canica Commons</span>
     <h2>Tu lugar, sin tener que <em>pensarlo.</em></h2>
-    <p class="lead">Acceso ilimitado entre semana. Sin calcular entradas. Las primeras 100 familias fundadoras bloquean este precio para siempre.</p>
+    <p class="lead">Acceso ilimitado todos los días. Sin calcular entradas. Las primeras 100 familias fundadoras bloquean este precio para siempre.</p>
+
+    <div style="margin-top: var(--sp-5); padding: var(--sp-4); border: 1px solid rgba(196,154,42,0.5); background: rgba(196,154,42,0.1);">
+      <p style="font-family: var(--display, 'DM Serif Display', serif); font-size: 17px; font-style: italic; line-height: 1.4; margin: 0 0 8px;">
+        Actividades diarias · Niñeras profesionales · Espacio pensado para niños.
+      </p>
+      <p style="font-size: 13px; opacity: 0.7; margin: 0;">
+        Todo en un mismo lugar, todos los días, por menos de lo que crees.
+      </p>
+    </div>
 
     <!-- Kid selector — each button goes directly to checkout -->
     <div style="margin:var(--sp-5) 0 var(--sp-3);">
@@ -137,22 +146,6 @@ async function checkoutKids(n) {
   }
 }
 </script>
-
-<!-- ====================================================
-     Membership invitation banner
-     ==================================================== -->
-<section style="padding: var(--sp-8) 0; background: rgba(196,154,42,0.08); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); text-align: center;">
-  <div class="container">
-    <p class="kicker" style="display:block; margin-bottom: 12px; opacity: 0.5;">Canica Commons</p>
-    <p style="font-family: var(--display, 'DM Serif Display', serif); font-size: 22px; font-style: italic; line-height: 1.35; margin: 0 auto 12px; max-width: 42ch; color: #1A1411;">
-      Actividades diarias · Niñeras profesionales · Espacio pensado para niños.
-    </p>
-    <p style="font-size: 14px; color: rgba(26,20,17,.65); margin: 0 auto var(--sp-5); max-width: 40ch;">
-      Todo en un mismo lugar, todos los días, por menos de lo que crees.
-    </p>
-    <a href="membership.html" class="btn btn--primary" style="display: inline-block;">Conocer la membresía →</a>
-  </div>
-</section>
 
 <!-- ====================================================
      Quiet info strip

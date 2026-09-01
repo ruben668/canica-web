@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Ludoteca · Estadísticas · Canica</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'IBM Plex Mono', monospace;
+    background: #FFF9F1;
+    color: #1A1411;
+    padding: 28px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 42px;
+    margin-bottom: 8px;
+  }
+  .subtitle { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(26,20,17,.5); margin-bottom: 32px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 32px; }
+  .kpi { border: 1px solid rgba(26,20,17,.15); padding: 20px; background: white; }
+  .kpi-num { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 36px; line-height: 1; margin-bottom: 8px; }
+  .kpi-label { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(26,20,17,.55); }
+  .kpi.highlight { background: #107039; color: #FFF9F1; border-color: #107039; }
+  .kpi.highlight .kpi-label { color: rgba(255,249,241,.6); }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(26,20,17,.15);
+  }
+  .tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+  .tab {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid rgba(26,20,17,.2);
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: rgba(26,20,17,.6);
+  }
+  .tab.active { background: #1A1411; color: #FFF9F1; border-color: #1A1411; }
+
+  table { width: 100%; border-collapse: collapse; background: white; font-size: 13px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(26,20,17,.08); }
+  th { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(26,20,17,.55); font-weight: 500; background: rgba(26,20,17,.03); }
+  tr:hover td { background: rgba(191,83,65,.05); }
+  .count { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 20px; color: #BF5341; }
+  .badge { display: inline-block; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; background: rgba(26,20,17,.08); }
+  .badge.member { background: #107039; color: #FFF9F1; }
+  .badge.hot { background: #BF5341; color: #FFF9F1; }
+  .phone { font-size: 11px; color: rgba(26,20,17,.55); }
+
+  .loading { padding: 40px; text-align: center; color: rgba(26,20,17,.4); font-style: italic; }
+  .empty { padding: 40px; text-align: center; color: rgba(26,20,17,.4); }
+
+  .last-update { font-size: 10px; color: rgba(26,20,17,.4); margin-top: 24px; text-align: right; }
+
+  @media (max-width: 640px) {
+    body { padding: 16px; }
+    h1 { font-size: 28px; }
+    .kpi-num { font-size: 28px; }
+    table { font-size: 11px; }
+    th, td { padding: 8px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Ludoteca · <em>Estadísticas</em></h1>
+<div class="subtitle">Check-ins acumulados · Papás y niños repetidores</div>
+
+<div class="kpis" id="kpis">
+  <div class="loading">Cargando...</div>
+</div>
+
+<div id="content">
+  <div class="loading">Cargando datos...</div>
+</div>
+
+<div class="last-update" id="last-update"></div>
+
+<script>
+let data = null;
+let currentTab = 'parents';
+
+async function load() {
+  try {
+    const r = await fetch('/api/checkin-stats');
+    data = await r.json();
+    if (data.error) throw new Error(data.error);
+    render();
+  } catch(e) {
+    document.getElementById('content').innerHTML = '<div class="empty">Error: ' + e.message + '</div>';
+  }
+}
+
+function render() {
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi">
+      <div class="kpi-num">${data.totalCheckins}</div>
+      <div class="kpi-label">Check-ins totales</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">${data.uniqueKids}</div>
+      <div class="kpi-label">Niños únicos</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">${data.uniqueParents}</div>
+      <div class="kpi-label">Familias únicas</div>
+    </div>
+    <div class="kpi highlight">
+      <div class="kpi-num">${data.members}</div>
+      <div class="kpi-label">Miembros activos</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">${data.walkIns}</div>
+      <div class="kpi-label">Walk-ins</div>
+    </div>
+  `;
+
+  const parentsRepeaters = data.parents.filter(p => p.visitCount >= 2);
+  const kidsRepeaters = data.kids.filter(k => k.visitCount >= 2);
+
+  document.getElementById('content').innerHTML = `
+    <h2>Repetidores</h2>
+    <div class="tabs">
+      <button class="tab ${currentTab==='parents'?'active':''}" onclick="setTab('parents')">Papás (${parentsRepeaters.length})</button>
+      <button class="tab ${currentTab==='kids'?'active':''}" onclick="setTab('kids')">Niños (${kidsRepeaters.length})</button>
+      <button class="tab ${currentTab==='all-parents'?'active':''}" onclick="setTab('all-parents')">Todos los papás</button>
+    </div>
+    <div id="table-container"></div>
+  `;
+
+  renderTable();
+}
+
+function setTab(t) { currentTab = t; render(); }
+
+function renderTable() {
+  const container = document.getElementById('table-container');
+  if (currentTab === 'parents' || currentTab === 'all-parents') {
+    const list = currentTab === 'parents' ? data.parents.filter(p => p.visitCount >= 2) : data.parents;
+    if (!list.length) { container.innerHTML = '<div class="empty">Sin datos.</div>'; return; }
+    container.innerHTML = `<table>
+      <thead><tr>
+        <th>Visitas</th><th>Familia</th><th>Niño(s)</th><th>Contacto</th><th>Colonia</th><th>Primera</th><th>Última</th>
+      </tr></thead>
+      <tbody>${list.map(p => `
+        <tr>
+          <td><span class="count">${p.visitCount}x</span>${p.visitCount >= 5 ? ' <span class="badge hot">🔥</span>' : ''}${p.type === 'Miembro' ? ' <span class="badge member">Miembro</span>' : ''}</td>
+          <td>${escapeHtml(p.parentName)}</td>
+          <td>${escapeHtml((p.kids || []).join(', '))}</td>
+          <td>${p.phone ? `<a href="https://wa.me/${p.phone.replace(/\\D/g,'')}" target="_blank" class="phone">${escapeHtml(p.phone)}</a>` : (p.email || '<span class="phone">—</span>')}</td>
+          <td class="phone">${escapeHtml(p.neighborhood || '—')}</td>
+          <td class="phone">${p.firstVisit || '—'}</td>
+          <td class="phone">${p.lastVisit || '—'}</td>
+        </tr>
+      `).join('')}</tbody>
+    </table>`;
+  } else if (currentTab === 'kids') {
+    const list = data.kids.filter(k => k.visitCount >= 2);
+    if (!list.length) { container.innerHTML = '<div class="empty">Sin datos.</div>'; return; }
+    container.innerHTML = `<table>
+      <thead><tr>
+        <th>Visitas</th><th>Niño</th><th>Papá/Mamá</th><th>Contacto</th><th>Primera</th><th>Última</th>
+      </tr></thead>
+      <tbody>${list.map(k => `
+        <tr>
+          <td><span class="count">${k.visitCount}x</span>${k.visitCount >= 5 ? ' <span class="badge hot">🔥</span>' : ''}</td>
+          <td>${escapeHtml(k.name)}</td>
+          <td>${escapeHtml(k.parent)}</td>
+          <td>${k.parentPhone ? `<a href="https://wa.me/${k.parentPhone.replace(/\\D/g,'')}" target="_blank" class="phone">${escapeHtml(k.parentPhone)}</a>` : '<span class="phone">—</span>'}</td>
+          <td class="phone">${k.firstVisit || '—'}</td>
+          <td class="phone">${k.lastVisit || '—'}</td>
+        </tr>
+      `).join('')}</tbody>
+    </table>`;
+  }
+}
+
+function escapeHtml(s) {
+  return (s || '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+load();
+document.getElementById('last-update').textContent = 'Cargado ' + new Date().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit'});
+</script>
+
+</body>
+</html>

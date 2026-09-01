@@ -20,7 +20,7 @@
       "memory": 256,
       "maxDuration": 10
     },
-    "api/checkin-report.js": {
+    "api/checkin-stats.js": {
       "memory": 256,
       "maxDuration": 30
     },
@@ -109,6 +109,10 @@
     {
       "source": "/ludoteca-checkin",
       "destination": "/ludoteca-checkin.html"
+    },
+    {
+      "source": "/checkin-stats",
+      "destination": "/checkin-stats.html"
     }
   ],
   "outputDirectory": ".",

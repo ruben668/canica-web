@@ -23,8 +23,8 @@ module.exports = async (req, res) => {
       const amount = (price.unit_amount || 0) / 100;
       const interval = price.recurring?.interval || 'month';
 
-      // Next billing date
-      const nextTs = s.current_period_end || s.billing_cycle_anchor;
+      // Next billing date (Stripe moved current_period_end to item level in newer versions)
+      const nextTs = s.current_period_end || item.current_period_end || s.billing_cycle_anchor;
       const nextBilling = nextTs
         ? new Date(nextTs * 1000).toLocaleDateString('es-MX', {
             day: 'numeric', month: 'short', year: 'numeric',

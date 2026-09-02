@@ -95,7 +95,13 @@ module.exports = async (req, res) => {
       email: cust.email,
       plan: sub ? sub.items.data[0]?.price?.nickname || 'familiar' : null,
       since: sub ? new Date(sub.start_date * 1000).toLocaleDateString('es-MX', { month: 'long', year: 'numeric' }) : null,
-      current_period_end: sub ? new Date(sub.current_period_end * 1000).toLocaleDateString('es-MX') : null,
+      current_period_end: (() => {
+        if (!sub) return null;
+        // Stripe moved current_period_end to item level in newer versions
+        const ts = sub.current_period_end || sub.items?.data?.[0]?.current_period_end || sub.billing_cycle_anchor;
+        if (!ts) return null;
+        return new Date(ts * 1000).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+      })(),
     };
 
     // Log check-in to Notion (fire and forget — don't block the response)

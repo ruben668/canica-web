@@ -113,6 +113,10 @@
     {
       "source": "/checkin-stats",
       "destination": "/checkin-stats.html"
+    },
+    {
+      "source": "/privacidad",
+      "destination": "/privacidad.html"
     }
   ],
   "outputDirectory": ".",

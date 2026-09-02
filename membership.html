@@ -256,6 +256,19 @@ function checkout(plan) {
   document.getElementById('modal-plan-name').textContent = info.name;
   document.getElementById('modal-plan-price').textContent = info.price;
   document.getElementById('confirm-modal').dataset.plan = plan;
+  // Reset kids fields
+  document.getElementById('kid-name-1').value = '';
+  const kid2 = document.getElementById('kid-name-2');
+  const kid3 = document.getElementById('kid-name-3');
+  if (kid2) kid2.value = '';
+  if (kid3) kid3.value = '';
+  document.getElementById('kids-error').textContent = '';
+  // Show relevant kid fields based on plan
+  const wrap2 = document.getElementById('kid-2-wrap');
+  const wrap3 = document.getElementById('kid-3-wrap');
+  if (plan === 'club') { wrap2.style.display = 'block'; wrap3.style.display = 'none'; }
+  else if (plan === 'familiar') { wrap2.style.display = 'block'; wrap3.style.display = 'block'; }
+  else { wrap2.style.display = 'none'; wrap3.style.display = 'none'; }
   document.getElementById('confirm-modal').style.display = 'flex';
 }
 
@@ -263,14 +276,29 @@ async function proceedCheckout() {
   const modal = document.getElementById('confirm-modal');
   const plan = modal.dataset.plan;
   const btn = document.getElementById('confirm-btn');
+  const errEl = document.getElementById('kids-error');
+  errEl.textContent = '';
+
+  // Collect kid names (required for at least first kid)
+  const kids = [];
+  const k1 = document.getElementById('kid-name-1').value.trim();
+  const k2 = document.getElementById('kid-name-2')?.value.trim();
+  const k3 = document.getElementById('kid-name-3')?.value.trim();
+  if (k1) kids.push(k1);
+  if (k2) kids.push(k2);
+  if (k3) kids.push(k3);
+  if (!kids.length) {
+    errEl.textContent = 'Por favor ingresa el nombre de al menos un niño/a.';
+    return;
+  }
+
   btn.disabled = true;
   btn.textContent = 'Cargando...';
-  modal.style.display = 'none';
   try {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan })
+      body: JSON.stringify({ plan, kids })
     });
     const data = await res.json();
     if (data.url) {
@@ -302,11 +330,28 @@ function closeModal() {
       <br>El cargo mensual de <strong><span id="modal-plan-price"></span> MXN</strong> se aplicará automáticamente cada mes.
     </div>
 
-    <div style="border:1px solid rgba(26,20,17,.12);padding:16px;margin-bottom:24px;font-size:12px;line-height:1.8">
+    <div style="border:1px solid rgba(26,20,17,.12);padding:16px;margin-bottom:20px;font-size:12px;line-height:1.8">
       <div>✓ &nbsp;Cargo mensual automático a tu tarjeta</div>
       <div>✓ &nbsp;Cancela cuando quieras desde <a href="/cancelar" style="color:inherit;text-decoration:underline">canica.fun/cancelar</a></div>
       <div>✓ &nbsp;Sin penalización por cancelación</div>
       <div style="margin-top:8px;color:rgba(26,20,17,.6);font-size:11px">⚠ Una vez que se procesa el cobro del mes en curso, no se realizan reembolsos por ese período.</div>
+    </div>
+
+    <div style="margin-bottom:24px">
+      <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,20,17,.55);margin-bottom:10px">¿Para quién es la membresía?</div>
+      <div id="kid-1-wrap" style="margin-bottom:10px">
+        <label style="display:block;font-size:10px;color:rgba(26,20,17,.5);margin-bottom:4px">Nombre del niño/a</label>
+        <input id="kid-name-1" type="text" placeholder="Nombre" autocomplete="off" style="width:100%;padding:12px 14px;border:1px solid rgba(26,20,17,.2);background:#FFF9F1;font-family:var(--body);font-size:14px;color:#1A1411;outline:none;box-sizing:border-box;border-radius:0;-webkit-appearance:none">
+      </div>
+      <div id="kid-2-wrap" style="display:none;margin-bottom:10px">
+        <label style="display:block;font-size:10px;color:rgba(26,20,17,.5);margin-bottom:4px">Segundo niño/a</label>
+        <input id="kid-name-2" type="text" placeholder="Nombre" autocomplete="off" style="width:100%;padding:12px 14px;border:1px solid rgba(26,20,17,.2);background:#FFF9F1;font-family:var(--body);font-size:14px;color:#1A1411;outline:none;box-sizing:border-box;border-radius:0;-webkit-appearance:none">
+      </div>
+      <div id="kid-3-wrap" style="display:none;margin-bottom:10px">
+        <label style="display:block;font-size:10px;color:rgba(26,20,17,.5);margin-bottom:4px">Tercer niño/a</label>
+        <input id="kid-name-3" type="text" placeholder="Nombre" autocomplete="off" style="width:100%;padding:12px 14px;border:1px solid rgba(26,20,17,.2);background:#FFF9F1;font-family:var(--body);font-size:14px;color:#1A1411;outline:none;box-sizing:border-box;border-radius:0;-webkit-appearance:none">
+      </div>
+      <div id="kids-error" style="font-size:12px;color:#be352b;margin-top:6px;min-height:18px"></div>
     </div>
 
     <div style="display:flex;gap:10px">

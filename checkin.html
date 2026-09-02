@@ -167,6 +167,7 @@ function showValid(data) {
     <h1 class="status-title"><em>Pasa adelante.</em></h1>
     <p class="member-name">${data.name}</p>
     <div class="plan-badge">${planLabel}</div>
+    ${data.kids ? `<p class="member-detail" style="font-style:italic;opacity:.7">Niño(s): ${data.kids}</p>` : ''}
     <p class="member-detail">Miembro desde ${data.since || '—'}</p>
     ${data.email ? `<p class="member-detail">${data.email}</p>` : ''}
     <hr class="divider">

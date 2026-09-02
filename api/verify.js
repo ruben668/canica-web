@@ -94,6 +94,7 @@ module.exports = async (req, res) => {
       name: cust.name || cust.email || 'Miembro',
       email: cust.email,
       plan: sub ? sub.items.data[0]?.price?.nickname || 'familiar' : null,
+      kids: sub?.metadata?.kids || '',
       since: sub ? new Date(sub.start_date * 1000).toLocaleDateString('es-MX', { month: 'long', year: 'numeric' }) : null,
       current_period_end: (() => {
         if (!sub) return null;

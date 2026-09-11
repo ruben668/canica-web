@@ -21,6 +21,16 @@
     .q-header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 28px; border-bottom: 1px solid rgba(26,20,17,.12); margin-bottom: 40px; }
     .q-address { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(26,20,17,.4); text-align: right; line-height: 1.8; }
     .q-doc-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(26,20,17,.4); margin-bottom: 32px; }
+
+    /* Interactive controls */
+    .q-controls { background: rgba(26,20,17,.03); border: 1px solid rgba(26,20,17,.08); padding: 20px 24px; margin-bottom: 32px; }
+    .q-controls-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(26,20,17,.5); margin-bottom: 16px; }
+    .q-control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+    .q-control-grid label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: rgba(26,20,17,.55); display: block; margin-bottom: 6px; }
+    .q-control-grid input, .q-control-grid select { width: 100%; padding: 9px 11px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #1a1411; background: #FFF9F1; border: 1px solid rgba(26,20,17,.15); border-radius: 0; -webkit-appearance: none; outline: none; box-sizing: border-box; }
+    .q-control-grid input:focus, .q-control-grid select:focus { border-color: #1a1411; }
+    .q-control-full { grid-column: 1 / -1; }
+
     .q-details { display: grid; grid-template-columns: 110px 1fr; margin-bottom: 40px; }
     .q-details .k { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(26,20,17,.4); padding: 9px 0; border-bottom: 1px solid rgba(26,20,17,.08); }
     .q-details .v { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 17px; font-weight: 400; color: #1a1411; padding: 9px 0 9px 20px; border-bottom: 1px solid rgba(26,20,17,.08); }
@@ -57,7 +67,13 @@
     .q-footer-contact { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(26,20,17,.35); text-align: right; line-height: 1.9; }
     .q-print-btn { position: fixed; bottom: 28px; right: 28px; background: #1a1411; color: #FFF9F1; border: none; padding: 13px 28px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
     .q-print-btn:hover { opacity: 0.75; }
-    @media (max-width: 600px) { .quote-page { padding: 32px 24px 48px; } .q-header { flex-direction: column; align-items: flex-start; gap: 12px; } .q-address { text-align: left; } .q-total-final .tf-val { font-size: 24px; } }
+    @media (max-width: 600px) {
+      .quote-page { padding: 32px 24px 48px; }
+      .q-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .q-address { text-align: left; }
+      .q-total-final .tf-val { font-size: 24px; }
+      .q-control-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -76,13 +92,46 @@
 
   <div class="q-doc-label">Cotización · Evento privado</div>
 
+  <!-- Interactive Controls (hidden when printing) -->
+  <div class="q-controls no-print">
+    <div class="q-controls-title">Ajusta tu cotización</div>
+    <div class="q-control-grid">
+      <div>
+        <label for="ctrl-client">Cliente</label>
+        <input type="text" id="ctrl-client" placeholder="Nombre del cliente">
+      </div>
+      <div>
+        <label for="ctrl-date">Fecha del evento</label>
+        <input type="date" id="ctrl-date">
+      </div>
+      <div>
+        <label for="ctrl-adults">Adultos</label>
+        <input type="number" id="ctrl-adults" min="0" value="20">
+      </div>
+      <div>
+        <label for="ctrl-kids">Niños</label>
+        <input type="number" id="ctrl-kids" min="0" value="10">
+      </div>
+      <div>
+        <label for="ctrl-hours">Duración (horas)</label>
+        <input type="number" id="ctrl-hours" min="1" max="12" step="0.5" value="4">
+      </div>
+      <div>
+        <label for="ctrl-time">Horario</label>
+        <input type="text" id="ctrl-time" placeholder="3:00 pm – 7:00 pm" value="3:00 pm – 7:00 pm">
+      </div>
+    </div>
+  </div>
+
   <div class="q-details">
+    <div class="k">Cliente</div>
+    <div class="v" id="d-client">—</div>
     <div class="k">Fecha</div>
-    <div class="v">Miércoles 3 ó Jueves 4 de junio</div>
+    <div class="v" id="d-date">—</div>
     <div class="k">Horario</div>
-    <div class="v">3:00 pm – 7:00 pm <span style="font-size:13px;color:rgba(26,20,17,.4);">(4 horas)</span></div>
+    <div class="v" id="d-time">3:00 pm – 7:00 pm <span style="font-size:13px;color:rgba(26,20,17,.4);" id="d-hours">(4 horas)</span></div>
     <div class="k">Invitados</div>
-    <div class="v">22 adultos · 11 niños · 33 personas</div>
+    <div class="v" id="d-guests">—</div>
     <div class="k">Modalidad</div>
     <div class="v">Cierre exclusivo del restaurante al público</div>
   </div>
@@ -91,9 +140,9 @@
   <div class="q-section">
     <div class="q-num">01 — Renta de espacio</div>
     <div class="q-section-title">Uso exclusivo de Canica</div>
-    <div class="q-section-sub">Todo lo que necesitan para un evento memorable.</div>
+    <div class="q-section-sub" id="d-venue-sub">Todo lo que necesitan para un evento memorable.</div>
     <ul class="q-bullets">
-      <li>Uso exclusivo del restaurante y ludoteca durante 4 horas</li>
+      <li>Uso exclusivo del restaurante y ludoteca durante el evento</li>
       <li>Servicio privado del equipo de cocina, sala y maestras de ludoteca</li>
       <li>Dos actividades recreativas personalizadas para los niños</li>
       <li>Pastel de cumpleaños personalizado</li>
@@ -102,49 +151,48 @@
     <div class="q-line">
       <div class="q-line-label">
         Renta de espacio
-        <small>Incluye actividades, pastel y piñata</small>
+        <small id="d-venue-note">Incluye actividades, pastel y piñata</small>
       </div>
-      <div class="q-line-price">$16,000.00</div>
+      <div class="q-line-price" id="d-venue-price">$8,000.00</div>
     </div>
   </div>
 
-  <!-- 02 — NIÑOS -->
+  <!-- 02 — ADULTOS -->
   <div class="q-section">
-    <div class="q-num">02 — Menú para niños</div>
-    <div class="q-section-title">Bento infantil</div>
-    <div class="q-section-sub">$200.00 por persona · 11 niños</div>
+    <div class="q-num">02 — Cargo por adulto</div>
+    <div class="q-section-title">Menú y servicio</div>
+    <div class="q-section-sub" id="d-adult-sub">$400.00 por adulto · 20 adultos</div>
+    <ul class="q-bullets">
+      <li>Menú del día servido en mesa</li>
+      <li>Aguas del día · café · té ilimitado</li>
+      <li>Servicio de sala durante todo el evento</li>
+    </ul>
+    <div class="q-line">
+      <div class="q-line-label">
+        Adultos
+        <small id="d-adult-note">20 personas × $400.00</small>
+      </div>
+      <div class="q-line-price" id="d-adult-price">$8,000.00</div>
+    </div>
+  </div>
+
+  <!-- 03 — NIÑOS -->
+  <div class="q-section">
+    <div class="q-num">03 — Cargo por niño</div>
+    <div class="q-section-title">Bento infantil + ludoteca</div>
+    <div class="q-section-sub" id="d-kid-sub">$300.00 por niño · 10 niños</div>
     <ul class="q-bullets">
       <li><strong>Proteína</strong>&nbsp;&nbsp;Pechuga de pollo a la plancha</li>
-      <li><strong>Acompañamientos (elige 2)</strong>&nbsp;&nbsp;Arroz blanco · Puré de camote · Jitomate cherry confitado · Hummus de lenteja · Aguacate · Ensalada de pepino · Pan masa madre</li>
-      <li><strong>Bebida (elige 1)</strong>&nbsp;&nbsp;Soda natural · Naranjada · Limonada</li>
+      <li><strong>Acompañamientos</strong>&nbsp;&nbsp;Arroz blanco · Puré de camote · Jitomate cherry · Hummus · Aguacate · Pan masa madre</li>
+      <li><strong>Bebida</strong>&nbsp;&nbsp;Soda natural · Naranjada · Limonada</li>
+      <li>Acceso a ludoteca durante todo el evento con maestras</li>
     </ul>
     <div class="q-line">
       <div class="q-line-label">
-        Menú niños
-        <small>11 personas × $200.00</small>
+        Niños
+        <small id="d-kid-note">10 personas × $300.00</small>
       </div>
-      <div class="q-line-price">$2,200.00</div>
-    </div>
-  </div>
-
-  <!-- 03 — ADULTOS -->
-  <div class="q-section">
-    <div class="q-num">03 — Bebidas para adultos</div>
-    <div class="q-section-title">Paquete de bebidas</div>
-    <div class="q-section-sub">$250.00 por persona · 22 adultos</div>
-    <ul class="q-bullets">
-      <li>Selección de vinos de la casa, cervezas y refrescos naturales durante el evento</li>
-      <li>Servicio de mesa durante las 4 horas</li>
-    </ul>
-    <div class="q-line">
-      <div class="q-line-label">
-        Paquete bebidas adultos
-        <small>22 personas × $250.00</small>
-      </div>
-      <div class="q-line-price">$5,500.00</div>
-    </div>
-    <div class="q-note-box">
-      Las botanas y mezze se pueden pedir a la carta durante el evento — te avisamos los precios al confirmar la fecha.
+      <div class="q-line-price" id="d-kid-price">$3,000.00</div>
     </div>
   </div>
 
@@ -152,18 +200,18 @@
   <div class="q-totals">
     <div class="q-total-row">
       <span class="tl">Subtotal</span>
-      <span class="tv">$23,700.00</span>
+      <span class="tv" id="d-subtotal">$19,000.00</span>
     </div>
     <div class="q-total-row">
       <span class="tl">Servicio (15%)</span>
-      <span class="tv">$3,555.00</span>
+      <span class="tv" id="d-service">$2,850.00</span>
     </div>
     <div class="q-total-final">
       <span class="tf-label">Total del evento</span>
-      <span class="tf-val">$27,255.00</span>
+      <span class="tf-val" id="d-total">$21,850.00</span>
     </div>
     <div class="q-note-box" style="margin-top:12px;">
-      Las botanas y mezze à la carte se cobran adicional al total del evento.
+      <strong>Alcohol no incluido.</strong> El servicio de bebidas alcohólicas (vinos, cervezas, cocteles) se cobra por consumo, aparte del total del evento. Te compartimos la carta de bebidas al confirmar la fecha.
     </div>
   </div>
 
@@ -171,12 +219,13 @@
   <div class="q-conditions">
     <div class="q-conditions-title">Condiciones</div>
     <ol class="q-cond-list">
-      <li>Para confirmar la fecha se requiere el 50% de la renta: <strong>$8,000.00</strong></li>
+      <li>Para confirmar la fecha se requiere el <strong>50% de la renta del espacio</strong> como anticipo (<span id="d-deposit">$4,000.00</span>).</li>
       <li>El saldo restante se liquida el día del evento, antes del inicio.</li>
       <li>Esta cotización tiene vigencia de <strong>7 días naturales</strong> a partir de su emisión.</li>
       <li>La fecha queda confirmada únicamente al recibir el anticipo.</li>
-      <li>Las botanas y mezze à la carta se cobran al consumo, no están incluidas en el total.</li>
+      <li><strong>Alcohol no incluido.</strong> Las bebidas alcohólicas se cobran por consumo al finalizar el evento.</li>
       <li>El menú está sujeto a disponibilidad de ingredientes de temporada.</li>
+      <li>Los precios varían según el día de la semana: Lunes a Miércoles, Jueves, Viernes a Domingo.</li>
     </ol>
   </div>
 
@@ -192,5 +241,87 @@
 </div>
 
 <button class="q-print-btn no-print" onclick="window.print()">Guardar PDF</button>
+
+<script>
+// Pricing matrix — day-of-week based (Sunday=0, Monday=1, ..., Saturday=6)
+// Monday–Wednesday: venue 8,000 · adult 400 · kid 300
+// Thursday:         venue 9,000 · adult 500 · kid 300
+// Friday–Sunday:    venue 15,000 · adult 500 · kid 300
+function getPricing(date) {
+  if (!date) return { tier: 'Lun–Mié', venue: 8000, adult: 400, kid: 300 };
+  const day = date.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+  if (day >= 1 && day <= 3) return { tier: 'Lun–Mié', venue: 8000, adult: 400, kid: 300 };
+  if (day === 4)            return { tier: 'Jueves',  venue: 9000, adult: 500, kid: 300 };
+  return                          { tier: 'Vie–Dom', venue: 15000, adult: 500, kid: 300 }; // Fri, Sat, Sun
+}
+
+const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const WEEKDAYS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+
+function formatMoney(n) {
+  return '$' + n.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  return WEEKDAYS[d.getDay()].charAt(0).toUpperCase() + WEEKDAYS[d.getDay()].slice(1) + ' ' + d.getDate() + ' de ' + MONTHS[d.getMonth()] + ' de ' + d.getFullYear();
+}
+
+function updateQuote() {
+  const client  = document.getElementById('ctrl-client').value.trim();
+  const dateStr = document.getElementById('ctrl-date').value;
+  const adults  = parseInt(document.getElementById('ctrl-adults').value) || 0;
+  const kids    = parseInt(document.getElementById('ctrl-kids').value) || 0;
+  const hours   = parseFloat(document.getElementById('ctrl-hours').value) || 4;
+  const timeStr = document.getElementById('ctrl-time').value.trim() || '—';
+
+  const date = dateStr ? new Date(dateStr + 'T12:00:00') : null;
+  const p = getPricing(date);
+
+  // Header details
+  document.getElementById('d-client').textContent = client || '—';
+  document.getElementById('d-date').textContent   = formatDate(date);
+  document.getElementById('d-time').innerHTML     = timeStr + ' <span style="font-size:13px;color:rgba(26,20,17,.4);">(' + hours + ' hora' + (hours !== 1 ? 's' : '') + ')</span>';
+  document.getElementById('d-guests').textContent = adults + ' adulto' + (adults !== 1 ? 's' : '') + ' · ' + kids + ' niño' + (kids !== 1 ? 's' : '') + ' · ' + (adults + kids) + ' personas';
+
+  // 01 Venue
+  const venueSub = 'Tarifa ' + p.tier + ' · ' + formatMoney(p.venue);
+  document.getElementById('d-venue-sub').textContent   = venueSub;
+  document.getElementById('d-venue-note').textContent  = 'Incluye actividades, pastel, piñata · Tarifa ' + p.tier;
+  document.getElementById('d-venue-price').textContent = formatMoney(p.venue);
+
+  // 02 Adults
+  const adultTotal = adults * p.adult;
+  document.getElementById('d-adult-sub').textContent   = formatMoney(p.adult) + ' por adulto · ' + adults + ' adulto' + (adults !== 1 ? 's' : '');
+  document.getElementById('d-adult-note').textContent  = adults + ' persona' + (adults !== 1 ? 's' : '') + ' × ' + formatMoney(p.adult);
+  document.getElementById('d-adult-price').textContent = formatMoney(adultTotal);
+
+  // 03 Kids
+  const kidTotal = kids * p.kid;
+  document.getElementById('d-kid-sub').textContent   = formatMoney(p.kid) + ' por niño · ' + kids + ' niño' + (kids !== 1 ? 's' : '');
+  document.getElementById('d-kid-note').textContent  = kids + ' persona' + (kids !== 1 ? 's' : '') + ' × ' + formatMoney(p.kid);
+  document.getElementById('d-kid-price').textContent = formatMoney(kidTotal);
+
+  // Totals
+  const subtotal = p.venue + adultTotal + kidTotal;
+  const service  = subtotal * 0.15;
+  const total    = subtotal + service;
+  const deposit  = p.venue * 0.5;
+
+  document.getElementById('d-subtotal').textContent = formatMoney(subtotal);
+  document.getElementById('d-service').textContent  = formatMoney(service);
+  document.getElementById('d-total').textContent    = formatMoney(total);
+  document.getElementById('d-deposit').textContent  = formatMoney(deposit);
+}
+
+// Wire up controls
+['ctrl-client','ctrl-date','ctrl-adults','ctrl-kids','ctrl-hours','ctrl-time'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateQuote);
+  document.getElementById(id).addEventListener('change', updateQuote);
+});
+
+// Initial render
+updateQuote();
+</script>
 </body>
 </html>

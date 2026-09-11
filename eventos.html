@@ -21,41 +21,40 @@
     }
     body{background:var(--ivory);color:var(--black);font-family:var(--mono);font-size:13px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:80px;}
 
-    /* HEADER */
     .site-header{padding:24px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(26,20,17,.1);}
     .wordmark{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--black);text-decoration:none;}
     .nav-link{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(26,20,17,.4);text-decoration:none;}
 
-    /* HERO */
     .hero{padding:72px 32px 48px;max-width:760px;margin:0 auto;}
     .hero-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(26,20,17,.4);margin-bottom:16px;}
     .hero-title{font-family:var(--serif);font-size:52px;font-weight:400;line-height:1.05;margin-bottom:20px;}
     .hero-title em{font-style:italic;color:var(--rufous);}
     .hero-desc{font-size:13px;color:rgba(26,20,17,.55);line-height:1.8;max-width:480px;margin-bottom:0;}
 
-    /* CALCULATOR */
     .calc-wrap{max-width:760px;margin:0 auto;padding:0 32px 80px;}
-
     .calc-section{margin-bottom:40px;}
     .calc-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,20,17,.4);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(26,20,17,.1);}
 
     /* Day picker */
     .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:16px;}
-    .day-btn{background:rgba(26,20,17,.04);border:1px solid rgba(26,20,17,.1);padding:10px 4px;text-align:center;cursor:pointer;border-radius:2px;transition:all .15s;}
+    .day-btn{background:rgba(26,20,17,.04);border:1px solid rgba(26,20,17,.1);padding:14px 4px;text-align:center;cursor:pointer;border-radius:2px;transition:all .15s;}
     .day-btn:hover{background:rgba(26,20,17,.08);}
     .day-btn.active{background:var(--black);border-color:var(--black);color:var(--ivory);}
-    .day-btn .day-name{font-size:9px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px;}
-    .day-btn .day-price{font-family:var(--serif);font-size:11px;font-style:italic;}
+    .day-btn .day-name{font-size:9px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:6px;}
+    .day-btn .day-price{font-family:var(--serif);font-size:12px;font-style:italic;}
 
-    /* Slot picker */
+    /* Event type */
     .slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
     .slot-btn{background:rgba(26,20,17,.04);border:1px solid rgba(26,20,17,.1);padding:16px;cursor:pointer;text-align:left;border-radius:2px;transition:all .15s;}
     .slot-btn:hover{background:rgba(26,20,17,.08);}
     .slot-btn.active{background:var(--black);border-color:var(--black);color:var(--ivory);}
-    .slot-btn.disabled{opacity:.35;cursor:not-allowed;}
     .slot-name{font-size:12px;font-weight:500;display:block;margin-bottom:4px;}
     .slot-time{font-size:10px;color:rgba(26,20,17,.45);}
     .slot-btn.active .slot-time{color:rgba(255,249,241,.5);}
+
+    /* Date input */
+    .date-input{width:100%;padding:14px 16px;font-family:var(--mono);font-size:14px;color:var(--black);background:rgba(26,20,17,.04);border:1px solid rgba(26,20,17,.1);outline:none;border-radius:2px;-webkit-appearance:none;}
+    .date-input:focus{border-color:var(--black);}
 
     /* People counter */
     .people-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
@@ -68,128 +67,105 @@
     .counter-val{font-family:var(--serif);font-size:36px;font-style:italic;min-width:48px;text-align:center;}
 
     /* Add-ons */
-    .addon-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-    .addon-item{display:flex;align-items:center;gap:10px;padding:12px;background:rgba(26,20,17,.04);cursor:pointer;border:1px solid transparent;border-radius:2px;transition:all .15s;}
+    .addon-grid{display:grid;grid-template-columns:1fr;gap:6px;}
+    .addon-item{display:flex;align-items:center;gap:12px;background:rgba(26,20,17,.04);border:1px solid rgba(26,20,17,.1);padding:14px 16px;cursor:pointer;transition:all .15s;}
     .addon-item:hover{background:rgba(26,20,17,.08);}
-    .addon-item.active{border-color:var(--black);background:rgba(26,20,17,.08);}
-    .addon-check{width:18px;height:18px;border:1px solid rgba(26,20,17,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;}
-    .addon-item.active .addon-check{background:var(--black);color:var(--ivory);border-color:var(--black);}
-    .addon-name{font-size:11px;font-weight:500;flex:1;}
-    .addon-price{font-size:10px;color:rgba(26,20,17,.5);}
+    .addon-item.active{background:var(--black);color:var(--ivory);border-color:var(--black);}
+    .addon-check{width:18px;height:18px;border:1px solid rgba(26,20,17,.3);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+    .addon-item.active .addon-check{border-color:var(--ivory);}
+    .addon-name{flex:1;font-size:12px;}
+    .addon-price{font-size:11px;color:rgba(26,20,17,.5);}
+    .addon-item.active .addon-price{color:rgba(255,249,241,.5);}
 
-    /* Total */
-    .total-box{background:var(--black);color:var(--ivory);padding:28px 28px;margin-top:32px;}
-    .total-breakdown{margin-bottom:20px;}
-    .total-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,249,241,.08);font-size:11px;color:rgba(255,249,241,.6);}
-    .total-row:last-child{border-bottom:none;}
-    .total-row.subtotal{color:rgba(255,249,241,.8);font-weight:500;}
-    .total-final{display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid rgba(255,249,241,.15);margin-top:8px;}
-    .total-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,249,241,.45);}
-    .total-amount{font-family:var(--serif);font-size:44px;font-style:italic;color:var(--ivory);}
-    .anticipo-note{font-size:10px;color:rgba(255,249,241,.4);margin-top:6px;}
+    /* Includes checklist */
+    .includes-box{background:rgba(255,249,241,.4);border:1px solid rgba(26,20,17,.08);padding:14px 16px;margin-top:14px;}
+    .checklist-item{display:flex;gap:10px;align-items:center;padding:4px 0;font-size:11px;color:rgba(26,20,17,.65);}
+    .checklist-check{width:14px;height:14px;background:var(--green);color:var(--ivory);border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
-    /* CTA */
-    .cta-area{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;}
-    .cta-primary{background:var(--rufous);color:var(--ivory);border:none;padding:14px 28px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;}
+    /* Total box */
+    .total-box{background:var(--black);color:var(--ivory);padding:28px 24px;margin-top:24px;}
+    .empty-msg{font-size:12px;font-style:italic;text-align:center;padding:24px 0;}
+    .total-breakdown{border-bottom:1px solid rgba(255,249,241,.15);padding-bottom:14px;margin-bottom:14px;}
+    .total-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;color:rgba(255,249,241,.75);}
+    .total-final{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;}
+    .total-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,249,241,.5);margin-bottom:4px;}
+    .total-amount{font-family:var(--serif);font-size:44px;font-style:italic;}
+    .anticipo-note{font-size:10px;color:var(--yellow);margin-top:4px;}
+    .cta-area{margin-top:20px;}
+    .cta-primary{display:block;background:var(--yellow);color:var(--black);padding:16px;text-align:center;text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;transition:opacity .15s;}
     .cta-primary:hover{opacity:.85;}
-    .cta-secondary{background:transparent;color:rgba(255,249,241,.6);border:1px solid rgba(255,249,241,.2);padding:14px 28px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;}
-    .cta-secondary:hover{border-color:rgba(255,249,241,.4);color:var(--ivory);}
 
-    /* Empty state */
-    .empty-msg{font-size:11px;color:rgba(26,20,17,.35);text-align:center;padding:32px;font-style:italic;}
+    /* Alcohol note */
+    .alcohol-note{background:rgba(191,83,65,.08);border-left:2px solid var(--rufous);padding:10px 14px;margin-top:20px;font-size:11px;color:rgba(26,20,17,.65);}
+    .alcohol-note strong{color:var(--rufous);}
 
-    /* What's included callout */
-    .checklist-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(26,20,17,.06);font-size:11px;color:rgba(26,20,17,.7);}
-    .checklist-item:last-child{border-bottom:none;}
-    .checklist-check{width:18px;height:18px;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
-    .checklist-item.extra .checklist-check{background:var(--rufous);}
-        .includes-box{background:rgba(26,20,17,.04);border-left:2px solid var(--rufous);padding:14px 16px;margin-top:16px;font-size:11px;color:rgba(26,20,17,.65);line-height:1.8;}
+    /* Contact fallback */
+    .contact-strip{background:rgba(26,20,17,.03);padding:32px 24px;text-align:center;border-top:1px solid rgba(26,20,17,.1);}
+    .contact-strip a{color:var(--rufous);text-decoration:none;}
 
     @media(max-width:600px){
-      .hero{padding:48px 20px 32px;}
+      .hero{padding:40px 24px 32px;}
       .hero-title{font-size:36px;}
       .calc-wrap{padding:0 20px 60px;}
       .day-grid{grid-template-columns:repeat(4,1fr);}
-      .people-grid,.addon-grid{grid-template-columns:1fr;}
+      .people-grid{grid-template-columns:1fr;}
+      .slot-grid{grid-template-columns:1fr;}
     }
   </style>
 </head>
 <body>
 
 <header class="site-header">
-  <a href="/" style="display:block;">
-      <img src="assets/canica-wordmark-vector.svg" alt="canica" style="height:28px;width:auto;display:block;">
-    </a>
-  <a href="/reservations" class="nav-link">Reservaciones →</a>
+  <a href="/" class="wordmark">canica</a>
+  <a href="/" class="nav-link">← Inicio</a>
 </header>
 
-<div class="hero">
-  <div class="hero-label">Eventos privados · Canica</div>
-  <h1 class="hero-title">Celebra en<br>un lugar <em>especial.</em></h1>
-  <p class="hero-desc">Canica es el único espacio en Condesa donde los adultos comen bien y los niños juegan supervisados — sin que ninguno tenga que ceder. Reserva el espacio cualquier día de la semana para tu cumpleaños, bautizo o reunión familiar.</p>
-
-</div>
+<section class="hero">
+  <div class="hero-label">Eventos privados en Canica</div>
+  <h1 class="hero-title">Celebra en <em>Canica.</em></h1>
+  <p class="hero-desc">Los niños juegan, los adultos disfrutan. Cumpleaños, bautizos, reuniones familiares — cierra el espacio para tu grupo y arma tu cotización en segundos.</p>
+</section>
 
 <div class="calc-wrap">
 
   <!-- STEP 1: DAY -->
   <div class="calc-section">
     <div class="calc-label">01 — ¿Qué día?</div>
-    <div class="day-grid" id="day-grid">
-      <!-- Generated by JS -->
-    </div>
+    <div class="day-grid" id="day-grid"></div>
   </div>
 
-  <!-- DATE PICKER -->
+  <!-- STEP 2: DATE (optional) -->
   <div class="calc-section">
-    <div class="calc-label">01b — ¿Qué fecha tienes en mente?</div>
-    <input type="date" id="event-date" 
-      style="font-family:var(--mono);font-size:13px;background:rgba(26,20,17,.04);border:1px solid rgba(26,20,17,.1);padding:12px 16px;width:100%;color:var(--black);border-radius:2px;"
-      onchange="state.date=this.value; recalc();">
-    <p style="font-size:10px;color:rgba(26,20,17,.35);margin-top:6px;">Sujeto a disponibilidad. Te confirmaremos en menos de 24 horas.</p>
+    <div class="calc-label">02 — ¿Qué fecha tienes en mente? (opcional)</div>
+    <input type="date" class="date-input" id="date-input" onchange="updateDate()">
   </div>
 
-  <!-- BIRTHDAY TOGGLE -->
+  <!-- STEP 3: EVENT TYPE -->
   <div class="calc-section">
-    <div class="calc-label">02 — ¿Es un cumpleaños?</div>
+    <div class="calc-label">03 — ¿Qué tipo de evento?</div>
     <div class="slot-grid">
       <div class="slot-btn" id="type-birthday" onclick="selectType('birthday')">
-        <span class="slot-name">🎂 Sí, es un cumpleaños</span>
-        <span class="slot-time">Piñata + pastel incluidos en la renta</span>
+        <span class="slot-name">Cumpleaños</span>
+        <span class="slot-time">Incluye piñata, pastel y decoración</span>
       </div>
       <div class="slot-btn" id="type-other" onclick="selectType('other')">
         <span class="slot-name">Otro evento</span>
         <span class="slot-time">Bautizo, baby shower, reunión...</span>
       </div>
     </div>
-  </div>
-
-  <!-- STEP 2: SLOT -->
-  <div class="calc-section">
-    <div class="calc-label">03 — ¿Qué turno?</div>
-    <div class="slot-grid">
-      <div class="slot-btn" id="slot-morning" onclick="selectSlot('morning')">
-        <span class="slot-name">Mañana</span>
-        <span class="slot-time">9:00 am – 12:00 pm</span>
-      </div>
-      <div class="slot-btn" id="slot-afternoon" onclick="selectSlot('afternoon')">
-        <span class="slot-name">Tarde</span>
-        <span class="slot-time" id="slot-afternoon-time">1:00 pm – 4:00 pm</span>
-      </div>
-    </div>
-    <div id="includes-box" style="display:none;margin-top:16px;">
+    <div class="includes-box" id="includes-box" style="display:none;">
       <div style="font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(26,20,17,.4);margin-bottom:10px;">Siempre incluido en tu evento:</div>
       <div id="includes-list"></div>
     </div>
   </div>
 
-  <!-- STEP 3: PEOPLE -->
+  <!-- STEP 4: PEOPLE -->
   <div class="calc-section">
     <div class="calc-label">04 — ¿Cuántos invitados?</div>
     <div class="people-grid">
       <div class="counter-box">
         <div class="counter-label">Adultos</div>
-        <div class="counter-price" id="adult-price-label">$600 c/u · platillo + agua fresca + bebida</div>
+        <div class="counter-price" id="adult-price-label">Selecciona un día para ver el precio</div>
         <div class="counter-controls">
           <button class="counter-btn" onclick="change('adults',-1)">−</button>
           <div class="counter-val" id="adults-val">0</div>
@@ -208,20 +184,11 @@
     </div>
   </div>
 
-  <!-- STEP 4: ADD-ONS -->
+  <!-- STEP 5: BEBIDAS OPCIONAL -->
   <div class="calc-section">
     <div class="calc-label">05 — Bebidas (opcional)</div>
+    <div style="font-size:11px;color:rgba(26,20,17,.55);margin-bottom:14px;line-height:1.6;">Paquetes sin alcohol. Consumo adicional por adulto durante el evento.</div>
     <div class="addon-grid">
-      <div class="addon-item" onclick="toggleAddon('pinata')" id="addon-pinata">
-        <div class="addon-check" id="check-pinata"></div>
-        <span class="addon-name">Piñata + relleno</span>
-        <span class="addon-price">$600</span>
-      </div>
-      <div class="addon-item" onclick="toggleAddon('pastel')" id="addon-pastel">
-        <div class="addon-check" id="check-pastel"></div>
-        <span class="addon-name">Pastel de celebración</span>
-        <span class="addon-price">$900</span>
-      </div>
       <div class="addon-item" onclick="toggleAddon('drinks2')" id="addon-drinks2">
         <div class="addon-check" id="check-drinks2"></div>
         <span class="addon-name">2 bebidas por adulto</span>
@@ -233,11 +200,14 @@
         <span class="addon-price">$520 p/adulto</span>
       </div>
     </div>
+    <div class="alcohol-note">
+      <strong>Alcohol no incluido.</strong> Las bebidas alcohólicas (vinos, cervezas, cocteles) se cobran por consumo aparte del total del evento.
+    </div>
   </div>
 
   <!-- TOTAL -->
   <div class="total-box" id="total-box">
-    <div class="empty-msg" id="empty-msg" style="color:rgba(255,249,241,.3);">Selecciona día y turno para ver tu cotización.</div>
+    <div class="empty-msg" id="empty-msg" style="color:rgba(255,249,241,.3);">Selecciona día y tipo de evento para ver tu cotización.</div>
     <div id="total-content" style="display:none;">
       <div class="total-breakdown" id="breakdown"></div>
       <div class="total-final">
@@ -251,108 +221,99 @@
       <div class="cta-area">
         <a href="#" class="cta-primary" id="cta-stripe" target="_blank">Solicitar cotización por WhatsApp</a>
       </div>
-      <p style="font-size:10px;color:rgba(255,249,241,.3);margin-top:12px;line-height:1.6;">Tu solicitud queda pendiente hasta que confirmemos disponibilidad. Te responderemos en menos de 24 horas y te enviaremos el link de pago del anticipo.</p>
+      <p style="font-size:10px;color:rgba(255,249,241,.3);margin-top:12px;line-height:1.6;">Tu solicitud queda pendiente hasta que confirmemos disponibilidad. Te responderemos en menos de 24 horas.</p>
     </div>
   </div>
 
 </div>
 
+<div class="contact-strip">
+  <div style="font-size:11px;color:rgba(26,20,17,.55);">¿Tienes preguntas antes de cotizar?<br>Escríbenos: <a href="mailto:informacion@canica.fun">informacion@canica.fun</a> · WhatsApp <a href="https://wa.me/13105971480">+1 310 597 1480</a></div>
+</div>
+
 <script>
-const TARGETS = { 0:52000, 1:14000, 2:18000, 3:18000, 4:20000, 5:32000, 6:44000 };
+// ═══════════════════════════════════════════════════════════════
+// PRICING — day-of-week rent + per-person rates
+// Sunday=0, Monday=1, ..., Saturday=6
+// Mon–Wed: venue $8,000 · adult $400 · kid $300
+// Thu:     venue $9,000 · adult $500 · kid $300
+// Fri–Sun: venue $15,000 · adult $500 · kid $300
+// ═══════════════════════════════════════════════════════════════
+function getPricing(dow) {
+  if (dow >= 1 && dow <= 3) return { venue: 8000,  adult: 400, kid: 300 };
+  if (dow === 4)            return { venue: 9000,  adult: 500, kid: 300 };
+  return                          { venue: 15000, adult: 500, kid: 300 }; // Fri, Sat, Sun
+}
 const DAYS_ES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-const IS_WEEKEND = [true, false, false, false, false, false, true];
-const ADULT_PRICE_WD = 600, ADULT_PRICE_WE = 750, KID_PRICE = 300;
-const MORNING_MULT = 0.5, AFTERNOON_MULT = 1.0;
-const ADDONS = { pinata: 600, pastel: 900, deco: 400 };
+const DAYS_SHORT = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+const KID_PRICE = 300;
+const DRINKS_2 = 350;
+const DRINKS_3 = 520;
 
-let state = { day: null, date: null, eventType: null, slot: null, adults: 0, kids: 0, addons: new Set() };
-
-function selectType(type) {
-  state.eventType = type;
-  document.querySelectorAll('#type-birthday, #type-other').forEach(b => b.classList.remove('active'));
-  document.getElementById('type-' + type).classList.add('active');
-  // If birthday, hide piñata and pastel from add-ons (they're included)
-  const hide = type === 'birthday';
-  ['pinata','pastel'].forEach(id => {
-    const el = document.getElementById('addon-' + id);
-    if (el) el.style.display = hide ? 'none' : '';
-    if (hide) state.addons.delete(id);
-  });
-  updateChecklist();
-  recalc();
-}
-
-function updateChecklist() {
-  if (!state.slot) return;
-  const box = document.getElementById('includes-box');
-  const list = document.getElementById('includes-list');
-  if (!box || !list) return;
-
-  const isBday = state.eventType === 'birthday';
-  const isWe = state.day !== null && IS_WEEKEND[state.day];
-  const slotLabel = state.slot === 'morning' ? '9am–12pm' : (isWe ? '2pm–5pm' : '1pm–4pm');
-
-  const items = [
-    { text: `Uso exclusivo del espacio (${slotLabel})`, extra: false },
-    { text: 'Servicio completo de cocina y sala', extra: false },
-    { text: 'Maestras de ludoteca supervisando', extra: false },
-    { text: '2 actividades recreativas para los niños', extra: false },
-    { text: 'Agua fresca ilimitada', extra: false },
-  ];
-  if (isBday) {
-    items.push({ text: 'Piñata + relleno', extra: false });
-    items.push({ text: 'Pastel de celebración', extra: false });
-    items.push({ text: 'Decoración básica', extra: false });
-  }
-  // Add selected extras
-  if (state.addons.has('deco')) items.push({ text: 'Decoración básica', extra: true });
-  if (state.addons.has('drinks2')) items.push({ text: `2 bebidas por adulto (${state.adults} personas)`, extra: true });
-  if (state.addons.has('drinks3')) items.push({ text: `3 bebidas por adulto (${state.adults} personas)`, extra: true });
-
-  list.innerHTML = items.map(i =>
-    `<div class="checklist-item${i.extra ? ' extra' : ''}">
-      <div class="checklist-check">✓</div>
-      <span>${i.text}</span>
-    </div>`
-  ).join('');
-
-  box.style.display = 'block';
-}
+let state = { day: null, date: null, eventType: null, adults: 0, kids: 0, addons: new Set() };
 
 function fmt(n) { return '$' + Math.round(n).toLocaleString('es-MX'); }
 
 // Build day buttons
-const grid = document.getElementById('day-grid');
-for (let d = 0; d < 7; d++) {
-  const target = TARGETS[d];
-  const morningRent = Math.round(target * MORNING_MULT);
-  const btn = document.createElement('div');
-  btn.className = 'day-btn';
-  btn.id = 'day-' + d;
-  btn.innerHTML = `<span class="day-name">${DAYS_ES[d].slice(0,3)}</span><span class="day-price">desde ${fmt(morningRent)}</span>`;
-  btn.onclick = () => selectDay(d);
-  grid.appendChild(btn);
-}
+(function buildDayGrid() {
+  const grid = document.getElementById('day-grid');
+  for (let d = 0; d < 7; d++) {
+    const p = getPricing(d);
+    const btn = document.createElement('div');
+    btn.className = 'day-btn';
+    btn.id = 'day-' + d;
+    btn.innerHTML = '<span class="day-name">' + DAYS_SHORT[d] + '</span><span class="day-price">desde ' + fmt(p.venue) + '</span>';
+    btn.onclick = function() { selectDay(d); };
+    grid.appendChild(btn);
+  }
+})();
 
 function selectDay(d) {
   state.day = d;
   document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('day-' + d).classList.add('active');
-  // Update afternoon time for weekends
-  const isWe = IS_WEEKEND[d];
-  document.getElementById('slot-afternoon-time').textContent = isWe ? '2:00 pm – 5:00 pm' : '1:00 pm – 4:00 pm';
-  // Update adult price label
-  const adultPrice = isWe ? ADULT_PRICE_WE : ADULT_PRICE_WD;
-  document.getElementById('adult-price-label').textContent = `${fmt(adultPrice)} c/u · platillo + agua fresca + bebida`;
+  const p = getPricing(d);
+  document.getElementById('adult-price-label').textContent = fmt(p.adult) + ' c/u · menú abierto (sin alcohol)';
   recalc();
 }
 
-function selectSlot(slot) {
-  state.slot = slot;
-  document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('slot-' + slot).classList.add('active');
+function updateDate() {
+  const v = document.getElementById('date-input').value;
+  state.date = v || null;
+  if (v) {
+    // Auto-select the day-of-week button matching the chosen date
+    const d = new Date(v + 'T12:00:00').getDay();
+    selectDay(d);
+  }
+}
+
+function selectType(type) {
+  state.eventType = type;
+  document.querySelectorAll('#type-birthday, #type-other').forEach(b => b.classList.remove('active'));
+  document.getElementById('type-' + type).classList.add('active');
   updateChecklist();
   recalc();
+}
+
+function updateChecklist() {
+  if (!state.eventType) return;
+  const box = document.getElementById('includes-box');
+  const list = document.getElementById('includes-list');
+  const items = [
+    'Uso exclusivo del espacio (restaurante y ludoteca)',
+    'Servicio completo de cocina y sala',
+    'Maestras de ludoteca supervisando',
+    '2 actividades recreativas para los niños',
+  ];
+  if (state.eventType === 'birthday') {
+    items.push('Piñata + relleno');
+    items.push('Pastel de celebración');
+    items.push('Decoración básica');
+  }
+  list.innerHTML = items.map(t =>
+    '<div class="checklist-item"><div class="checklist-check">✓</div><span>' + t + '</span></div>'
+  ).join('');
+  box.style.display = 'block';
 }
 
 function change(field, delta) {
@@ -377,98 +338,77 @@ function toggleAddon(id) {
   const check = document.getElementById('check-' + id);
   if (item) item.classList.toggle('active');
   if (check) check.textContent = state.addons.has(id) ? '✓' : '';
-  updateChecklist();
   recalc();
 }
 
 function recalc() {
-  if (!state.day === null || state.day === null || !state.slot) {
+  if (state.day === null || !state.eventType) {
     document.getElementById('empty-msg').style.display = 'block';
     document.getElementById('total-content').style.display = 'none';
     return;
   }
 
-  const target = TARGETS[state.day];
-  const mult = state.slot === 'morning' ? MORNING_MULT : AFTERNOON_MULT;
-  const rent = Math.round(target * mult);
-  const isWe = IS_WEEKEND[state.day];
-  const adultPrice = isWe ? ADULT_PRICE_WE : ADULT_PRICE_WD;
-  const adultsTotal = state.adults * adultPrice;
+  const p = getPricing(state.day);
+  const rent = p.venue;
+  const adultsTotal = state.adults * p.adult;
   const kidsTotal = state.kids * KID_PRICE;
 
-  let addonsTotal = 0;
-  const addonLines = [];
-  if (state.addons.has('pinata')) { addonsTotal += 600; addonLines.push(['Piñata + relleno', 600]); }
-  if (state.addons.has('pastel')) { addonsTotal += 900; addonLines.push(['Pastel', 900]); }
+  let drinksTotal = 0;
+  let drinksLabel = '';
   if (state.addons.has('drinks2') && state.adults > 0) {
-    const d2 = state.adults * 350;
-    addonsTotal += d2;
-    addonLines.push([`2 bebidas por adulto (${state.adults} × $350)`, d2]);
-  }
-  if (state.addons.has('drinks3') && state.adults > 0) {
-    const d3 = state.adults * 520;
-    addonsTotal += d3;
-    addonLines.push([`3 bebidas por adulto (${state.adults} × $520)`, d3]);
+    drinksTotal = state.adults * DRINKS_2;
+    drinksLabel = state.adults + ' adultos × ' + fmt(DRINKS_2) + ' (2 bebidas c/u)';
+  } else if (state.addons.has('drinks3') && state.adults > 0) {
+    drinksTotal = state.adults * DRINKS_3;
+    drinksLabel = state.adults + ' adultos × ' + fmt(DRINKS_3) + ' (3 bebidas c/u)';
   }
 
-  // Birthday includes piñata ($600) + pastel ($900) in rental
-  let birthdayIncludes = 0;
-  if (state.eventType === 'birthday') birthdayIncludes = 1900; // piñata $600 + pastel $900 + deco $400
-  const total = rent + adultsTotal + kidsTotal + addonsTotal;
+  // 15% service only on F&B (adults + kids + drink package), NOT on rent
+  const fnb = adultsTotal + kidsTotal + drinksTotal;
+  const service = fnb * 0.15;
+  const total = rent + fnb + service;
   const anticipo = Math.round(rent * 0.5);
 
-  // Build breakdown
-  const slotLabel = state.slot === 'morning'
-    ? (isWe ? 'Renta mañana (9am–12pm)' : 'Renta mañana (9am–12pm)')
-    : (isWe ? 'Renta tarde (2pm–5pm)' : 'Renta tarde (1pm–4pm)');
-
   let html = '';
-  html += `<div class="total-row"><span>${slotLabel}</span><span>${fmt(rent)}</span></div>`;
+  html += '<div class="total-row"><span>Renta del espacio (' + DAYS_ES[state.day] + ')</span><span>' + fmt(rent) + '</span></div>';
   if (state.eventType === 'birthday') {
-    html += `<div class="total-row" style="color:rgba(255,249,241,.4);font-style:italic"><span>  ↳ Piñata + relleno, pastel y decoración incluidos</span><span>✓</span></div>`;
+    html += '<div class="total-row" style="color:rgba(255,249,241,.4);font-style:italic"><span>  ↳ Piñata, pastel y decoración incluidos</span><span>✓</span></div>';
   }
-  if (state.adults > 0) html += `<div class="total-row"><span>${state.adults} adultos × ${fmt(adultPrice)}</span><span>${fmt(adultsTotal)}</span></div>`;
-  if (state.kids > 0)   html += `<div class="total-row"><span>${state.kids} niños × ${fmt(KID_PRICE)}</span><span>${fmt(kidsTotal)}</span></div>`;
-  addonLines.forEach(([label, amt]) => {
-    html += `<div class="total-row"><span>${label}</span><span>${fmt(amt)}</span></div>`;
-  });
+  if (state.adults > 0) html += '<div class="total-row"><span>' + state.adults + ' adultos × ' + fmt(p.adult) + '</span><span>' + fmt(adultsTotal) + '</span></div>';
+  if (state.kids > 0)   html += '<div class="total-row"><span>' + state.kids + ' niños × ' + fmt(KID_PRICE) + '</span><span>' + fmt(kidsTotal) + '</span></div>';
+  if (drinksTotal > 0)  html += '<div class="total-row"><span>Paquete bebidas · ' + drinksLabel + '</span><span>' + fmt(drinksTotal) + '</span></div>';
+  if (fnb > 0)          html += '<div class="total-row"><span>Servicio 15% sobre consumo</span><span>' + fmt(service) + '</span></div>';
 
   document.getElementById('breakdown').innerHTML = html;
   document.getElementById('total-amount').textContent = fmt(total);
-  document.getElementById('anticipo-note').textContent = `Anticipo para confirmar: ${fmt(anticipo)} (50% de la renta)`;
+  document.getElementById('anticipo-note').textContent = 'Anticipo para confirmar: ' + fmt(anticipo) + ' (50% de la renta)';
 
-  // Build reference code and WhatsApp message
-  const dayNames2 = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
-  const slotCode = state.slot === 'morning' ? 'MAÑANA' : 'TARDE';
-  const refCode = `${dayNames2[state.day]}-${slotCode}-${state.adults}A-${state.kids}N`;
-  const dayLabel2 = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][state.day];
-  const slotLabel2 = state.slot === 'morning' ? '9am–12pm' : (IS_WEEKEND[state.day] ? '2pm–5pm' : '1pm–4pm');
+  // Reference code + WhatsApp
+  const refCode = DAYS_SHORT[state.day] + '-' + state.adults + 'A-' + state.kids + 'N';
   const eventTypeLabel = state.eventType === 'birthday' ? 'Cumpleaños' : 'Otro evento';
   const dateDisplay = state.date
     ? new Date(state.date + 'T12:00:00').toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long', year:'numeric'})
-    : `${dayLabel2} (fecha por confirmar)`;
+    : DAYS_ES[state.day] + ' (fecha por confirmar)';
 
   const msgLines = [
-    `Hola 👋 Quisiera solicitar una cotización para un evento en Canica.`,
-    ``,
-    `📋 Referencia: ${refCode}`,
-    ``,
-    `📅 Fecha: ${dateDisplay}`,
-    `⏰ Turno: ${slotLabel2}`,
-    `👥 ${state.adults} adultos · ${state.kids} niños`,
-    `🎉 Tipo: ${eventTypeLabel}`,
-    state.addons.has('drinks2') ? `🥂 Paquete 2 bebidas por adulto` : null,
-    state.addons.has('drinks3') ? `🍾 Paquete 3 bebidas por adulto` : null,
-    ``,
-    `💰 Total estimado: ${fmt(total)}`,
-    `   Anticipo: ${fmt(anticipo)}`,
-    ``,
-    `¿Tienen disponibilidad? Quedo pendiente de su confirmación.`,
+    'Hola 👋 Quisiera solicitar una cotización para un evento en Canica.',
+    '',
+    '📋 Referencia: ' + refCode,
+    '📅 Fecha: ' + dateDisplay,
+    '👥 ' + state.adults + ' adultos · ' + state.kids + ' niños',
+    '🎉 Tipo: ' + eventTypeLabel,
+    state.addons.has('drinks2') ? '🥂 Paquete 2 bebidas por adulto' : null,
+    state.addons.has('drinks3') ? '🍾 Paquete 3 bebidas por adulto' : null,
+    '',
+    '💰 Total estimado: ' + fmt(total),
+    '   Anticipo: ' + fmt(anticipo),
+    '',
+    '¿Tienen disponibilidad? Quedo pendiente de su confirmación.',
   ].filter(l => l !== null);
 
   const waMsg = encodeURIComponent(msgLines.join('\n'));
-  document.getElementById('cta-stripe').href = `https://wa.me/13105971480?text=${waMsg}`;
-  document.getElementById('ref-code').textContent = `Referencia: ${refCode}`;
+  document.getElementById('cta-stripe').href = 'https://wa.me/13105971480?text=' + waMsg;
+  document.getElementById('ref-code').textContent = 'Referencia: ' + refCode;
   document.getElementById('ref-code').style.display = 'block';
 
   document.getElementById('empty-msg').style.display = 'none';

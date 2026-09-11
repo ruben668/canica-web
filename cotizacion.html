@@ -196,6 +196,37 @@
     </div>
   </div>
 
+  <!-- 04 — BEBIDAS OPCIONAL -->
+  <div class="q-section">
+    <div class="q-num">04 — Bebidas (opcional)</div>
+    <div class="q-section-title">Paquete de bebidas sin alcohol</div>
+    <div class="q-section-sub">Consumo adicional por adulto durante el evento. Sin alcohol — el alcohol se cobra por consumo aparte.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" class="q-drink-grid">
+      <label class="q-drink-opt" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid rgba(26,20,17,.15);background:rgba(26,20,17,.03);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;">
+        <input type="radio" name="drink-pkg" value="none" id="drink-none" checked style="margin:0;">
+        <span style="flex:1;"><strong>Sin paquete</strong></span>
+        <span style="color:rgba(26,20,17,.4);">—</span>
+      </label>
+      <label class="q-drink-opt" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid rgba(26,20,17,.15);background:rgba(26,20,17,.03);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;">
+        <input type="radio" name="drink-pkg" value="2" id="drink-2" style="margin:0;">
+        <span style="flex:1;"><strong>2 bebidas por adulto</strong></span>
+        <span style="color:rgba(26,20,17,.55);">$350 p/adulto</span>
+      </label>
+      <label class="q-drink-opt" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid rgba(26,20,17,.15);background:rgba(26,20,17,.03);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;">
+        <input type="radio" name="drink-pkg" value="3" id="drink-3" style="margin:0;">
+        <span style="flex:1;"><strong>3 bebidas por adulto</strong></span>
+        <span style="color:rgba(26,20,17,.55);">$520 p/adulto</span>
+      </label>
+    </div>
+    <div class="q-line" id="d-drink-line" style="margin-top:14px;display:none;">
+      <div class="q-line-label">
+        Paquete de bebidas
+        <small id="d-drink-note">—</small>
+      </div>
+      <div class="q-line-price" id="d-drink-price">$0.00</div>
+    </div>
+  </div>
+
   <!-- TOTALES -->
   <div class="q-totals">
     <div class="q-total-row">
@@ -205,6 +236,10 @@
     <div class="q-total-row">
       <span class="tl">Consumo (adultos + niños)</span>
       <span class="tv" id="d-sub-fnb">$11,000.00</span>
+    </div>
+    <div class="q-total-row" id="d-row-drinks" style="display:none;">
+      <span class="tl">Paquete de bebidas</span>
+      <span class="tv" id="d-sub-drinks">$0.00</span>
     </div>
     <div class="q-total-row">
       <span class="tl">Servicio 15% sobre consumo</span>
@@ -309,14 +344,33 @@ function updateQuote() {
   document.getElementById('d-kid-note').textContent  = kids + ' persona' + (kids !== 1 ? 's' : '') + ' × ' + formatMoney(p.kid);
   document.getElementById('d-kid-price').textContent = formatMoney(kidTotal);
 
-  // Totals — 15% service only on F&B consumption, NOT on venue rent
-  const fnbSubtotal = adultTotal + kidTotal;
+  // Drink package (optional): 'none' | '2' ($350/adulto) | '3' ($520/adulto)
+  const drinkRadio = document.querySelector('input[name="drink-pkg"]:checked');
+  const drinkPkg   = drinkRadio ? drinkRadio.value : 'none';
+  const drinkRate  = drinkPkg === '2' ? 350 : drinkPkg === '3' ? 520 : 0;
+  const drinkTotal = drinkRate * adults;
+
+  const drinkLine  = document.getElementById('d-drink-line');
+  const drinkRow   = document.getElementById('d-row-drinks');
+  if (drinkTotal > 0) {
+    drinkLine.style.display = 'flex';
+    drinkRow.style.display  = 'flex';
+    document.getElementById('d-drink-note').textContent   = adults + ' adulto' + (adults !== 1 ? 's' : '') + ' × ' + formatMoney(drinkRate) + ' (' + drinkPkg + ' bebidas c/u)';
+    document.getElementById('d-drink-price').textContent  = formatMoney(drinkTotal);
+    document.getElementById('d-sub-drinks').textContent   = formatMoney(drinkTotal);
+  } else {
+    drinkLine.style.display = 'none';
+    drinkRow.style.display  = 'none';
+  }
+
+  // Totals — 15% service only on F&B consumption (adults + kids + drink package), NOT on venue rent
+  const fnbSubtotal = adultTotal + kidTotal + drinkTotal;
   const service     = fnbSubtotal * 0.15;
   const total       = p.venue + fnbSubtotal + service;
   const deposit     = p.venue * 0.5;
 
   document.getElementById('d-sub-venue').textContent = formatMoney(p.venue);
-  document.getElementById('d-sub-fnb').textContent   = formatMoney(fnbSubtotal);
+  document.getElementById('d-sub-fnb').textContent   = formatMoney(adultTotal + kidTotal);
   document.getElementById('d-service').textContent   = formatMoney(service);
   document.getElementById('d-total').textContent     = formatMoney(total);
   document.getElementById('d-deposit').textContent   = formatMoney(deposit);
@@ -326,6 +380,9 @@ function updateQuote() {
 ['ctrl-client','ctrl-date','ctrl-adults','ctrl-kids','ctrl-hours','ctrl-time'].forEach(id => {
   document.getElementById(id).addEventListener('input', updateQuote);
   document.getElementById(id).addEventListener('change', updateQuote);
+});
+document.querySelectorAll('input[name="drink-pkg"]').forEach(el => {
+  el.addEventListener('change', updateQuote);
 });
 
 // Initial render

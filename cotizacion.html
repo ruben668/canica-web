@@ -160,11 +160,11 @@
   <!-- 02 — ADULTOS -->
   <div class="q-section">
     <div class="q-num">02 — Cargo por adulto</div>
-    <div class="q-section-title">Menú y servicio</div>
+    <div class="q-section-title">Consumo por adulto</div>
     <div class="q-section-sub" id="d-adult-sub">$400.00 por adulto · 20 adultos</div>
     <ul class="q-bullets">
-      <li>Menú del día servido en mesa</li>
-      <li>Aguas del día · café · té ilimitado</li>
+      <li><strong>Menú abierto</strong>&nbsp;&nbsp;Cada adulto consume libremente del menú hasta agotar su presupuesto</li>
+      <li>Lo que exceda el presupuesto se cobra aparte al finalizar el evento</li>
       <li>Servicio de sala durante todo el evento</li>
     </ul>
     <div class="q-line">
@@ -199,19 +199,26 @@
   <!-- TOTALES -->
   <div class="q-totals">
     <div class="q-total-row">
-      <span class="tl">Subtotal</span>
-      <span class="tv" id="d-subtotal">$19,000.00</span>
+      <span class="tl">Renta del espacio</span>
+      <span class="tv" id="d-sub-venue">$8,000.00</span>
     </div>
     <div class="q-total-row">
-      <span class="tl">Servicio (15%)</span>
-      <span class="tv" id="d-service">$2,850.00</span>
+      <span class="tl">Consumo (adultos + niños)</span>
+      <span class="tv" id="d-sub-fnb">$11,000.00</span>
+    </div>
+    <div class="q-total-row">
+      <span class="tl">Servicio 15% sobre consumo</span>
+      <span class="tv" id="d-service">$1,650.00</span>
     </div>
     <div class="q-total-final">
       <span class="tf-label">Total del evento</span>
-      <span class="tf-val" id="d-total">$21,850.00</span>
+      <span class="tf-val" id="d-total">$20,650.00</span>
     </div>
     <div class="q-note-box" style="margin-top:12px;">
       <strong>Alcohol no incluido.</strong> El servicio de bebidas alcohólicas (vinos, cervezas, cocteles) se cobra por consumo, aparte del total del evento. Te compartimos la carta de bebidas al confirmar la fecha.
+    </div>
+    <div class="q-note-box" style="margin-top:8px;">
+      El presupuesto por persona cubre consumo del menú dentro del evento. Cualquier <strong>consumo adicional</strong> por encima del presupuesto se cobra aparte al finalizar.
     </div>
   </div>
 
@@ -302,16 +309,17 @@ function updateQuote() {
   document.getElementById('d-kid-note').textContent  = kids + ' persona' + (kids !== 1 ? 's' : '') + ' × ' + formatMoney(p.kid);
   document.getElementById('d-kid-price').textContent = formatMoney(kidTotal);
 
-  // Totals
-  const subtotal = p.venue + adultTotal + kidTotal;
-  const service  = subtotal * 0.15;
-  const total    = subtotal + service;
-  const deposit  = p.venue * 0.5;
+  // Totals — 15% service only on F&B consumption, NOT on venue rent
+  const fnbSubtotal = adultTotal + kidTotal;
+  const service     = fnbSubtotal * 0.15;
+  const total       = p.venue + fnbSubtotal + service;
+  const deposit     = p.venue * 0.5;
 
-  document.getElementById('d-subtotal').textContent = formatMoney(subtotal);
-  document.getElementById('d-service').textContent  = formatMoney(service);
-  document.getElementById('d-total').textContent    = formatMoney(total);
-  document.getElementById('d-deposit').textContent  = formatMoney(deposit);
+  document.getElementById('d-sub-venue').textContent = formatMoney(p.venue);
+  document.getElementById('d-sub-fnb').textContent   = formatMoney(fnbSubtotal);
+  document.getElementById('d-service').textContent   = formatMoney(service);
+  document.getElementById('d-total').textContent     = formatMoney(total);
+  document.getElementById('d-deposit').textContent   = formatMoney(deposit);
 }
 
 // Wire up controls

@@ -184,22 +184,8 @@
     </div>
   </div>
 
-  <!-- STEP 5: BEBIDAS OPCIONAL -->
+  <!-- Alcohol note (no drink packages) -->
   <div class="calc-section">
-    <div class="calc-label">05 — Bebidas (opcional)</div>
-    <div style="font-size:11px;color:rgba(26,20,17,.55);margin-bottom:14px;line-height:1.6;">Paquetes sin alcohol. Consumo adicional por adulto durante el evento.</div>
-    <div class="addon-grid">
-      <div class="addon-item" onclick="toggleAddon('drinks2')" id="addon-drinks2">
-        <div class="addon-check" id="check-drinks2"></div>
-        <span class="addon-name">2 bebidas por adulto</span>
-        <span class="addon-price">$350 p/adulto</span>
-      </div>
-      <div class="addon-item" onclick="toggleAddon('drinks3')" id="addon-drinks3">
-        <div class="addon-check" id="check-drinks3"></div>
-        <span class="addon-name">3 bebidas por adulto</span>
-        <span class="addon-price">$520 p/adulto</span>
-      </div>
-    </div>
     <div class="alcohol-note">
       <strong>Alcohol no incluido.</strong> Las bebidas alcohólicas (vinos, cervezas, cocteles) se cobran por consumo aparte del total del evento.
     </div>
@@ -308,7 +294,7 @@ function updateChecklist() {
   if (state.eventType === 'birthday') {
     items.push('Piñata + relleno');
     items.push('Pastel de celebración');
-    items.push('Decoración básica');
+    items.push('Decoración estilo Canica');
   }
   list.innerHTML = items.map(t =>
     '<div class="checklist-item"><div class="checklist-check">✓</div><span>' + t + '</span></div>'
@@ -353,18 +339,8 @@ function recalc() {
   const adultsTotal = state.adults * p.adult;
   const kidsTotal = state.kids * KID_PRICE;
 
-  let drinksTotal = 0;
-  let drinksLabel = '';
-  if (state.addons.has('drinks2') && state.adults > 0) {
-    drinksTotal = state.adults * DRINKS_2;
-    drinksLabel = state.adults + ' adultos × ' + fmt(DRINKS_2) + ' (2 bebidas c/u)';
-  } else if (state.addons.has('drinks3') && state.adults > 0) {
-    drinksTotal = state.adults * DRINKS_3;
-    drinksLabel = state.adults + ' adultos × ' + fmt(DRINKS_3) + ' (3 bebidas c/u)';
-  }
-
-  // 15% service only on F&B (adults + kids + drink package), NOT on rent
-  const fnb = adultsTotal + kidsTotal + drinksTotal;
+  // 15% service only on F&B (adults + kids), NOT on rent
+  const fnb = adultsTotal + kidsTotal;
   const service = fnb * 0.15;
   const total = rent + fnb + service;
   const anticipo = Math.round(rent * 0.5);
@@ -372,11 +348,10 @@ function recalc() {
   let html = '';
   html += '<div class="total-row"><span>Renta del espacio (' + DAYS_ES[state.day] + ')</span><span>' + fmt(rent) + '</span></div>';
   if (state.eventType === 'birthday') {
-    html += '<div class="total-row" style="color:rgba(255,249,241,.4);font-style:italic"><span>  ↳ Piñata, pastel y decoración incluidos</span><span>✓</span></div>';
+    html += '<div class="total-row" style="color:rgba(255,249,241,.4);font-style:italic"><span>  ↳ Piñata, pastel y decoración estilo Canica incluidos</span><span>✓</span></div>';
   }
   if (state.adults > 0) html += '<div class="total-row"><span>' + state.adults + ' adultos × ' + fmt(p.adult) + '</span><span>' + fmt(adultsTotal) + '</span></div>';
   if (state.kids > 0)   html += '<div class="total-row"><span>' + state.kids + ' niños × ' + fmt(KID_PRICE) + '</span><span>' + fmt(kidsTotal) + '</span></div>';
-  if (drinksTotal > 0)  html += '<div class="total-row"><span>Paquete bebidas · ' + drinksLabel + '</span><span>' + fmt(drinksTotal) + '</span></div>';
   if (fnb > 0)          html += '<div class="total-row"><span>Servicio 15% sobre consumo</span><span>' + fmt(service) + '</span></div>';
 
   document.getElementById('breakdown').innerHTML = html;
@@ -397,8 +372,6 @@ function recalc() {
     '📅 Fecha: ' + dateDisplay,
     '👥 ' + state.adults + ' adultos · ' + state.kids + ' niños',
     '🎉 Tipo: ' + eventTypeLabel,
-    state.addons.has('drinks2') ? '🥂 Paquete 2 bebidas por adulto' : null,
-    state.addons.has('drinks3') ? '🍾 Paquete 3 bebidas por adulto' : null,
     '',
     '💰 Total estimado: ' + fmt(total),
     '   Anticipo: ' + fmt(anticipo),

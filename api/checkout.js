@@ -27,11 +27,18 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { plan, kids } = req.body || {};
+  const { plan, kids, email } = req.body || {};
   const priceId = PRICE_IDS[plan];
 
   if (!priceId) {
     return res.status(400).json({ error: "Invalid plan" });
+  }
+
+  // Email is now required at signup
+  const emailNormalized = (email || "").toString().trim().toLowerCase();
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailNormalized);
+  if (!emailValid) {
+    return res.status(400).json({ error: "Correo electr\u00f3nico requerido" });
   }
 
   // Normalize kids list to a comma-separated string (Stripe metadata values are strings, 500 char max)
@@ -42,17 +49,35 @@ module.exports = async (req, res) => {
   const origin = req.headers.origin || "https://canica.fun";
 
   try {
-    const session = await stripe.checkout.sessions.create({
+    // Reuse existing customer if we already have one for this email
+    let customerId = null;
+    try {
+      const existing = await stripe.customers.list({ email: emailNormalized, limit: 1 });
+      if (existing.data.length) customerId = existing.data[0].id;
+    } catch (_) { /* fall through, Stripe will create one */ }
+
+    const sessionParams = {
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${origin}/success.html?plan=${plan}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/#membership`,
       locale: "es",
-      metadata: { plan, plan_name: PLAN_NAMES[plan], kids: kidsStr, kid_count: String(kidsList.length) },
+      metadata: { plan, plan_name: PLAN_NAMES[plan], kids: kidsStr, kid_count: String(kidsList.length), email: emailNormalized },
       subscription_data: {
-        metadata: { plan, source: "canica.fun", kids: kidsStr, kid_count: String(kidsList.length) }
+        metadata: { plan, source: "canica.fun", kids: kidsStr, kid_count: String(kidsList.length), email: emailNormalized }
       },
+    };
+    if (customerId) {
+      sessionParams.customer = customerId;
+      sessionParams.customer_update = { name: "auto" };
+    } else {
+      sessionParams.customer_email = emailNormalized;
+      sessionParams.customer_creation = "always";
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      ...sessionParams,
       custom_text: {
         submit: { message: "Cargo mensual automático. Cancela cuando quieras. Guarda el QR que aparece al finalizar — es tu pase de entrada." },
         after_submit: { message: "Revisa tu correo. Te enviaremos tu pase de entrada y los detalles de tu membresía." }

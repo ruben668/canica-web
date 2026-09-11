@@ -72,8 +72,8 @@ module.exports = async (req, res) => {
       sessionParams.customer = customerId;
       sessionParams.customer_update = { name: "auto" };
     } else {
+      // In subscription mode Stripe creates the customer automatically
       sessionParams.customer_email = emailNormalized;
-      sessionParams.customer_creation = "always";
     }
 
     const session = await stripe.checkout.sessions.create({

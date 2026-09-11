@@ -159,9 +159,25 @@
     </div>
   </div>
 
-  <!-- STEP 4: PEOPLE -->
+  <!-- STEP 4: TIME SLOT -->
   <div class="calc-section">
-    <div class="calc-label">04 — ¿Cuántos invitados?</div>
+    <div class="calc-label">04 — ¿Qué turno?</div>
+    <div class="slot-grid">
+      <div class="slot-btn" id="slot-morning" onclick="selectSlot('morning')">
+        <span class="slot-name">Mañana</span>
+        <span class="slot-time">10:00 am – 2:00 pm (4 horas)</span>
+      </div>
+      <div class="slot-btn" id="slot-afternoon" onclick="selectSlot('afternoon')">
+        <span class="slot-name">Tarde</span>
+        <span class="slot-time">3:00 pm – 7:00 pm (4 horas)</span>
+      </div>
+    </div>
+    <div style="font-size:11px;color:rgba(26,20,17,.5);margin-top:10px;font-style:italic;">Los horarios se pueden adaptar un poco a tu evento.</div>
+  </div>
+
+  <!-- STEP 5: PEOPLE -->
+  <div class="calc-section">
+    <div class="calc-label">05 — ¿Cuántos invitados?</div>
     <div class="people-grid">
       <div class="counter-box">
         <div class="counter-label">Adultos</div>
@@ -236,7 +252,14 @@ const KID_PRICE = 300;
 const DRINKS_2 = 350;
 const DRINKS_3 = 520;
 
-let state = { day: null, date: null, eventType: null, adults: 0, kids: 0, addons: new Set() };
+let state = { day: null, date: null, eventType: null, slot: null, adults: 0, kids: 0, addons: new Set() };
+
+function selectSlot(s) {
+  state.slot = s;
+  document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('slot-' + s).classList.add('active');
+  recalc();
+}
 
 function fmt(n) { return '$' + Math.round(n).toLocaleString('es-MX'); }
 
@@ -365,11 +388,13 @@ function recalc() {
     ? new Date(state.date + 'T12:00:00').toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long', year:'numeric'})
     : DAYS_ES[state.day] + ' (fecha por confirmar)';
 
+  const slotLabel = state.slot === 'morning' ? 'Mañana (10 am – 2 pm)' : state.slot === 'afternoon' ? 'Tarde (3 pm – 7 pm)' : 'Turno por confirmar';
   const msgLines = [
     'Hola 👋 Quisiera solicitar una cotización para un evento en Canica.',
     '',
     '📋 Referencia: ' + refCode,
     '📅 Fecha: ' + dateDisplay,
+    '⏰ Turno: ' + slotLabel,
     '👥 ' + state.adults + ' adultos · ' + state.kids + ' niños',
     '🎉 Tipo: ' + eventTypeLabel,
     '',

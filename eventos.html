@@ -240,13 +240,13 @@
 // Mon–Wed: venue $8,000  · adult $400 · kid $300
 // Thu:     venue $9,000  · adult $500 · kid $300
 // Fri:     venue $15,000 · adult $500 · kid $300
-// Sat–Sun: venue $15,000 · adult $600 · kid $400
+// Sat–Sun: venue $15,000 · adult $650 · kid $450
 // ═══════════════════════════════════════════════════════════════
 function getPricing(dow) {
   if (dow >= 1 && dow <= 3) return { venue: 8000,  adult: 400, kid: 300 };
   if (dow === 4)            return { venue: 9000,  adult: 500, kid: 300 };
   if (dow === 5)            return { venue: 15000, adult: 500, kid: 300 }; // Fri
-  return                          { venue: 15000, adult: 600, kid: 400 }; // Sat, Sun
+  return                          { venue: 15000, adult: 650, kid: 450 }; // Sat, Sun
 }
 const DAYS_ES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 const DAYS_SHORT = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];

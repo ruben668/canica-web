@@ -254,14 +254,14 @@
 // Monday–Wednesday: venue 8,000  · adult 400 · kid 300
 // Thursday:         venue 9,000  · adult 500 · kid 300
 // Friday:           venue 15,000 · adult 500 · kid 300
-// Saturday–Sunday:  venue 15,000 · adult 600 · kid 400
+// Saturday–Sunday:  venue 15,000 · adult 650 · kid 450
 function getPricing(date) {
   if (!date) return { tier: 'Lun–Mié', venue: 8000, adult: 400, kid: 300 };
   const day = date.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
   if (day >= 1 && day <= 3) return { tier: 'Lun–Mié', venue: 8000, adult: 400, kid: 300 };
   if (day === 4)            return { tier: 'Jueves',   venue: 9000,  adult: 500, kid: 300 };
   if (day === 5)            return { tier: 'Viernes',  venue: 15000, adult: 500, kid: 300 };
-  return                          { tier: 'Sáb–Dom', venue: 15000, adult: 600, kid: 400 }; // Sat, Sun
+  return                          { tier: 'Sáb–Dom', venue: 15000, adult: 650, kid: 450 }; // Sat, Sun
 }
 
 const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];

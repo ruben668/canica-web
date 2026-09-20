@@ -22,13 +22,9 @@
     },
     "api/checkin-stats.js": {
       "memory": 256,
-      "maxDuration": 30
-    },
-    "api/checkin-log.js": {
-      "memory": 256,
       "maxDuration": 10
     },
-    "api/checkin-stats.js": {
+    "api/checkin-log.js": {
       "memory": 256,
       "maxDuration": 10
     },
@@ -39,9 +35,17 @@
     "api/parent-lookup.js": {
       "memory": 256,
       "maxDuration": 10
+    },
+    "api/reservar.js": {
+      "memory": 256,
+      "maxDuration": 10
     }
   },
   "rewrites": [
+    {
+      "source": "/reservar",
+      "destination": "/reservar.html"
+    },
     {
       "source": "/canva-callback",
       "destination": "/api/canva-callback"

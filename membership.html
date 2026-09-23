@@ -312,7 +312,7 @@ async function proceedCheckout() {
   btn.disabled = true;
   btn.textContent = 'Cargando...';
   try {
-    const res = await fetch('/api/checkout', {
+    const res = await fetch('https://www.canica.fun/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ plan, kids, email })

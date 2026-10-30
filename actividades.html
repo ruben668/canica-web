@@ -1480,7 +1480,16 @@ const NOV_COHETE_ESPACIAL = { time: '9:00 am – 1:00 pm', name: 'Cohete Espacia
 
 const NOV_PORTARRETRATOS = { time: '9:00 am – 1:00 pm', name: 'Portarretratos', desc: 'Los niños decoran marcos de cartón con cuentas, pompones, botones, conchitas y pintura. Para llevar a casa con una foto favorita.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/portarretratos.png' };
 
-const NOV_SIN_LABORES = { time: 'Horario regular', name: 'Puente Día de la Revolución', desc: 'Hoy no hay actividad guiada — ludoteca abierta para juego libre. Perfecta para traer a los niños a correr, explorar y descansar del puente.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Día sin labores escolares — ludoteca abierta en horario normal.', photo: 'assets/placeholder.jpg' };
+const NOV_SIN_LABORES = {
+  time: 'Cerrado todo el día',
+  name: 'Cerrado — Día de la Revolución',
+  desc: 'Canica permanece cerrado por el feriado del Día de la Revolución. Café y ludoteca no abren. ¡Nos vemos el martes 17!',
+  warning: '⚠️ Canica cerrado todo el día por feriado nacional.',
+  price: '',
+  photo: 'assets/evento-privado.jpg',
+  paid: false,
+  closed: true
+};
 
 const NOV_VELITA = { time: '9:00 am – 11:15 am · 12:35 pm – 7:30 pm', name: 'Velita', desc: 'Los niños decoran pequeños frascos de vidrio con pintura y transparencias para hacer portavelas. Con velita LED segura para llevar a casa.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/velita.png' };
 
@@ -1581,7 +1590,7 @@ const ACTIVITY_DATA = {
   '2026-11-13': [NOV_COHETE_ESPACIAL],
   '2026-11-14': [NOV_PORTARRETRATOS],
   '2026-11-15': [NOV_PAJARITOS],
-  '2026-11-16': [NOV_SIN_LABORES],
+  '2026-11-16': [NOV_SIN_LABORES],  // Cerrado — Día de la Revolución (no LUNES_DESCUENTO porque está cerrado)
   '2026-11-18': [NOV_CAR_WASH],
   '2026-11-19': [NOV_ESTRELLAS],
   '2026-11-20': [NOV_MACETAS_PINTADAS],

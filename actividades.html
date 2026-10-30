@@ -1494,6 +1494,24 @@ const NOV_SUETER = { time: '9:00 am – 1:00 pm', name: 'Diseña tu Propio Suét
 
 const NOV_PALOMERO = { time: '9:00 am – 11:15 am · 12:35 pm – 7:30 pm', name: 'Palomero', desc: 'Los niños decoran cubetitas o conos de cartón que se convierten en palomeros personalizados. Con palomitas al final para disfrutar.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/palomero.png' };
 
+const NOV_PAJARITOS = { time: '9:00 am – 1:00 pm', name: 'Pajaritos', desc: 'Pajaritos de cartón y papel decorados con plumas, ojitos y colores vivos. Cada niño arma su propia bandada para llevar a casa.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/pajaritos.png' };
+
+const NOV_CAR_WASH = { time: '9:00 am – 1:00 pm', name: 'Car Wash Sensorial', desc: 'Una tina con agua jabonosa, esponjas de colores y carritos de juguete. Los niños lavan sus autos en un mini túnel de espuma. Juego sensorial con burbujas garantizadas.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/car-wash.png' };
+
+const NOV_BANO_BEBES = { time: '9:00 am – 1:00 pm', name: 'Baño de Bebés', desc: 'Muñecos bebés en tinas con agua tibia, jabón, esponjas y peines. Los niños los bañan, les lavan el pelo y los peinan. Juego sensorial y rol tranquilo.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/bano-bebes.png' };
+
+const NOV_DIBUJOS_GISES = { time: '9:00 am – 1:00 pm', name: 'Dibujos con Gises', desc: 'Los niños dibujan sobre papel kraft o papel negro con gises de colores. Técnicas de difuminado, trazos gruesos y mezclas de color. Al final se llevan sus dibujos a casa.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/dibujos-gises.png' };
+
+const NOV_COCODRILO = { time: '9:00 am – 1:00 pm', name: 'Pintando un Cocodrilo', desc: 'Siluetas de cocodrilo en cartón que los niños pintan de verde con témperas, agregan dientes blancos y ojitos. Cada cocodrilo con su personalidad.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/cocodrilo.png' };
+
+const NOV_SEPARADORES = { time: '9:00 am – 1:00 pm', name: 'Separadores para Libros', desc: 'Los niños crean sus propios separadores de libros con cartulina, listones, pompones y stickers. Perfectos para marcar su cuento favorito.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/separadores.png' };
+
+const NOV_SOMBRERITO = { time: '9:00 am – 1:00 pm', name: 'Sombrerito', desc: 'Pequeños sombreros de cartón que los niños decoran con pintura, flores, listones y pompones. Se los llevan puestos a casa.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/sombrerito.png' };
+
+const NOV_MUNECOS_LOCOS = { time: '9:00 am – 1:00 pm', name: 'Muñecos Locos', desc: 'Los niños crean muñecos chistosos con platos de papel, pompones, botones, limpiapipas y mucha imaginación. Cada uno con su cara única.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/munecos-locos.png' };
+
+const NOV_PALETAS_SABORES = { time: '9:00 am – 11:15 am · 12:35 pm – 7:30 pm', name: 'Paletas de Sabores', desc: 'Los niños pintan y decoran paletas de cartón gigantes con colores de sus sabores favoritos. Puras paletas de ensueño para colgar o jugar.', age: 'Todos los niños', price: 'Sin costo adicional · Incluida con la entrada a la ludoteca', note: 'Esta es una actividad, no una clase. Todos los niños están invitados a participar. Las actividades son para todas las edades — el resultado dependerá de cada niño.', photo: 'assets/nov/paletas-sabores.png' };
+
 const ACTIVITY_DATA = {
   '2026-07-27': [LUNES_DESCUENTO],
   '2026-08-17': [LUNES_DESCUENTO],
@@ -1562,13 +1580,21 @@ const ACTIVITY_DATA = {
   '2026-11-12': [NOV_DIBUJOS_ALUMINIO],
   '2026-11-13': [NOV_COHETE_ESPACIAL],
   '2026-11-14': [NOV_PORTARRETRATOS],
+  '2026-11-15': [NOV_PAJARITOS],
   '2026-11-16': [NOV_SIN_LABORES],
+  '2026-11-18': [NOV_CAR_WASH],
   '2026-11-19': [NOV_ESTRELLAS],
   '2026-11-20': [NOV_MACETAS_PINTADAS],
   '2026-11-21': [NOV_ESPEJITO],
   '2026-11-22': [NOV_SUETER],
   '2026-11-23': [LUNES_DESCUENTO, NOV_PALOMERO],
-  '2026-11-30': [LUNES_DESCUENTO],
+  '2026-11-24': [NOV_BANO_BEBES],
+  '2026-11-25': [NOV_DIBUJOS_GISES],
+  '2026-11-26': [NOV_COCODRILO],
+  '2026-11-27': [NOV_SEPARADORES],
+  '2026-11-28': [NOV_SOMBRERITO],
+  '2026-11-29': [NOV_MUNECOS_LOCOS],
+  '2026-11-30': [LUNES_DESCUENTO, NOV_PALETAS_SABORES],
   '2026-12-07': [LUNES_DESCUENTO],
   '2026-12-14': [LUNES_DESCUENTO],
   '2026-12-21': [LUNES_DESCUENTO],

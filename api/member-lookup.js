@@ -10,9 +10,14 @@ module.exports = async (req, res) => {
   const { whatsapp, email } = req.body || {};
   if (!whatsapp && !email) return res.status(400).json({ error: 'whatsapp or email required' });
 
-  const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
   try {
+    const key = process.env.STRIPE_SECRET_KEY;
+    if (!key) {
+      console.error('member-lookup: STRIPE_SECRET_KEY env var is empty');
+      return res.status(500).json({ error: 'config: STRIPE_SECRET_KEY missing at runtime' });
+    }
+    const stripe = require('stripe')(key);
+
     // Normalize phone: strip non-digits, ensure country code
     const normalizePhone = (p) => {
       if (!p) return null;
